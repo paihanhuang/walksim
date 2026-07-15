@@ -1,6 +1,7 @@
 package com.pikmin.stephook
 
 import android.app.AndroidAppHelper
+import android.database.Cursor
 import android.net.Uri
 import android.os.SystemClock
 import de.robv.android.xposed.XposedBridge
@@ -10,7 +11,7 @@ data class Pace(val playing: Boolean, val stepsPerMin: Float)
 
 /**
  * Reads the live pace from :app's exported, query-only `PaceProvider` (S5 / T5.2):
- *   `content://com.pikmin.walksim.pace/current` -> cursor { playing:INT(0/1), stepsPerMin:REAL }
+ *   `content://com.pikmin.walksim.pace/current` -> cursor { playing:INT(0/1), stepsPerMin:REAL (+trailing additive cols, read by name) }
  *
  * Queried DIRECTLY on the step-driver thread (our own thread — never Pikmin's sensor callback path),
  * cached to <= 2 Hz. All failures (null Application / null cursor / any exception) degrade to
@@ -55,17 +56,32 @@ class PaceClient(private val nowMs: () -> Long = { SystemClock.elapsedRealtime()
                 XposedBridge.log("PaceClient: empty cursor")
                 return NOT_PLAYING
             }
+            return parseRow(c)
+        }
+    }
+
+    companion object {
+        // Stable IPC contract constants — asserted against the canonical pace-contract.properties by
+        // PaceContractTest. A rename here (or on the provider side) is what makes the contract test RED.
+        internal const val CURRENT_URI_STR = "content://com.pikmin.walksim.pace/current"
+        internal const val COL_PLAYING = "playing"
+        internal const val COL_STEPS_PER_MIN = "stepsPerMin"
+        internal const val POLL_INTERVAL_MS = 500L // <= 2 Hz
+
+        private val NOT_PLAYING = Pace(playing = false, stepsPerMin = 0f)
+        // Lazy so touching the companion (e.g. from a unit test) never runs android.net.Uri.parse;
+        // resolved once on the first device query. Same value as before — behavior unchanged.
+        private val CURRENT_URI: Uri by lazy { Uri.parse(CURRENT_URI_STR) }
+
+        /**
+         * Maps the cursor's current row -> [Pace] by column NAME. Name-based reads are additive-
+         * tolerant: an extra trailing column (schemaVersion) is ignored and an old 2-column cursor
+         * still parses. Pure over the row -> unit-testable without a live provider.
+         */
+        internal fun parseRow(c: Cursor): Pace {
             val playing = c.getInt(c.getColumnIndexOrThrow(COL_PLAYING)) == 1
             val spm = if (playing) c.getFloat(c.getColumnIndexOrThrow(COL_STEPS_PER_MIN)) else 0f
             return Pace(playing, spm)
         }
-    }
-
-    private companion object {
-        val NOT_PLAYING = Pace(playing = false, stepsPerMin = 0f)
-        const val POLL_INTERVAL_MS = 500L // <= 2 Hz
-        val CURRENT_URI: Uri = Uri.parse("content://com.pikmin.walksim.pace/current")
-        const val COL_PLAYING = "playing"
-        const val COL_STEPS_PER_MIN = "stepsPerMin"
     }
 }
