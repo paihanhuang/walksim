@@ -1,0 +1,74 @@
+walk-sim / spike-step-hook — Stage 0 green baseline (Task 0.1)
+================================================================
+Date:    2026-07-14
+Branch:  plan-a-arch-optimization
+Roots:   /Users/davidhuang/Projects/pikmin-remote-control/walk-sim
+         /Users/davidhuang/Projects/pikmin-remote-control/spike-step-hook
+
+Toolchain (walk-sim/gradle/libs.versions.toml):
+  kotlin              = 2.1.0
+  junit (jupiter)     = 5.11.3
+  coroutines          = 1.9.0
+  serialization       = 1.7.3
+  agp (android)       = 8.7.3
+  osmdroid            = 6.1.20
+  playServicesLocation= 21.3.0
+  JDK                 = OpenJDK 17 (/opt/homebrew/opt/openjdk@17)
+
+Run commands (JAVA_HOME + wrapper -p <root>):
+  JAVA_HOME=.../openjdk@17/.../Home walk-sim/gradlew -p .../walk-sim test          -> BUILD SUCCESSFUL (exit 0)
+  JAVA_HOME=.../openjdk@17/.../Home spike-step-hook/gradlew -p .../spike-step-hook test -> BUILD SUCCESSFUL (exit 0)
+
+Note: both roots reported all tasks UP-TO-DATE (cached green from the prior run on
+this branch). Authoritative per-suite counts below are read from the last-run JUnit
+XML under **/build/test-results/**/TEST-*.xml; every suite shows failures=0 errors=0.
+
+------------------------------------------------------------------
+walk-sim suite inventory (module :: test class :: tests / skipped)
+------------------------------------------------------------------
+core-osm (:core-osm:test)
+  OverpassFilterTest ............ 1 / 0
+  OverpassGraphBuildTest ........ 1 / 0
+  OverpassRoadSourceTest ........ 1 / 0
+  ShibuyaFixtureBaker ........... 1 / 1  (baker disabled by default)
+  ShibuyaIntegrationTest ........ 1 / 0
+  ShibuyaSweepTest .............. 1 / 0
+  UenoRouteDiagnostic ........... 2 / 2  (diagnostics disabled by default)
+  core-osm subtotal ............. 8 / 3
+
+core-sim (:core-sim:test)
+  GeoTest ....................... 5 / 0
+  GraphRandomWalkerTest ......... 6 / 0
+  NoUTurnBearingTest ............ 1 / 0
+  PathEngineTest ................ 2 / 0
+  SweepRouteTest ................ 8 / 0
+  WalkingMotionEngineTest ....... 9 / 0
+  WalkPlayerTest ................ 3 / 0
+  WalkProfileTest ............... 1 / 0
+  core-sim subtotal ............ 35 / 0
+
+app (:app:testDebugUnitTest — also run identically as testReleaseUnitTest)
+  LocationMappingTest ........... 2 / 0
+  LocationsSpacingTest .......... 3 / 0
+  PaceDerivationTest ............ 4 / 0
+  SequencePlanTest .............. 6 / 0
+  WalkStateMachineTest .......... 6 / 0
+  app subtotal ................. 21 / 0
+
+  core-model (:core-model:test) .. NO-SOURCE (no tests; Geo lives in core-sim pre-Stage-1)
+
+walk-sim distinct tests (app counted once) = 8 + 35 + 21 = 64  (61 executed, 3 skipped)
+walk-sim task executions (`test` runs app debug+release) = 8 + 35 + 42 = 85
+(STATUS.md's "77" is an earlier snapshot; this file records the exact current inventory.)
+
+------------------------------------------------------------------
+spike-step-hook suite inventory
+------------------------------------------------------------------
+app (:app:testDebugUnitTest — also run identically as testReleaseUnitTest)
+  PaceSchedulerTest ............. 3 / 0
+  spike distinct tests = 3   (task executions debug+release = 6)
+
+------------------------------------------------------------------
+Verdict: PASS. Both Gradle roots BUILD SUCCESSFUL; every JUnit suite failures=0
+errors=0. This is the frozen green baseline the Stage 0 goldens/perf harness and
+all later stages are verified against.
