@@ -13,8 +13,10 @@ import android.util.Log
 import com.pikmin.model.LatLng
 import com.pikmin.model.WalkGraph
 import com.pikmin.model.WalkProfile
-import com.pikmin.osm.OverpassGraph
+import com.pikmin.osm.CompositeRoadSource
+import com.pikmin.osm.FixtureRoadSource
 import com.pikmin.osm.OverpassRoadSource
+import com.pikmin.osm.RoadSource
 import com.pikmin.sim.DEFAULT_LANE_SPACING_M
 import com.pikmin.sim.WalkPlayer
 import com.pikmin.sim.WalkPlayerConfig
@@ -47,11 +49,28 @@ class WalkService : Service() {
     private var job: Job? = null
     private var wakelock: PowerManager.WakeLock? = null
     private var injector: LocationInjector? = null
+    private lateinit var roadSource: RoadSource // live Overpass + baked-Shibuya fallback, built once in onCreate
     @Volatile private var holdTarget: LatLng? = null // live-updatable hold point (census teleport / freeze re-point)
     @Volatile private var holdActive = false // true only while a hold session runs → re-point targets a hold, not a walk
+    @Volatile private var fellBackToShibuya = false // set by the RoadSource fallback signal → resolveGraph re-homes to SHIBUYA
     private var radiusOverrideM: Int? = null // radius_s extra: manual fetch-radius override for tuning runs
     private var laneSpacingM = DEFAULT_LANE_SPACING_M
     private var closeLoop = false
+
+    override fun onCreate() {
+        super.onCreate()
+        // Build the graph source once: live Overpass, falling back to the baked offline Shibuya map on ANY fetch
+        // failure. The fallback signal raises the banner AND flags a re-home to SHIBUYA (consumed in resolveGraph).
+        roadSource = CompositeRoadSource(
+            OverpassRoadSource(),
+            FixtureRoadSource { assets.open(SHIBUYA_ASSET).bufferedReader().use { it.readText() } },
+            onFallback = {
+                Log.w(TAG, "Overpass fetch failed; falling back to baked Shibuya", it)
+                WalkBus.setupError.value = "Map fetch failed — using the offline Shibuya map."
+                fellBackToShibuya = true
+            },
+        )
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -204,18 +223,11 @@ class WalkService : Service() {
      */
     private suspend fun resolveGraph(start: LatLng, segS: Long, profile: WalkProfile): Pair<WalkGraph, LatLng> {
         val radiusM = radiusOverrideM ?: sweepFetchRadiusM(profile.meanSpeedMps * segS, laneSpacingM).toInt()
-        return runCatching { OverpassRoadSource().graphAround(start, radiusM) to start }
-            .getOrElse {
-                Log.w(TAG, "Overpass fetch failed; falling back to baked Shibuya", it)
-                WalkBus.setupError.value = "Map fetch failed — using the offline Shibuya map."
-                shibuyaGraph() to SHIBUYA
-            }
-    }
-
-    private fun shibuyaGraph(): WalkGraph {
-        bakedShibuya?.let { return it }
-        val json = assets.open(SHIBUYA_ASSET).bufferedReader().use { it.readText() }
-        return OverpassGraph.fromOverpassJson(json).also { bakedShibuya = it }
+        fellBackToShibuya = false
+        val graph = roadSource.graphAround(start, radiusM)
+        // On fallback the composite served the baked Shibuya graph and signalled a re-home: the effective start
+        // becomes SHIBUYA, not the unreachable pin (identical to the pre-injection behavior).
+        return graph to if (fellBackToShibuya) SHIBUYA else start
     }
 
     private fun stopWalk() {
@@ -296,9 +308,5 @@ class WalkService : Service() {
         const val EXTRA_CLOSE_STR = "close_s"     // "1" → closed run: shortest path home appended (AC-24e)
         const val EXTRA_SEQUENTIAL = "seq"     // "1" → default "All areas" mode: walk every preset in sequence
         const val EXTRA_HOLD_STR = "hold_s"    // "1" → static position hold (freeze / census sampling): pin mock, no route/steps
-
-        /** Parsed once per process — the baked graph is ~1.5 MB of JSON. */
-        @Volatile
-        private var bakedShibuya: WalkGraph? = null
     }
 }
