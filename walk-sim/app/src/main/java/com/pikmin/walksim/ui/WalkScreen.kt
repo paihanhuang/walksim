@@ -1,6 +1,7 @@
 package com.pikmin.walksim.ui
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -26,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -83,16 +85,22 @@ fun WalkScreen(
 
         LocationDropdown(selectedPosition = state.selectedPosition, onSelectPreset = onSelectPreset)
 
-        // Map slot — the osmdroid AndroidView. Weighted so it fills the same space the Stage-1 placeholder did.
-        WalkMap(
-            startPin = state.startPin,
-            selectedPosition = state.selectedPosition,
-            sample = state.sample,
-            onPick = onPick,
-            modifier = Modifier
+        // Map slot — the osmdroid AndroidView, with the one-shot completion petal-burst overlaid on its centre.
+        // Weighted so it fills the same space the Stage-1 placeholder did.
+        Box(
+            Modifier
                 .fillMaxWidth()
                 .weight(1f),
-        )
+        ) {
+            WalkMap(
+                startPin = state.startPin,
+                selectedPosition = state.selectedPosition,
+                sample = state.sample,
+                onPick = onPick,
+                modifier = Modifier.fillMaxSize(),
+            )
+            CompletionBurst(state.status, Modifier.fillMaxSize())
+        }
 
         Text(
             "start pin: %.5f, %.5f".format(state.startPin.lat, state.startPin.lng),
@@ -116,9 +124,11 @@ fun WalkScreen(
             modifier = Modifier.fillMaxWidth(),
         )
 
+        val startInteraction = remember { MutableInteractionSource() }
         Button(
             onClick = onStart,
             enabled = controls.start,
+            interactionSource = startInteraction,
             shape = MaterialTheme.shapes.extraLarge,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color(PetalTokens.START),
@@ -126,7 +136,8 @@ fun WalkScreen(
             ),
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp),
+                .height(56.dp)
+                .pressSquish(startInteraction),
         ) {
             Text("START", fontSize = 18.sp, fontWeight = FontWeight.Bold)
         }
@@ -138,9 +149,28 @@ fun WalkScreen(
         }
 
         Card(Modifier.fillMaxWidth()) {
-            Column(Modifier.padding(12.dp)) {
-                Text(hud.line1, color = Color(PetalTokens.TEXT))
-                if (hud.line2.isNotEmpty()) Text(hud.line2, color = Color(PetalTokens.TEXT))
+            Column(
+                Modifier.padding(12.dp),
+                verticalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(10.dp),
+                    verticalAlignment = Alignment.CenterVertically,
+                ) {
+                    // Bobbing sprout: on-screen only while a walk is active, and it bobs only while RUNNING
+                    // (frozen when PAUSED) — so no infinite animation runs at idle/stopped.
+                    if (state.status == WalkState.RUNNING || state.status == WalkState.PAUSED) {
+                        BobbingSprout(state.status)
+                    }
+                    Column {
+                        Text(hud.line1, color = Color(PetalTokens.TEXT))
+                        if (hud.line2.isNotEmpty()) Text(hud.line2, color = Color(PetalTokens.TEXT))
+                    }
+                }
+                // Petal progress fills as the walk advances; only meaningful once samples arrive.
+                if (state.sample != null) {
+                    PetalProgress(progressFraction(state.sample, state.durationS), Modifier.fillMaxWidth())
+                }
             }
         }
     }
@@ -155,14 +185,16 @@ private fun ControlButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val interaction = remember { MutableInteractionSource() }
     Button(
         onClick = onClick,
         enabled = enabled,
+        interactionSource = interaction,
         colors = ButtonDefaults.buttonColors(
             containerColor = Color(argb),
             contentColor = Color(PetalTokens.TEXT),
         ),
-        modifier = modifier,
+        modifier = modifier.pressSquish(interaction),
     ) {
         Text(label)
     }
