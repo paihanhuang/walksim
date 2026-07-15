@@ -29,6 +29,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -86,11 +87,14 @@ fun WalkScreen(
         LocationDropdown(selectedPosition = state.selectedPosition, onSelectPreset = onSelectPreset)
 
         // Map slot — the osmdroid AndroidView, with the one-shot completion petal-burst overlaid on its centre.
-        // Weighted so it fills the same space the Stage-1 placeholder did.
+        // Weighted so it fills the same space the Stage-1 placeholder did. clipToBounds is REQUIRED: the hosted
+        // osmdroid MapView paints its tile canvas past its View bounds, so without clipping it draws over the
+        // location dropdown above (hiding the area picker) and the start-pin label below.
         Box(
             Modifier
                 .fillMaxWidth()
-                .weight(1f),
+                .weight(1f)
+                .clipToBounds(),
         ) {
             WalkMap(
                 startPin = state.startPin,
