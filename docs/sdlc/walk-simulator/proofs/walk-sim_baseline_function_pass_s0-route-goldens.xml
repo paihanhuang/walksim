@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.osm.RouteGoldenTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-15T04:05:47" hostname="Davids-MBP" time="0.111">
+  <properties/>
+  <testcase name="shibuyaOpen()" classname="com.pikmin.osm.RouteGoldenTest" time="0.076"/>
+  <testcase name="gridShortfall()" classname="com.pikmin.osm.RouteGoldenTest" time="0.002"/>
+  <testcase name="shibuyaClosed()" classname="com.pikmin.osm.RouteGoldenTest" time="0.032"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
