@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Petal Pop splash window background — soft pink. -->
+    <color name="petal_splash_bg">#FFFFD9E7</color>
+</resources>

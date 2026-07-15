@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Themed-icon (Android 13+) monochrome layer for the Sprout Pin: one even-odd path renders the pin
+     as a solid silhouette with a round hole in the head, and the sprout sitting solid inside that hole.
+     Colour is replaced by the system theme; only the alpha silhouette matters. Original art. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="evenOdd"
+        android:pathData="M54,84 C41,65 34,57 34,43 A20,20 0 1,1 74,43 C74,57 67,65 54,84 Z
+                          M40,41 a14,14 0 1,0 28,0 a14,14 0 1,0 -28,0 Z
+                          M52.5,52 C52.5,46 52.5,40 54,31 C55.5,40 55.5,46 55.5,52 Z
+                          M53,46 C46,46 43,42 43,35 C48,36 52,40 53,46 Z
+                          M55,46 C62,46 65,42 65,35 C60,36 56,40 55,46 Z" />
+</vector>

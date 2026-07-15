@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Post-splash app theme: identical look to before (Material Light, no action bar). -->
+    <style name="Theme.WalkSim" parent="@android:style/Theme.Material.Light.NoActionBar" />
+
+    <!-- Launch theme: Petal Pop splash (soft-pink window + garden sprout), then hands off to
+         Theme.WalkSim via installSplashScreen(). Parent comes from androidx.core:core-splashscreen. -->
+    <style name="Theme.WalkSim.Splash" parent="Theme.SplashScreen">
+        <item name="windowSplashScreenBackground">@color/petal_splash_bg</item>
+        <item name="windowSplashScreenAnimatedIcon">@drawable/ic_splash_sprout</item>
+        <item name="postSplashScreenTheme">@style/Theme.WalkSim</item>
+    </style>
+</resources>

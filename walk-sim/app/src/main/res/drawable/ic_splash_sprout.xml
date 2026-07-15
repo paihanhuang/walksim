@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Original garden sprout for the Petal Pop splash. 288x288 canvas, content kept within the centre
+     ~192dp so the Android-12 splash circle mask never clips it. Not derived from any IP. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="288dp"
+    android:height="288dp"
+    android:viewportWidth="288"
+    android:viewportHeight="288">
+    <!-- Tapered stem. -->
+    <path
+        android:fillColor="#FF43A047"
+        android:pathData="M139,208 C139,170 140,130 144,92 C148,130 149,170 149,208 Z" />
+    <!-- Left leaf. -->
+    <path
+        android:fillColor="#FF43A047"
+        android:pathData="M143,152 C118,150 98,132 90,98 C122,102 140,120 143,152 Z" />
+    <!-- Right leaf. -->
+    <path
+        android:fillColor="#FF43A047"
+        android:pathData="M145,152 C170,150 190,132 198,98 C166,102 148,120 145,152 Z" />
+</vector>

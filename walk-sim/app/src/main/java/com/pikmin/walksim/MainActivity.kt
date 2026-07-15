@@ -7,6 +7,7 @@ import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -29,6 +30,9 @@ import com.pikmin.walksim.ui.startSpec
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // Petal Pop splash (soft-pink window + garden sprout) via androidx.core:core-splashscreen; must run
+        // before super.onCreate so the compat splash installs. Cosmetic only — no walk behaviour is touched.
+        installSplashScreen()
         super.onCreate(savedInstanceState)
         setContent {
             WalkSimTheme {
