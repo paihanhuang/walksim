@@ -1,0 +1,52 @@
+walk-sim — Stage 0 gen/heap perf baseline (Task 0.4)
+=====================================================
+Date:   2026-07-14
+Branch: plan-a-arch-optimization
+Test:   walk-sim/core-sim/src/test/kotlin/com/pikmin/sim/PerfBaselineTest.kt (env-gated)
+Support:walk-sim/core-sim/src/test/kotlin/com/pikmin/sim/SyntheticGraphs.kt (denseGrid)
+
+Run command (env var must reach the forked test JVM -> --no-daemon; env is not a task
+input -> --rerun-tasks to force execution):
+  WALKSIM_PERF=1 JAVA_HOME=.../openjdk@17/.../Home \
+    walk-sim/gradlew --no-daemon --rerun-tasks -p .../walk-sim \
+    :core-sim:test --tests com.pikmin.sim.PerfBaselineTest -i
+Result: BUILD SUCCESSFUL (exit 0).
+
+Workload: SyntheticGraphs.denseGrid(nodes = 12_000) -> 110x110 = 12100-node square
+lattice, bidirectional ~100 m edges (Okubo-scale dense core), start = (0,0) corner.
+Pipeline timed: sweepRoute(10 km, 500 m spacing, open) -> PathEngine.densify(1 m)
+-> WalkingMotionEngine.frames(600 s, seed 7). Route reached full length
+(points=10242 densified @ 1 m; frames=600), so the numbers are a real end-to-end
+generation measurement, not a degenerate/shortfall path.
+
+------------------------------------------------------------------
+MEASURED BASELINE (single machine: Apple Silicon, JDK 17)
+------------------------------------------------------------------
+  QG-GEN  route   = 44.996417 ms      (dominant phase: O(N)-per-waypoint snap scan
+                                        over 12.1k nodes in SweepRoute.kt:135-146)
+          densify =  2.136833 ms
+          frames  =  3.569833 ms
+          points  = 10242
+          frames  = 600
+  QG-HEAP deltaMB = 10.832224 MB
+
+  gen total (route+densify+frames) = 50.703083 ms
+
+------------------------------------------------------------------
+STAGE 5 TRIGGER BUDGET  (= measured x 1.5; documented per Task 0.4 Step 3)
+------------------------------------------------------------------
+Stage 5 runs ONLY IF a future re-measure (Task 5.0) on comparable hardware breaches
+any budget below. Within budget => Stage 5 is deferred/never runs.
+
+  route   budget = 67.494626 ms   (1.5 x 44.996417)
+  densify budget =  3.205250 ms   (1.5 x  2.136833)
+  frames  budget =  5.354750 ms   (1.5 x  3.569833)
+  gen total budget = 76.054625 ms (1.5 x 50.703083)   <- primary trigger
+  heap    budget = 16.248336 MB   (1.5 x 10.832224)
+
+Caveat: absolute ms are machine/JIT-sensitive; compare Stage 5 re-measures on the
+SAME machine, warmed, and treat the gen-total (76.05 ms) + heap (16.25 MB) budgets
+as the headline triggers. The env gate keeps this test at zero default-run cost
+(returns immediately unless WALKSIM_PERF=1) and adds no production dependency.
+
+Verdict: PASS. Reproducible gen/heap numbers captured; Stage 5 budget frozen.
