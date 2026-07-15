@@ -11,6 +11,7 @@ import com.google.android.gms.location.LocationServices
 import com.google.android.gms.tasks.Tasks
 import com.pikmin.model.LatLng
 import com.pikmin.model.SimSample
+import com.pikmin.walksim.session.LocationSink
 
 /**
  * Ported from the proven spike-s0a `MockGnssInjector` (Pixel-class device, this OS). Mocks the raw gps +
@@ -24,7 +25,7 @@ import com.pikmin.model.SimSample
  * The mock-location gate is the Developer-Options "mock location app" selection; when this app is not
  * selected, addTestProvider throws SecurityException — caught reactively in [start] to raise the AC-16 flag.
  */
-class LocationInjector(context: Context) {
+class LocationInjector(context: Context) : LocationSink {
 
     private val lm = context.getSystemService(Context.LOCATION_SERVICE) as LocationManager
     private val fused: FusedLocationProviderClient =
@@ -32,6 +33,10 @@ class LocationInjector(context: Context) {
 
     // Mock BOTH gps and network so FLP never leaks a stale real network fix (which reads as a teleport).
     private val providers = listOf(LocationManager.GPS_PROVIDER, LocationManager.NETWORK_PROVIDER)
+
+    // [LocationSink] aliases — the session drives these names; the bodies keep their original names to avoid call-site churn.
+    override fun engage(): Boolean = start()
+    override fun hold(pos: LatLng) = holdAt(pos)
 
     /** @return true if mock mode is engaged; false if this app is not the selected mock-location app (AC-16). */
     @Suppress("DEPRECATION") // multi-arg addTestProvider is the min-SDK-compatible overload
@@ -67,7 +72,7 @@ class LocationInjector(context: Context) {
     )
 
     /** Push one fully-populated fix (mapped from [sample]) to gps + network + fused, stamped with the real clock. */
-    fun push(sample: SimSample) {
+    override fun push(sample: SimSample) {
         val fields = LocationMapping.fromSample(
             sample,
             timeMs = System.currentTimeMillis(),
@@ -81,7 +86,7 @@ class LocationInjector(context: Context) {
     }
 
     /** AC-15: remove the test providers and disengage fused mock mode, restoring the real location stack. */
-    fun restore() {
+    override fun restore() {
         for (p in providers) runCatching { lm.removeTestProvider(p) }
         runCatching { Tasks.await(fused.setMockMode(false)) }
     }
