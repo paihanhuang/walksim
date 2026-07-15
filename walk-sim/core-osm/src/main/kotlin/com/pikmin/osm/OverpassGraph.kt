@@ -1,6 +1,7 @@
 package com.pikmin.osm
 
 import com.pikmin.model.Edge
+import com.pikmin.model.Geo
 import com.pikmin.model.LatLng
 import com.pikmin.model.WalkGraph
 import kotlinx.serialization.json.Json
@@ -11,12 +12,6 @@ import kotlinx.serialization.json.jsonArray
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
 import kotlinx.serialization.json.long
-import kotlin.math.asin
-import kotlin.math.cos
-import kotlin.math.min
-import kotlin.math.pow
-import kotlin.math.sin
-import kotlin.math.sqrt
 
 /**
  * Turns an Overpass `out geom` JSON body into a connected, foot-walkable [WalkGraph]:
@@ -134,22 +129,11 @@ object OverpassGraph {
         return WalkGraph(nodes, adjacency)
     }
 
-    // --- geodesy (local copy of :core-sim Geo.haversineMeters so :core-osm depends only on :core-model) ---
-
-    private const val EARTH_RADIUS_M = 6_371_008.8 // IUGG mean Earth radius, identical to :core-sim Geo
+    // --- edge length (haversine via :core-model Geo) ------------------------------------------------
 
     private fun polylineLength(points: List<LatLng>): Double {
         var sum = 0.0
-        for (i in 0 until points.size - 1) sum += haversineMeters(points[i], points[i + 1])
+        for (i in 0 until points.size - 1) sum += Geo.haversineMeters(points[i], points[i + 1])
         return sum
-    }
-
-    private fun haversineMeters(a: LatLng, b: LatLng): Double {
-        val dLat = Math.toRadians(b.lat - a.lat)
-        val dLng = Math.toRadians(b.lng - a.lng)
-        val la1 = Math.toRadians(a.lat)
-        val la2 = Math.toRadians(b.lat)
-        val h = sin(dLat / 2).pow(2) + cos(la1) * cos(la2) * sin(dLng / 2).pow(2)
-        return 2 * EARTH_RADIUS_M * asin(min(1.0, sqrt(h)))
     }
 }

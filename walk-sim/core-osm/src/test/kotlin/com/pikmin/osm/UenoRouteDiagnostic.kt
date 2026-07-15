@@ -1,9 +1,9 @@
 package com.pikmin.osm
 
+import com.pikmin.model.Geo
 import com.pikmin.model.LatLng
 import com.pikmin.model.Route
 import com.pikmin.model.WalkGraph
-import com.pikmin.sim.Geo
 import com.pikmin.sim.sweepRoute
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable

@@ -36,7 +36,7 @@ class RouteGoldenTest {
         for (r in 0 until n) for (c in 0 until n) nodes[id(r, c)] = LatLng(35.0 + r * stepDeg, 139.0 + c * stepDeg)
         fun link(a: Long, b: Long) {
             val ga = listOf(nodes.getValue(a), nodes.getValue(b))
-            val len = com.pikmin.sim.Geo.haversineMeters(ga[0], ga[1])
+            val len = com.pikmin.model.Geo.haversineMeters(ga[0], ga[1])
             adj.getOrPut(a) { ArrayList() }.add(Edge(b, ga, len))
             adj.getOrPut(b) { ArrayList() }.add(Edge(a, ga.reversed(), len))
         }

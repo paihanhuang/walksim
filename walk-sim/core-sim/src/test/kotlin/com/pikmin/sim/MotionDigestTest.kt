@@ -1,5 +1,6 @@
 package com.pikmin.sim
 
+import com.pikmin.model.Geo
 import com.pikmin.model.LatLng
 import com.pikmin.model.WalkProfile
 import org.junit.jupiter.api.Assertions.assertEquals

@@ -1,7 +1,7 @@
 package com.pikmin.osm
 
+import com.pikmin.model.Geo
 import com.pikmin.model.LatLng
-import com.pikmin.sim.Geo
 import com.pikmin.sim.GraphRandomWalker
 import com.pikmin.sim.WalkPlayer
 import com.pikmin.sim.WalkPlayerConfig

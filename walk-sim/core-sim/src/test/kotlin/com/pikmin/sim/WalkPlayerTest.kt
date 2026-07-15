@@ -1,5 +1,6 @@
 package com.pikmin.sim
 
+import com.pikmin.model.Geo
 import com.pikmin.model.LatLng
 import kotlinx.coroutines.flow.toList
 import kotlinx.coroutines.test.runTest

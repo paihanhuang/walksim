@@ -1,4 +1,4 @@
-package com.pikmin.sim
+package com.pikmin.model
 
 import com.pikmin.model.LatLng
 import org.junit.jupiter.api.Assertions.assertEquals
