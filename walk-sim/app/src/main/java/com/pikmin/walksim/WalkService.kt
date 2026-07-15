@@ -166,11 +166,26 @@ class WalkService : Service() {
         getSystemService(NotificationManager::class.java).createNotificationChannel(
             NotificationChannel(CHANNEL, "Walk injector", NotificationManager.IMPORTANCE_LOW),
         )
+        // PAUSE/STOP buttons: getService PendingIntents targeting THIS service with the existing
+        // ACTION_PAUSE/ACTION_STOP that onStartCommand already handles — cosmetic buttons over
+        // unchanged behavior. FQNs (PendingIntent/Icon) keep this Plan-B edit contained to this method.
+        fun action(icon: Int, title: String, act: String, requestCode: Int) =
+            Notification.Action.Builder(
+                android.graphics.drawable.Icon.createWithResource(this, icon), title,
+                android.app.PendingIntent.getService(
+                    this, requestCode, Intent(this, WalkService::class.java).setAction(act),
+                    android.app.PendingIntent.FLAG_IMMUTABLE,
+                ),
+            ).build()
         return Notification.Builder(this, CHANNEL)
-            .setContentTitle("WalkSim — injecting mock location")
-            .setContentText(text)
-            .setSmallIcon(android.R.drawable.ic_menu_mylocation)
+            .setContentTitle("WalkSim")
+            .setContentText("🌸 Strolling — $text")
+            .setSmallIcon(R.drawable.ic_sprout)
+            .setColor(0xFFF0554E.toInt())
+            .setColorized(true)
             .setOngoing(true)
+            .addAction(action(android.R.drawable.ic_media_pause, "Pause", ACTION_PAUSE, 1))
+            .addAction(action(android.R.drawable.ic_menu_close_clear_cancel, "Stop", ACTION_STOP, 2))
             .build()
     }
 

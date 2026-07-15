@@ -1,0 +1,15 @@
+<!-- Original monochrome seedling: two leaves + a tapered stem, opaque white on a transparent
+     background so the status bar renders it as an alpha mask and the notification's setColor
+     can tint it. Hand-authored; not derived from any Nintendo/Niantic/Pikmin artwork. -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="#FFFFFFFF"
+        android:fillType="nonZero"
+        android:pathData="M11.2,21.5 C11.3,18 11.4,15 12,12.2 C12.6,15 12.7,18 12.8,21.5 Z
+                          M11.7,14.8 C8.5,15.5 5,13 3.8,7.5 C8,7.8 10.8,10.8 11.7,14.8 Z
+                          M12.3,14.8 C13.2,10.8 16,7.8 20.2,7.5 C19,13 15.5,15.5 12.3,14.8 Z" />
+</vector>
