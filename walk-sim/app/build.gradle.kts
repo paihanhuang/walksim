@@ -26,6 +26,12 @@ android {
     kotlinOptions {
         jvmTarget = "17"
     }
+
+    testOptions {
+        // The extracted WalkSessionController keeps its diagnostic android.util.Log calls; without this the
+        // stub android.jar throws "not mocked" on them in the pure JVM controller test. Test-only; no prod effect.
+        unitTests.isReturnDefaultValues = true
+    }
 }
 
 dependencies {
@@ -37,6 +43,7 @@ dependencies {
     implementation(libs.play.services.location)
 
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.kotlinx.coroutines.test) // virtual-time runTest for the suspend controller matrix
 }
 
 // JVM unit tests for the pure logic (mapping / state-machine / pace) use JUnit5, like the :core-* modules.
