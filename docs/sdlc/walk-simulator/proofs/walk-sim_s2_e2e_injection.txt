@@ -1,0 +1,52 @@
+=== walk-sim Stage 2 E2E injection proof (branch plan-a-arch-optimization @ e185477) ===
+Tue Jul 14 23:06:51 PDT 2026
+
+### dumpsys location sample 1 (mock/fus/gps) ###
+        10289/com.google.android.gms[fused_location_provider]/E8A499FE Request[@0 BALANCED, hiddenFromAppOps, WorkSource{10289 com.google.android.gms}]
+      last location=Location[gps 35.659712,139.700309 hAcc=8.226621 et=+1d10h33m36s761ms alt=30.0 vAcc=3.0 mslAlt=-6.4261221324696365 mslAltAcc=3.0121255 vel=1.4040792 sAcc=0.5 bear=319.5686 bAcc=5.0 mock]
+    network provider [mock]:
+      last location=Location[network 35.659712,139.700309 hAcc=8.226621 et=+1d10h33m36s761ms alt=30.0 vAcc=3.0 mslAlt=-6.4261221324696365 mslAltAcc=3.0121255 vel=1.4040792 sAcc=0.5 bear=319.5686 bAcc=5.0 mock]
+      last mock location=Location[network 35.659712,139.700309 hAcc=8.226621 et=+1d10h33m36s761ms alt=30.0 vAcc=3.0 vel=1.4040792 sAcc=0.5 bear=319.5686 bAcc=5.0 mock]
+    fused provider:
+      last location=Location[fused 35.659712,139.700309 hAcc=8.226621 et=+1d10h33m36s761ms alt=30.0 vAcc=3.0 mslAlt=-6.4261221324696365 mslAltAcc=3.0121255 vel=1.4040792 sAcc=0.5 bear=319.5686 bAcc=5.0 mock]
+      identity=10289/com.google.android.gms[fused_location_provider]
+      extra attribution tags={awareness_provider, activity_recognition_provider, network_location_provider, gnss_location_provider, network_location_calibration, current_semantic_location, fused_location_provider, wearable_flp_shim, geofencer_provider}
+      target service=10289/com.google.android.gms/com.google.android.location.fused.FusedLocationService@1
+    gps provider [mock]:
+      last location=Location[gps 35.659712,139.700309 hAcc=8.226621 et=+1d10h33m36s761ms alt=30.0 vAcc=3.0 mslAlt=-6.4261221324696365 mslAltAcc=3.0121255 vel=1.4040792 sAcc=0.5 bear=319.5686 bAcc=5.0 mock]
+      last mock location=Location[gps 35.659712,139.700309 hAcc=8.226621 et=+1d10h33m36s761ms alt=30.0 vAcc=3.0 vel=1.4040792 sAcc=0.5 bear=319.5686 bAcc=5.0 mock]
+      10289/com.google.android.gms[fused_location_provider]: min/max interval = 0s/9223372036854775s, total/active/foreground duration = +1d10h16m2s710ms/+1d10h16m2s709ms/+1d10h16m2s710ms, locations = 191378
+    gps:
+      10289/com.google.android.gms[fused_location_provider]: min/max interval = 0s/2s, total/active/foreground duration = +1h26m46s811ms/+1h26m46s759ms/+1h26m46s800ms, locations = 5045
+    fused:
+        10289/com.google.android.gms[fused_location_provider]/0E4D32BA
+    07-14 19:29:23.465: gps provider -registration 10289/com.google.android.gms[fused_location_provider]/CE3099D2
+    07-14 19:29:23.465: gps provider request = ProviderRequest[@+1d0h0m0s0ms, HIGH_ACCURACY, WorkSource{10309 com.nianticlabs.pikmin}]
+
+--- wait 8s, sample 2 to show movement ---
+### dumpsys location sample 2 (mock/fus/gps) ###
+        10289/com.google.android.gms[fused_location_provider]/E8A499FE Request[@0 BALANCED, hiddenFromAppOps, WorkSource{10289 com.google.android.gms}]
+      last location=Location[gps 35.659732,139.700273 hAcc=6.2621922 et=+1d10h33m45s4ms alt=30.0 vAcc=3.0 mslAlt=-6.426297530005968 mslAltAcc=3.0121255 vel=0.0 sAcc=0.5 bear=317.12302 bAcc=5.0 mock]
+    network provider [mock]:
+      last location=Location[network 35.659732,139.700273 hAcc=6.2621922 et=+1d10h33m45s4ms alt=30.0 vAcc=3.0 mslAlt=-6.426297530005968 mslAltAcc=3.0121255 vel=0.0 sAcc=0.5 bear=317.12302 bAcc=5.0 mock]
+      last mock location=Location[network 35.659732,139.700273 hAcc=6.2621922 et=+1d10h33m45s4ms alt=30.0 vAcc=3.0 vel=0.0 sAcc=0.5 bear=317.12302 bAcc=5.0 mock]
+    fused provider:
+      last location=Location[fused 35.659732,139.700273 hAcc=6.2621922 et=+1d10h33m45s4ms alt=30.0 vAcc=3.0 mslAlt=-6.426297530005968 mslAltAcc=3.0121255 vel=0.0 sAcc=0.5 bear=317.12302 bAcc=5.0 mock]
+      identity=10289/com.google.android.gms[fused_location_provider]
+      extra attribution tags={awareness_provider, activity_recognition_provider, network_location_provider, gnss_location_provider, network_location_calibration, current_semantic_location, fused_location_provider, wearable_flp_shim, geofencer_provider}
+      target service=10289/com.google.android.gms/com.google.android.location.fused.FusedLocationService@1
+    gps provider [mock]:
+      last location=Location[gps 35.659732,139.700273 hAcc=6.2621922 et=+1d10h33m45s4ms alt=30.0 vAcc=3.0 mslAlt=-6.426297530005968 mslAltAcc=3.0121255 vel=0.0 sAcc=0.5 bear=317.12302 bAcc=5.0 mock]
+      last mock location=Location[gps 35.659732,139.700273 hAcc=6.2621922 et=+1d10h33m45s4ms alt=30.0 vAcc=3.0 vel=0.0 sAcc=0.5 bear=317.12302 bAcc=5.0 mock]
+      10289/com.google.android.gms[fused_location_provider]: min/max interval = 0s/9223372036854775s, total/active/foreground duration = +1d10h16m10s852ms/+1d10h16m10s851ms/+1d10h16m10s852ms, locations = 191402
+    gps:
+      10289/com.google.android.gms[fused_location_provider]: min/max interval = 0s/2s, total/active/foreground duration = +1h26m46s811ms/+1h26m46s759ms/+1h26m46s800ms, locations = 5045
+    fused:
+        10289/com.google.android.gms[fused_location_provider]/0E4D32BA
+    07-14 19:29:23.465: gps provider -registration 10289/com.google.android.gms[fused_location_provider]/CE3099D2
+    07-14 19:29:23.465: gps provider request = ProviderRequest[@+1d0h0m0s0ms, HIGH_ACCURACY, WorkSource{10309 com.nianticlabs.pikmin}]
+
+### logcat: StepInjector | PaceClient | WalkService (tail 70) ###
+07-14 23:05:08.247 15260 15260 I LSPosed-Bridge: StepInjector: attach type=18 com.nianticproject.ichigo.fitness.FitnessManager$1 (feeds=1)
+07-14 23:06:03.129  1347  1347 I adbd    : adbd service requested 'shell,v2,TERM=xterm-256color,raw:su -c am start-foreground-service -n com.pikmin.walksim/.WalkService -a com.pikmin.walksim.START --es lat_s 35.6595 --es lng_s 139.7006 --el duration_s 420 --es spacing_s 500'
+07-14 23:06:03.218  1624  1942 I ActivityManager: Background started FGS: Allowed [callingPackage: com.android.shell; callingUid: 0; uidState: NONE; uidBFSL: n/a; BFGS denied: false; intent: Intent { act=com.pikmin.walksim.START xflg=0x4 cmp=com.pikmin.walksim/.WalkService (has extras) }; code:SYSTEM_UID; tempAllowListReason:<null>; allowWiu:51; targetSdkVersion:34; callerTargetSdkVersion:36; startForegroundCount:0; bindFromPackage:null; isBindService:false]

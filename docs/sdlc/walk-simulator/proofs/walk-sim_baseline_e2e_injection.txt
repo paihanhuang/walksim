@@ -1,0 +1,49 @@
+=== walk-sim BASELINE e2e — INJECTION EVIDENCE ===
+captured (device time): Tue Jul 14 21:56:02 PDT 2026
+START intent: com.pikmin.walksim.START lat_s=35.6595 lng_s=139.7006 duration_s=420 spacing_s=500 (via su, walksim TOP)
+
+### (A) WalkService running as FGS type=location(0x8) ###
+  * ServiceRecord{de9b83 u0 com.pikmin.walksim/.WalkService c:com.android.shell}
+    intent={act=com.pikmin.walksim.START cmp=com.pikmin.walksim/.WalkService}
+    isForeground=true foregroundId=1 types=0x00000008 foregroundNoti=Notification(channel=walksim_inject shortcut=null contentView=null vibrate=null sound=null defaults=0 flags=ONGOING_EVENT|NO_CLEAR|FOREGROUND_SERVICE color=0x00000000 vis=PRIVATE)
+    createTime=-1m31s573ms startingBgTimeout=--
+ startCommandResult=1
+
+### (B) dumpsys location — active mock fix (expect ~35.66,139.70 w/ velocity; NOT real loc) ###
+      last location=Location[gps 35.660078,139.699837 hAcc=8.724548 et=+1d9h22m45s549ms alt=30.0 vAcc=3.0 mslAlt=-6.4289811844919384 mslAltAcc=3.0121255 vel=1.2213863 sAcc=0.5 bear=290.963 bAcc=5.0 mock]
+    network provider [mock]:
+      last location=Location[network 35.660078,139.699837 hAcc=8.724548 et=+1d9h22m45s549ms alt=30.0 vAcc=3.0 mslAlt=-6.4289811844919384 mslAltAcc=3.0121255 vel=1.2213863 sAcc=0.5 bear=290.963 bAcc=5.0 mock]
+      last mock location=Location[network 35.660078,139.699837 hAcc=8.724548 et=+1d9h22m45s549ms alt=30.0 vAcc=3.0 vel=1.2213863 sAcc=0.5 bear=290.963 bAcc=5.0 mock]
+      last location=Location[fused 35.660078,139.699837 hAcc=8.724548 et=+1d9h22m45s549ms alt=30.0 vAcc=3.0 mslAlt=-6.4289811844919384 mslAltAcc=3.0121255 vel=1.2213863 sAcc=0.5 bear=290.963 bAcc=5.0 mock]
+    gps provider [mock]:
+      last location=Location[gps 35.660078,139.699837 hAcc=8.724548 et=+1d9h22m45s549ms alt=30.0 vAcc=3.0 mslAlt=-6.4289811844919384 mslAltAcc=3.0121255 vel=1.2213863 sAcc=0.5 bear=290.963 bAcc=5.0 mock]
+      last mock location=Location[gps 35.660078,139.699837 hAcc=8.724548 et=+1d9h22m45s549ms alt=30.0 vAcc=3.0 vel=1.2213863 sAcc=0.5 bear=290.963 bAcc=5.0 mock]
+
+### (C) recent mock provider override events ###
+    07-14 21:54:30.859: gps provider removed mock provider override
+    07-14 21:54:30.860: gps provider added mock provider override
+    07-14 21:54:30.874: network provider removed mock provider override
+    07-14 21:54:30.875: network provider added mock provider override
+
+### (D) logcat — StepInjector / StepHook / PaceClient / WalkService ###
+07-14 20:46:17.296  1624  2017 I AppsFilter: interaction: PackageSetting{5dae90c com.pikmin.stephook/10334} -> PackageSetting{1821b7c com.google.android.apps.maps/10215} BLOCKED
+07-14 21:00:16.651  1624  2509 I ActivityManager: Background started FGS: Allowed [callingPackage: com.pikmin.walksim; callingUid: 10340; uidState: TOP ; uidBFSL: [BFSL]; BFGS denied: false; intent: Intent { act=com.pikmin.walksim.START xflg=0x4 cmp=com.pikmin.walksim/.WalkService (has extras) }; code:PROC_STATE_TOP; tempAllowListReason:<null>; allowWiu:12; targetSdkVersion:34; callerTargetSdkVersion:34; startForegroundCount:0; bindFromPackage:null; isBindService:false]
+07-14 21:08:49.422  1624  2574 I ActivityManager: Background started FGS: Allowed [callingPackage: com.pikmin.walksim; callingUid: 10340; uidState: TOP ; uidBFSL: [BFSL]; BFGS denied: false; intent: Intent { act=com.pikmin.walksim.START xflg=0x4 cmp=com.pikmin.walksim/.WalkService (has extras) }; code:PROC_STATE_TOP; tempAllowListReason:<null>; allowWiu:12; targetSdkVersion:34; callerTargetSdkVersion:34; startForegroundCount:0; bindFromPackage:null; isBindService:false]
+07-14 21:34:26.424  1624  2534 W ActivityManager: Permission Denial: Accessing service com.pikmin.walksim/.WalkService from pid=31884, uid=2000 that is not exported from uid 10340
+07-14 21:52:54.107 25663 25663 I LSPosed-Bridge: StepInjector: detach com.nianticproject.ichigo.fitness.FitnessManager$1 (feeds=0)
+07-14 21:54:30.740  1347  1347 I adbd    : adbd service requested 'shell,v2,TERM=xterm-256color,raw:su -c am start-foreground-service -n com.pikmin.walksim/.WalkService -a com.pikmin.walksim.START --es lat_s 35.6595 --es lng_s 139.7006 --es duration_s 420 --es spacing_s 500'
+07-14 21:54:30.845  1624  5699 I ActivityManager: Background started FGS: Allowed [callingPackage: com.android.shell; callingUid: 0; uidState: NONE; uidBFSL: n/a; BFGS denied: false; intent: Intent { act=com.pikmin.walksim.START xflg=0x4 cmp=com.pikmin.walksim/.WalkService (has extras) }; code:SYSTEM_UID; tempAllowListReason:<null>; allowWiu:51; targetSdkVersion:34; callerTargetSdkVersion:36; startForegroundCount:0; bindFromPackage:null; isBindService:false]
+07-14 21:54:30.850  7255  7255 W Bundle  : 	at com.pikmin.walksim.WalkService.startWalk(WalkService.kt:90)
+07-14 21:54:30.850  7255  7255 W Bundle  : 	at com.pikmin.walksim.WalkService.onStartCommand(WalkService.kt:69)
+
+### (E) RESULT — Pikmin daily step counter (home/menu) ###
+BEFORE (21:52): 94882 steps  -> proofs/walk-sim_baseline_e2e_before.png
+AFTER  (22:05): 95947 steps  -> proofs/walk-sim_baseline_e2e_after.png
+Live progression observed (monotonic): 94882 -> 95572 -> 95912 -> 95947  (DELTA +1065)
+walksim engine @07:04 elapsed: distance 522 m, generated 696 steps (~1:1 with Pikmin credit)
+
+### (F) clean STOP (root) ###
+stopped (device time): Tue Jul 14 22:08:15 PDT 2026
+  (nothing)
+    07-14 22:06:52.430: gps provider removed mock provider override
+    07-14 22:06:52.430: network provider removed mock provider override
