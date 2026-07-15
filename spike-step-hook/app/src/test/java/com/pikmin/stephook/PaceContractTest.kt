@@ -1,7 +1,6 @@
 package com.pikmin.stephook
 
 import android.database.Cursor
-import java.io.File
 import java.lang.reflect.Proxy
 import java.util.Properties
 import org.junit.jupiter.api.Assertions.assertEquals
@@ -15,8 +14,14 @@ import org.junit.jupiter.api.Test
  */
 class PaceContractTest {
     private val canonical = Properties().apply {
-        File("/Users/davidhuang/Projects/pikmin-remote-control/docs/sdlc/walk-simulator/pace-contract.properties")
-            .inputStream().use { load(it) }
+        canonicalFile().inputStream().use { load(it) }
+    }
+
+    private fun canonicalFile(): java.io.File {
+        var dir: java.io.File? = java.io.File("").absoluteFile
+        val rel = "docs/sdlc/walk-simulator/pace-contract.properties"
+        while (dir != null && !java.io.File(dir, rel).exists()) dir = dir.parentFile
+        return java.io.File(requireNotNull(dir) { "pace-contract.properties not found above ${java.io.File("").absoluteFile}" }, rel)
     }
 
     @Test
