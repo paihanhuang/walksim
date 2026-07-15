@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.walksim.PaceContractTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-15T05:50:28" hostname="Davids-MBP" time="0.0">
+  <properties/>
+  <testcase name="providerConstantsMatchCanonical()" classname="com.pikmin.walksim.PaceContractTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
