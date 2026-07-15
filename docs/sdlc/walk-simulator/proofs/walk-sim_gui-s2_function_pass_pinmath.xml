@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.walksim.ui.PinMathTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-07-15T08:50:37" hostname="Davids-MBP" time="0.011">
+  <properties/>
+  <testcase name="presetCenterZeroIsFirstPreset()" classname="com.pikmin.walksim.ui.PinMathTest" time="0.009"/>
+  <testcase name="presetCenterAppliesMinusOneShift()" classname="com.pikmin.walksim.ui.PinMathTest" time="0.001"/>
+  <testcase name="pickedStartPassesTapThrough()" classname="com.pikmin.walksim.ui.PinMathTest" time="0.001"/>
+  <testcase name="presetCenterOneIsFirstPreset()" classname="com.pikmin.walksim.ui.PinMathTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
