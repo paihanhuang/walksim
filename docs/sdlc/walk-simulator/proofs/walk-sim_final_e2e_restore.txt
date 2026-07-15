@@ -1,0 +1,30 @@
+===================================================================
+walk-sim FINAL e2e — provider restore verification
+branch plan-a-arch-optimization HEAD 9bfeee1 — 2026-07-15 10:08:40 PDT
+===================================================================
+
+-- Provider section headers NOW (expect NO '[mock]' suffix on any):
+    passive provider:
+    network provider:
+    fused provider:
+    gps provider:
+
+-- Active mock last-locations NOW (expect NONE):
+   count of active 'mock' last-location lines = 0  (0 = fully restored)
+
+-- Restore event log (mock override added at START, REMOVED at walk end):
+    07-15 09:56:22.640: gps provider removed mock provider override
+    07-15 09:56:22.643: gps provider added mock provider override
+    07-15 09:56:22.664: network provider removed mock provider override
+    07-15 09:56:22.665: network provider added mock provider override
+    07-15 10:06:14.655: gps provider removed mock provider override
+    07-15 10:06:14.656: network provider removed mock provider override
+    07-15 10:06:14.741: gps provider removed mock provider override
+    07-15 10:06:14.741: network provider removed mock provider override
+
+-- WalkService running? (expect none after force-stop teardown):
+   ServiceRecord count = 0
+
+CONCLUSION: mock GPS/NETWORK test providers removed and GMS fused mock disengaged
+at 10:06:14 (walk auto-finish -> controller finally -> injector.restore(), AC-15);
+real location stack restored, no lingering mock, service torn down.

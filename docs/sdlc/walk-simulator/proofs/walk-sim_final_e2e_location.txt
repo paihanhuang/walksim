@@ -1,0 +1,64 @@
+===================================================================
+walk-sim FINAL e2e — location injection + step feed
+branch plan-a-arch-optimization HEAD 9bfeee1 — 2026-07-15 09:58:00 PDT
+Walk: Shibuya lat_s=35.6595 lng_s=139.7006 duration_s=480 spacing_s=500
+Injector: GPS+NETWORK test providers + GMS fused setMockLocation (LocationInjector.kt)
+===================================================================
+
+########## SAMPLE A  (09:58:00) ##########
+-- pace provider (content://com.pikmin.walksim.pace/current):
+Row: 0 playing=1, stepsPerMin=92.19249, schemaVersion=1
+-- dumpsys location (mock providers, last fix):
+      last location=Location[gps 35.660094,139.699662 hAcc=9.143712 et=+9h10m11s627ms alt=30.0 vAcc=3.0 mslAlt=-6.429426535438097 mslAltAcc=3.0121255 vel=1.1524061 sAcc=0.5 bear=282.13812 bAcc=5.0 mock]
+    network provider [mock]:
+      last location=Location[network 35.660094,139.699662 hAcc=9.143712 et=+9h10m11s627ms alt=30.0 vAcc=3.0 mslAlt=-6.429426535438097 mslAltAcc=3.0121255 vel=1.1524061 sAcc=0.5 bear=282.13812 bAcc=5.0 mock]
+      last location=Location[fused 35.660094,139.699662 hAcc=9.143712 et=+9h10m11s627ms alt=30.0 vAcc=3.0 mslAlt=-6.429426535438097 mslAltAcc=3.0121255 vel=1.1524061 sAcc=0.5 bear=282.13812 bAcc=5.0 mock]
+    gps provider [mock]:
+      last location=Location[gps 35.660094,139.699662 hAcc=9.143712 et=+9h10m11s627ms alt=30.0 vAcc=3.0 mslAlt=-6.429426535438097 mslAltAcc=3.0121255 vel=1.1524061 sAcc=0.5 bear=282.13812 bAcc=5.0 mock]
+
+...waiting 30s to show the fix MOVING along the route...
+
+########## SAMPLE B  (09:58:31) ##########
+-- pace provider:
+Row: 0 playing=1, stepsPerMin=94.80523, schemaVersion=1
+-- dumpsys location (mock providers, last fix):
+      last location=Location[gps 35.660170,139.699255 hAcc=6.2341833 et=+9h10m43s600ms alt=30.0 vAcc=3.0 mslAlt=-6.4306644234002945 mslAltAcc=3.0121255 vel=1.1622783 sAcc=0.5 bear=291.57687 bAcc=5.0 mock]
+    network provider [mock]:
+      last location=Location[network 35.660170,139.699255 hAcc=6.2341833 et=+9h10m43s600ms alt=30.0 vAcc=3.0 mslAlt=-6.4306644234002945 mslAltAcc=3.0121255 vel=1.1622783 sAcc=0.5 bear=291.57687 bAcc=5.0 mock]
+      last location=Location[fused 35.660170,139.699255 hAcc=6.2341833 et=+9h10m43s600ms alt=30.0 vAcc=3.0 mslAlt=-6.4306644234002945 mslAltAcc=3.0121255 vel=1.1622783 sAcc=0.5 bear=291.57687 bAcc=5.0 mock]
+    gps provider [mock]:
+      last location=Location[gps 35.660170,139.699255 hAcc=6.2341833 et=+9h10m43s600ms alt=30.0 vAcc=3.0 mslAlt=-6.4306644234002945 mslAltAcc=3.0121255 vel=1.1622783 sAcc=0.5 bear=291.57687 bAcc=5.0 mock]
+
+########## STEP FEED — logcat StepInjector / WalkService pulses ##########
+07-15 09:56:22.440  1384  1384 I adbd    : adbd service requested 'shell,v2,TERM=xterm-256color,raw:su -c am start-foreground-service -n com.pikmin.walksim/.WalkService -a com.pikmin.walksim.START --es lat_s 35.6595 --es lng_s 139.7006 --el duration_s 480 --es spacing_s 500'
+07-15 09:56:22.572  1657  1992 I ActivityManager: Background started FGS: Allowed [callingPackage: com.android.shell; callingUid: 0; uidState: NONE; uidBFSL: n/a; BFGS denied: false; intent: Intent { act=com.pikmin.walksim.START xflg=0x4 cmp=com.pikmin.walksim/.WalkService (has extras) }; code:SYSTEM_UID; tempAllowListReason:<null>; allowWiu:51; targetSdkVersion:34; callerTargetSdkVersion:36; startForegroundCount:0; bindFromPackage:null; isBindService:false]
+
+########## STEP FEED — provenance note ##########
+StepInjector (LSPosed, runs inside com.nianticlabs.pikmin) logs only load/attach/errors by
+design — there is NO per-pulse log line (deliberate, to avoid log spam at ~2 Hz). The live step
+feed is therefore evidenced by (a) the pace-provider stepsPerMin above (92-141 spm, playing=1 =
+the feed SOURCE), and (b) the Pikmin landing-page counter increasing (the feed SINK, see
+walk-sim_final_e2e_pikmin_before.png -> _after.png). The module load + attach into Pikmin's
+FitnessManager step listener was captured at Pikmin cold-start (before the START-time logcat -c):
+
+07-15 09:53:36.861 15745 I LSPosed-Bridge: StepHook: loaded in com.nianticlabs.pikmin (feeds sensor type=18)
+07-15 09:53:37.117 15745 I LSPosed-Bridge: StepHook: registered sensor type=18 in com.nianticlabs.pikmin
+07-15 09:53:37.117 15745 I LSPosed-Bridge: StepInjector: attach type=18 com.nianticproject.ichigo.fitness.FitnessManager$1 (feeds=1)
+   (sensor type 18 = TYPE_STEP_DETECTOR — the sensor Pikmin's FitnessManager registers for its live/landing-page count)
+
+########## NOTIFICATION ACTION TEST — PAUSE / RESUME ##########
+PAUSE was triggered by TAPPING the notification's Pause button (input tap 287,899 on bounds [200,836][375,962]).
+notification contentText after PAUSE tap = '🌸 Strolling — Paused' (dumpsys notification), confirming ACTION_PAUSE handled.
+playing flag flickers 0/1 by design (playing:=speedMps>0, Poisson micro-pauses) so the RELIABLE
+pause proof is a FROZEN fix while paused, then a MOVING fix after resume:
+
+-- while PAUSED, two fixes ~5s apart (expect IDENTICAL = frozen):
+   paused fix #1 (10:02:24): Location[gps 35.660822,139.697517
+   paused fix #2 (10:02:29): Location[gps 35.660822,139.697517
+
+-- RESUME via startService (mirrors the notification PendingIntent.getService semantics):
+   Starting service: Intent { act=com.pikmin.walksim.RESUME cmp=com.pikmin.walksim/.WalkService }
+-- after RESUME, two fixes ~6s apart (expect MOVING):
+   resumed fix #1 (10:02:33): Location[gps 35.660838,139.697470
+   resumed fix #2 (10:02:39): Location[gps 35.660856,139.697428
+-- pace after resume: Row: 0 playing=0, stepsPerMin=0.0, schemaVersion=1
