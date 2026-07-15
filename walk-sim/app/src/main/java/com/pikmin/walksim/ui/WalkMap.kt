@@ -113,9 +113,12 @@ fun WalkMap(
     // Cosmetic petal trail: a pink polyline of the recent injected-fix positions.
     val trailOverlay = remember {
         Polyline(mapView).apply {
-            // Cosmetic-only: drop the default info window so the trail never consumes a tap near the line —
-            // taps keep falling through to the MapEventsOverlay, so tap-to-place stays 1:1 with the old map.
-            infoWindow = null
+            // Cosmetic-only: a click listener returning false makes a tap within stroke-width tolerance of the
+            // trail NOT be consumed (osmdroid 6.1.20 Polyline.click() calls this listener instead of the
+            // onClickDefault path that returns true unconditionally). The tap then falls through to the
+            // MapEventsOverlay, so tap-to-place stays 1:1 with the old map. Returning false also skips
+            // onClickDefault entirely, so the trail's info window is never shown.
+            setOnClickListener { _, _, _ -> false }
             outlinePaint.color = PetalTokens.STOP
             outlinePaint.strokeWidth = 12f
             outlinePaint.isAntiAlias = true
