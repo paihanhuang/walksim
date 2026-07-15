@@ -11,36 +11,27 @@ import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
 import com.pikmin.model.LatLng
-import com.pikmin.model.WalkGraph
 import com.pikmin.model.WalkProfile
 import com.pikmin.osm.CompositeRoadSource
 import com.pikmin.osm.FixtureRoadSource
 import com.pikmin.osm.OverpassRoadSource
 import com.pikmin.osm.RoadSource
 import com.pikmin.sim.DEFAULT_LANE_SPACING_M
-import com.pikmin.sim.WalkPlayer
-import com.pikmin.sim.WalkPlayerConfig
-import com.pikmin.sim.sweepFetchRadiusM
-import kotlinx.coroutines.CancellationException
+import com.pikmin.walksim.session.Mode
+import com.pikmin.walksim.session.RunSpec
+import com.pikmin.walksim.session.WalkSessionController
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 
 /**
- * Wakelocked foreground service (location type) that plays a [WalkPlayer] stream as a mock GNSS fix stream
- * (gps + network + fused) via [LocationInjector]. The engine self-paces at 1 Hz, so collecting it off the
- * main thread gives the real-time fix cadence; pause is realised by back-pressuring that collection.
- *
- *  - AC-20 : start / pause / resume / stop, driven by the pure [WalkStateMachine].
- *  - AC-16 : engage mock BEFORE the (slower) graph build so a not-mock-app SecurityException surfaces ≤2 s.
- *  - Robustness: PARTIAL_WAKE_LOCK + off-Main collection (design "Coordination transport & robustness").
- *  - Graph : every pin → live Overpass fetch, radius sized to the walk's sweep (AC-2); on fetch failure,
- *    fall back to the baked Shibuya graph.
+ * Thin wakelocked foreground service (location type): parses the start intent into a [RunSpec], stands up the
+ * platform surfaces (FGS notification, wakelock, the real [LocationInjector] sink, the once-built [RoadSource]),
+ * and delegates the walk to the pure [WalkSessionController]. All route/sequence/hold/restore ordering lives in
+ * the controller (AC-11..16, AC-20); this class owns only Android I/O.
  */
 class WalkService : Service() {
 
@@ -49,25 +40,22 @@ class WalkService : Service() {
     private var job: Job? = null
     private var wakelock: PowerManager.WakeLock? = null
     private var injector: LocationInjector? = null
+    private var session: WalkSessionController? = null // current session; the RoadSource fallback signal re-homes it
     private lateinit var roadSource: RoadSource // live Overpass + baked-Shibuya fallback, built once in onCreate
     @Volatile private var holdTarget: LatLng? = null // live-updatable hold point (census teleport / freeze re-point)
     @Volatile private var holdActive = false // true only while a hold session runs → re-point targets a hold, not a walk
-    @Volatile private var fellBackToShibuya = false // set by the RoadSource fallback signal → resolveGraph re-homes to SHIBUYA
-    private var radiusOverrideM: Int? = null // radius_s extra: manual fetch-radius override for tuning runs
-    private var laneSpacingM = DEFAULT_LANE_SPACING_M
-    private var closeLoop = false
 
     override fun onCreate() {
         super.onCreate()
         // Build the graph source once: live Overpass, falling back to the baked offline Shibuya map on ANY fetch
-        // failure. The fallback signal raises the banner AND flags a re-home to SHIBUYA (consumed in resolveGraph).
+        // failure. The fallback signal raises the banner AND flags the session to re-home to SHIBUYA.
         roadSource = CompositeRoadSource(
             OverpassRoadSource(),
             FixtureRoadSource { assets.open(SHIBUYA_ASSET).bufferedReader().use { it.readText() } },
             onFallback = {
                 Log.w(TAG, "Overpass fetch failed; falling back to baked Shibuya", it)
                 WalkBus.setupError.value = "Map fetch failed — using the offline Shibuya map."
-                fellBackToShibuya = true
+                session?.fellBackToShibuya = true
             },
         )
     }
@@ -111,12 +99,12 @@ class WalkService : Service() {
             ?: intent?.getDoubleExtra(EXTRA_SPEED_MPS, WalkProfile().meanSpeedMps) ?: WalkProfile().meanSpeedMps
         val stride = intent?.getStringExtra(EXTRA_STRIDE_STR)?.toDoubleOrNull() ?: WalkProfile().strideM
         val profile = WalkProfile(meanSpeedMps = speed, strideM = stride)
-        radiusOverrideM = intent?.getStringExtra(EXTRA_RADIUS_STR)?.toIntOrNull()
-        laneSpacingM = intent?.getStringExtra(EXTRA_SPACING_STR)?.toDoubleOrNull()?.coerceIn(50.0, 2000.0)
+        val radiusOverrideM = intent?.getStringExtra(EXTRA_RADIUS_STR)?.toIntOrNull() // radius_s: manual fetch-radius override
+        val laneSpacingM = intent?.getStringExtra(EXTRA_SPACING_STR)?.toDoubleOrNull()?.coerceIn(50.0, 2000.0)
             ?: DEFAULT_LANE_SPACING_M // clamp: a typo'd tiny spacing would explode waypoint count (qa-quality)
-        closeLoop = intent?.getStringExtra(EXTRA_CLOSE_STR) == "1"
+        val closeLoop = intent?.getStringExtra(EXTRA_CLOSE_STR) == "1"
         val sequential = intent?.getStringExtra(EXTRA_SEQUENTIAL) == "1" // default "All areas" mode
-        val holdMode = intent?.getStringExtra(EXTRA_HOLD_STR) == "1" // hold_s=1 → static position hold (freeze/census), no route/steps
+        val holdMode = intent?.getStringExtra(EXTRA_HOLD_STR) == "1" // hold_s=1 → static position hold (freeze/census)
         if (holdMode) { holdTarget = LatLng(lat, lng); holdActive = true }
 
         WalkBus.durationS = durationS
@@ -130,104 +118,18 @@ class WalkService : Service() {
         wakelock = (getSystemService(Context.POWER_SERVICE) as PowerManager)
             .newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "walksim:inject")
             .apply { acquire(WAKELOCK_TIMEOUT_MS) }
-        injector = LocationInjector(this)
+        val inj = LocationInjector(this).also { injector = it }
 
-        job = scope.launch { runWalk(LatLng(lat, lng), durationS, profile, seed = System.currentTimeMillis(), sequential, holdMode) }
-    }
-
-    /** All blocking LM/FLP + Overpass calls run here, off the main thread. */
-    private suspend fun runWalk(start: LatLng, durationS: Long, profile: WalkProfile, seed: Long, sequential: Boolean, holdMode: Boolean) {
-        val inj = injector ?: return
-        // AC-16 first (≤2 s): engage mock before the slower graph build so a not-mock-app fault surfaces fast.
-        if (!inj.start()) {
-            WalkBus.mockAppOk.value = false
-            WalkBus.setupError.value = "Select WalkSim as the mock-location app in Developer Options, then start again."
-            finish(); return
-        }
-        try {
-            if (holdMode) {
-                // Static hold: pin the mock at [start] and refresh at 1 Hz until STOP. No graph/route/steps
-                // (playing stays 0) — used for freeze-in-place and for census teleport-sampling.
-                updateNotification("Holding position")
-                while (!machine.isTerminal) { inj.holdAt(holdTarget ?: start); delay(HOLD_REFRESH_MS) }
-            } else if (sequential) {
-                // Default "All areas": one pass over the presets in order, each for its slice of the total.
-                val plan = sequencePlan(PRESET_LOCATIONS, durationS)
-                for ((i, entry) in plan.withIndex()) {
-                    val (preset, segS) = entry
-                    val label = "Walking ${preset.label} · ${i + 1}/${plan.size}"
-                    updateNotification(label) // during the (slow) per-preset graph fetch
-                    inj.holdAt(preset.at) // cover the fetch gap so real GPS never shows between presets
-                    val (graph, effStart) = resolveGraph(preset.at, segS, profile)
-                    playRoute(graph, effStart, segS, profile, seed + i, inj, label) // distinct seed per preset
-                    if (machine.isTerminal) break // stopped: fall through to machine.complete()/finish()
-                }
-            } else {
-                inj.holdAt(start) // cover the initial fetch gap so real GPS never shows before the first route fix
-                val (graph, effStart) = resolveGraph(start, durationS, profile)
-                playRoute(graph, effStart, durationS, profile, seed, inj)
-            }
-            machine.complete()
-            Log.i(TAG, "walk complete: duration ${durationS}s elapsed")
-        } catch (_: CancellationException) {
-            // stop requested
-        } catch (e: IllegalArgumentException) {
-            WalkBus.setupError.value = "No walkable road near the start pin — move it onto a street."
-            Log.w(TAG, "route generation failed", e)
-        } catch (e: Exception) {
-            WalkBus.setupError.value = "Walk failed: ${e.message}"
-            Log.w(TAG, "walk failed", e)
-        } finally {
-            finish()
-        }
-    }
-
-    /**
-     * Streams one route ([WalkPlayer] over [graph] from [start] for [segS] s, seeded [seed]) into [inj], honoring
-     * pause/stop back-pressure. [notifLabel] (per-preset in sequential mode) prefixes the progress notification;
-     * null → progress only, as the single-route path shows.
-     */
-    private suspend fun playRoute(
-        graph: WalkGraph,
-        start: LatLng,
-        segS: Long,
-        profile: WalkProfile,
-        seed: Long,
-        inj: LocationInjector,
-        notifLabel: String? = null,
-    ) {
-        val cfg = WalkPlayerConfig(profile = profile, laneSpacingM = laneSpacingM, closeLoop = closeLoop, seed = seed)
-        var lastNotifBucket = -1L
-        WalkPlayer(graph, cfg).play(start, segS).collect { sample ->
-            awaitRunnable() // suspends while paused (back-pressure); throws when stopped
-            inj.push(sample)
-            WalkBus.sample.value = sample
-            val bucket = sample.tickIndex / NOTIF_EVERY_TICKS
-            if (bucket != lastNotifBucket) {
-                lastNotifBucket = bucket
-                val progress = progressText(sample.cumulativeDistanceM, sample.tickIndex + 1, segS)
-                updateNotification(if (notifLabel != null) "$notifLabel · $progress" else progress)
-            }
-        }
-    }
-
-    /** Suspends while paused; returns when runnable; throws [CancellationException] once stopped. */
-    private suspend fun awaitRunnable() {
-        while (machine.isPaused) delay(PAUSE_POLL_MS)
-        if (machine.isTerminal) throw CancellationException("stopped")
-    }
-
-    /**
-     * Every pin → live Overpass fetch; on fetch failure, fall back to the baked Shibuya graph.
-     * Radius: [radiusOverrideM] if given, else sized so the disc contains the segment's sweep spiral (AC-2).
-     */
-    private suspend fun resolveGraph(start: LatLng, segS: Long, profile: WalkProfile): Pair<WalkGraph, LatLng> {
-        val radiusM = radiusOverrideM ?: sweepFetchRadiusM(profile.meanSpeedMps * segS, laneSpacingM).toInt()
-        fellBackToShibuya = false
-        val graph = roadSource.graphAround(start, radiusM)
-        // On fallback the composite served the baked Shibuya graph and signalled a re-home: the effective start
-        // becomes SHIBUYA, not the unreachable pin (identical to the pre-injection behavior).
-        return graph to if (fellBackToShibuya) SHIBUYA else start
+        val spec = RunSpec(
+            start = LatLng(lat, lng), durationS = durationS, profile = profile, seed = System.currentTimeMillis(),
+            mode = if (holdMode) Mode.HOLD else if (sequential) Mode.SEQUENTIAL else Mode.SINGLE,
+            laneSpacingM = laneSpacingM, closeLoop = closeLoop, radiusOverrideM = radiusOverrideM,
+        )
+        val controller = WalkSessionController(roadSource, inj, machine, SHIBUYA, ::updateNotification, holdTarget = { holdTarget })
+        session = controller
+        // Single flight: exactly one job at a time. The controller restores providers in its own finally (AC-15);
+        // this finally then tears down the FGS/wakelock/bus. stopWalk cancels the job → both finallys still run.
+        job = scope.launch { try { controller.run(spec) } finally { finish() } }
     }
 
     private fun stopWalk() {
@@ -236,11 +138,10 @@ class WalkService : Service() {
         job = null
     }
 
-    /** Idempotent teardown: restore providers (AC-15), release the wakelock, clear state, drop the FGS. */
+    /** Idempotent teardown: release the wakelock, clear state, drop the FGS (providers are restored by the controller). */
     private fun finish() {
         if (!machine.isTerminal) machine.stop()
         holdActive = false
-        runCatching { injector?.restore() }
         wakelock?.let { if (it.isHeld) it.release() }
         wakelock = null
         WalkBus.clear()
@@ -251,15 +152,10 @@ class WalkService : Service() {
 
     override fun onDestroy() {
         machine.stop()
-        runCatching { injector?.restore() }
+        runCatching { injector?.restore() } // process-death path: scope.cancel()'s cleanup is async, so restore now
         wakelock?.let { if (it.isHeld) it.release() }
         scope.cancel()
         super.onDestroy()
-    }
-
-    private fun progressText(distanceM: Double, elapsedS: Long, durationS: Long): String {
-        val pct = if (durationS > 0) (elapsedS * 100.0 / durationS).coerceAtMost(100.0) else 0.0
-        return "%.2f km · %d%% · %d/%d min".format(distanceM / 1000.0, pct.toInt(), elapsedS / 60, durationS / 60)
     }
 
     private fun updateNotification(text: String) {
@@ -284,10 +180,7 @@ class WalkService : Service() {
         private const val NOTIF_ID = 1
         private const val SHIBUYA_ASSET = "shibuya.json"
         private const val DEFAULT_DURATION_S = 3600L
-        private const val PAUSE_POLL_MS = 100L
-        private const val NOTIF_EVERY_TICKS = 10L
         private const val WAKELOCK_TIMEOUT_MS = 11L * 60 * 60 * 1000 // 11 h — covers a 10 h soak + margin
-        private const val HOLD_REFRESH_MS = 1000L // re-push the held fix at 1 Hz so FLP never serves it as stale
 
         val SHIBUYA = LatLng(35.6595, 139.7006)
 
