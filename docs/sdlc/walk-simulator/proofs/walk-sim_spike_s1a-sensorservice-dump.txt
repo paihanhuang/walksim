@@ -1,0 +1,586 @@
+Captured at: 16:46:41.912
+Sensor Device:
+Total 27 h/w sensors, 27 running:
+0x00000007) active-count = 2; sampling_period(ms) = {250.0, 200.0}, selected = 200.00 ms; batching_period(ms) = {0.0, 0.0}, selected = 0.00 ms
+0x00000001) active-count = 4; sampling_period(ms) = {20.0, 66.7, 10.0, 20.0}, selected = 10.00 ms; batching_period(ms) = {0.0, 0.0, 0.0, 0.0}, selected = 0.00 ms
+0x00000002) active-count = 2; sampling_period(ms) = {20.0, 160.0}, selected = 20.00 ms; batching_period(ms) = {0.0, 0.0}, selected = 0.00 ms
+0x00000019) active-count = 1; sampling_period(ms) = {10.0}, selected = 10.00 ms; batching_period(ms) = {0.0}, selected = 0.00 ms
+0x00000003) active-count = 3; sampling_period(ms) = {20.0, 66.7, 20.0}, selected = 20.00 ms; batching_period(ms) = {0.0, 0.0, 0.0}, selected = 0.00 ms
+0x00000018) active-count = 1; sampling_period(ms) = {20.0}, selected = 20.00 ms; batching_period(ms) = {0.0}, selected = 0.00 ms
+0x00000004) active-count = 2; sampling_period(ms) = {100.0, 100.0}, selected = 100.00 ms; batching_period(ms) = {0.0, 0.0}, selected = 0.00 ms
+0x00000017) active-count = 1; sampling_period(ms) = {60000.0}, selected = 60000.00 ms; batching_period(ms) = {60000.0}, selected = 0.00 ms
+0x0000000c) active-count = 2; sampling_period(ms) = {1.0, 1.0}, selected = 1.00 ms; batching_period(ms) = {0.0, 0.0}, selected = 0.00 ms
+0x0000000e) active-count = 2; sampling_period(ms) = {20.0, 80.0}, selected = 20.00 ms; batching_period(ms) = {0.0, 0.0}, selected = 0.00 ms
+0x0000000f) active-count = 2; sampling_period(ms) = {20.0, 80.0}, selected = 20.00 ms; batching_period(ms) = {0.0, 0.0}, selected = 0.00 ms
+0x00000010) active-count = 3; sampling_period(ms) = {20.0, 66.7, 20.0}, selected = 20.00 ms; batching_period(ms) = {0.0, 0.0, 0.0}, selected = 0.00 ms
+0x0000001e) active-count = 1; sampling_period(ms) = {66.7}, selected = 66.67 ms; batching_period(ms) = {0.0}, selected = 0.00 ms
+0x00010000) active-count = 1; sampling_period(ms) = {1.0}, selected = 1.00 ms; batching_period(ms) = {0.0}, selected = 0.00 ms
+Sensor List:
+0x00000001) BMI160 accelerometer      | Bosch           | ver: 1 | type: android.sensor.accelerometer(1) | perm: n/a | flags: 0x00000d00
+	continuous | minRate=6.25Hz | maxRate=400.00Hz | FIFO (max,reserved) = (5736, 3000) events | non-wakeUp | 
+	highest rate level = 2, support shared mem: ashmem, gralloc, 
+0x00000002) BMI160 gyroscope          | Bosch           | ver: 1 | type: android.sensor.gyroscope(4) | perm: n/a | flags: 0x00000d00
+	continuous | minRate=6.25Hz | maxRate=400.00Hz | FIFO (max,reserved) = (3585, 20) events | non-wakeUp | 
+	highest rate level = 2, support shared mem: ashmem, gralloc, 
+0x00000003) AK09915 magnetometer      | AKM             | ver: 1 | type: android.sensor.magnetic_field(2) | perm: n/a | flags: 0x00000c80
+	continuous | minRate=3.12Hz | maxRate=50.00Hz | FIFO (max,reserved) = (3585, 600) events | non-wakeUp | 
+	highest rate level = 1, support shared mem: ashmem, gralloc, 
+0x00000004) BMP285 pressure           | Bosch           | ver: 1 | type: android.sensor.pressure(6) | perm: n/a | flags: 0x00000000
+	continuous | minRate=0.10Hz | maxRate=10.00Hz | FIFO (max,reserved) = (7170, 300) events | non-wakeUp | 
+0x00000005) BMP285 temperature        | Bosch           | ver: 1 | type: com.google.sensor.internal_temperature(65536) | perm: n/a | flags: 0x00000000
+	continuous | minRate=0.10Hz | maxRate=25.00Hz | FIFO (max,reserved) = (7170, 20) events | non-wakeUp | 
+0x00000006) TMD4903 Proximity Sensor  | AMS             | ver: 1 | type: android.sensor.proximity(8) | perm: n/a | flags: 0x00000003
+	on-change | minRate=0.10Hz | maxRate=5.00Hz | FIFO (max,reserved) = (7170, 300) events | wakeUp | 
+0x00000007) TMD4903 Light Sensor      | AMS             | ver: 1 | type: android.sensor.light(5) | perm: n/a | flags: 0x00000002
+	on-change | minRate=0.10Hz | maxRate=5.00Hz | FIFO (max,reserved) = (7170, 20) events | non-wakeUp | 
+0x00000008) Orientation               | Google          | ver: 1 | type: android.sensor.orientation(3) | perm: n/a | flags: 0x00000000
+	continuous | minRate=12.50Hz | maxRate=200.00Hz | FIFO (max,reserved) = (3585, 20) events | non-wakeUp | 
+0x00000009) BMI160 Step detector      | Bosch           | ver: 1 | type: android.sensor.step_detector(18) | perm: android.permission.ACTIVITY_RECOGNITION | flags: 0x00000006
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (7170, 100) events | non-wakeUp | 
+0x0000000c) Significant motion        | Google          | ver: 1 | type: android.sensor.significant_motion(17) | perm: n/a | flags: 0x00000005
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | wakeUp | 
+0x0000000e) Gravity                   | Google          | ver: 1 | type: android.sensor.gravity(9) | perm: n/a | flags: 0x00000000
+	continuous | minRate=12.50Hz | maxRate=200.00Hz | FIFO (max,reserved) = (3585, 20) events | non-wakeUp | 
+0x0000000f) Linear Acceleration       | Google          | ver: 1 | type: android.sensor.linear_acceleration(10) | perm: n/a | flags: 0x00000000
+	continuous | minRate=12.50Hz | maxRate=200.00Hz | FIFO (max,reserved) = (3585, 20) events | non-wakeUp | 
+0x00000010) Rotation Vector           | Google          | ver: 1 | type: android.sensor.rotation_vector(11) | perm: n/a | flags: 0x00000000
+	continuous | minRate=12.50Hz | maxRate=200.00Hz | FIFO (max,reserved) = (3585, 20) events | non-wakeUp | 
+0x00000012) Geomagnetic Rotation Vector | Google          | ver: 1 | type: android.sensor.geomagnetic_rotation_vector(20) | perm: n/a | flags: 0x00000000
+	continuous | minRate=12.50Hz | maxRate=200.00Hz | FIFO (max,reserved) = (3585, 20) events | non-wakeUp | 
+0x00000013) Game Rotation Vector      | Google          | ver: 1 | type: android.sensor.game_rotation_vector(15) | perm: n/a | flags: 0x00000000
+	continuous | minRate=12.50Hz | maxRate=200.00Hz | FIFO (max,reserved) = (3585, 300) events | non-wakeUp | 
+0x00000014) Pickup Gesture            | Google          | ver: 1 | type: android.sensor.pick_up_gesture(25) | perm: n/a | flags: 0x00000005
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | wakeUp | 
+0x00000015) Tilt Detector             | Google          | ver: 1 | type: android.sensor.tilt_detector(22) | perm: n/a | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (7170, 20) events | wakeUp | 
+0x00000017) BMI160 Step counter       | Bosch           | ver: 1 | type: android.sensor.step_counter(19) | perm: android.permission.ACTIVITY_RECOGNITION | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (7170, 20) events | non-wakeUp | 
+0x00000018) AK09915 magnetometer (uncalibrated) | AKM             | ver: 1 | type: android.sensor.magnetic_field_uncalibrated(14) | perm: n/a | flags: 0x00000c80
+	continuous | minRate=3.12Hz | maxRate=50.00Hz | FIFO (max,reserved) = (3585, 600) events | non-wakeUp | 
+	highest rate level = 1, support shared mem: ashmem, gralloc, 
+0x00000019) BMI160 gyroscope (uncalibrated) | Bosch           | ver: 1 | type: android.sensor.gyroscope_uncalibrated(16) | perm: n/a | flags: 0x00000d00
+	continuous | minRate=6.25Hz | maxRate=400.00Hz | FIFO (max,reserved) = (3585, 20) events | non-wakeUp | 
+	highest rate level = 2, support shared mem: ashmem, gralloc, 
+0x0000001b) Sensors Sync              | Google          | ver: 1 | type: com.google.sensor.sync(65537) | perm: n/a | flags: 0x00000006
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (7170, 20) events | non-wakeUp | 
+0x0000001c) Double Twist              | Google          | ver: 1 | type: com.google.sensor.double_twist(65538) | perm: n/a | flags: 0x00000007
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (7170, 20) events | wakeUp | 
+0x0000001d) Double Tap                | Google          | ver: 1 | type: com.google.sensor.double_tap(65539) | perm: n/a | flags: 0x00000006
+	special-trigger | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (7170, 20) events | non-wakeUp | 
+0x0000001e) Device Orientation        | Google          | ver: 1 | type: android.sensor.device_orientation(27) | perm: n/a | flags: 0x00000002
+	on-change | maxDelay=0us | minDelay=0us | FIFO (max,reserved) = (7170, 20) events | non-wakeUp | 
+0x00000021) Double Touch              | Google          | ver: 1 | type: com.google.sensor.double_touch(65540) | perm: n/a | flags: 0x00000005
+	one-shot | maxDelay=0us | minDelay=-1us | no batching | wakeUp | 
+0x00000024) BMI160 accelerometer (uncalibrated) | Bosch           | ver: 1 | type: android.sensor.accelerometer_uncalibrated(35) | perm: n/a | flags: 0x00000d00
+	continuous | minRate=6.25Hz | maxRate=400.00Hz | FIFO (max,reserved) = (5736, 3000) events | non-wakeUp | 
+	highest rate level = 2, support shared mem: ashmem, gralloc, 
+0x00010000) Dynamic Sensor Manager    | Google          | ver: 1 | type: android.sensor.dynamic_sensor_meta(32) | perm: n/a | flags: 0x00000007
+	special-trigger | minRate=1000.00Hz | maxRate=1000.00Hz | no batching | wakeUp | 
+0x5f636779) Corrected Gyroscope Sensor | AOSP            | ver: 1 | type: android.sensor.gyroscope(4) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+0x5f676172) Game Rotation Vector Sensor | AOSP            | ver: 3 | type: android.sensor.game_rotation_vector(15) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+0x5f676273) Gyroscope Bias (debug)    | AOSP            | ver: 1 | type: android.sensor.accelerometer(1) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+0x5f67656f) GeoMag Rotation Vector Sensor | AOSP            | ver: 3 | type: android.sensor.geomagnetic_rotation_vector(20) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+0x5f677276) Gravity Sensor            | AOSP            | ver: 3 | type: android.sensor.gravity(9) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+0x5f6c696e) Linear Acceleration Sensor | AOSP            | ver: 3 | type: android.sensor.linear_acceleration(10) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+0x5f726f76) Rotation Vector Sensor    | AOSP            | ver: 3 | type: android.sensor.rotation_vector(11) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+0x5f797072) Orientation Sensor        | AOSP            | ver: 1 | type: android.sensor.orientation(3) | perm: n/a | flags: 0x00000000
+	continuous | maxDelay=0us | maxRate=400.00Hz | no batching | non-wakeUp | 
+Fusion States:
+9-axis fusion disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+game fusion(no mag) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+geomag fusion (no gyro) disabled (0 clients), gyro-rate= 200.00Hz, q=< 0, 0, 0, 0 > (0), b=< 0, 0, 0 >
+Recent Sensor events:
+Device Orientation: last 1 events
+	 1 (ts=746.772551517, wall=16:32:55.775) 0.00, 
+Rotation Vector: last 10 events
+	 1 (ts=1572.674241060, wall=16:46:41.699) 0.02, -0.00, 0.59, 0.81, 2.09, 
+	 2 (ts=1572.694241060, wall=16:46:41.719) 0.02, -0.00, 0.59, 0.81, 2.09, 
+	 3 (ts=1572.714241060, wall=16:46:41.739) 0.02, -0.00, 0.59, 0.81, 2.09, 
+	 4 (ts=1572.734241060, wall=16:46:41.758) 0.02, -0.00, 0.59, 0.81, 2.09, 
+	 5 (ts=1572.754241060, wall=16:46:41.778) 0.02, -0.00, 0.59, 0.81, 2.09, 
+	 6 (ts=1572.774241060, wall=16:46:41.798) 0.02, -0.00, 0.59, 0.81, 2.09, 
+	 7 (ts=1572.794241060, wall=16:46:41.817) 0.02, -0.00, 0.59, 0.81, 2.09, 
+	 8 (ts=1572.814241060, wall=16:46:41.837) 0.02, -0.00, 0.59, 0.81, 2.09, 
+	 9 (ts=1572.834241060, wall=16:46:41.856) 0.02, -0.00, 0.59, 0.81, 2.09, 
+	10 (ts=1572.854241060, wall=16:46:41.876) 0.02, -0.00, 0.59, 0.81, 2.09, 
+Linear Acceleration: last 10 events
+	 1 (ts=1572.674241060, wall=16:46:41.699) 0.03, 0.01, 0.17, 
+	 2 (ts=1572.694241060, wall=16:46:41.718) -0.01, 0.01, 0.19, 
+	 3 (ts=1572.714241060, wall=16:46:41.737) 0.02, 0.01, 0.18, 
+	 4 (ts=1572.734241060, wall=16:46:41.757) 0.01, 0.02, 0.16, 
+	 5 (ts=1572.754241060, wall=16:46:41.777) 0.02, -0.02, 0.19, 
+	 6 (ts=1572.774241060, wall=16:46:41.796) 0.02, 0.02, 0.17, 
+	 7 (ts=1572.794241060, wall=16:46:41.815) 0.00, -0.00, 0.19, 
+	 8 (ts=1572.814241060, wall=16:46:41.835) 0.01, -0.01, 0.19, 
+	 9 (ts=1572.834241060, wall=16:46:41.855) 0.00, 0.02, 0.17, 
+	10 (ts=1572.854241060, wall=16:46:41.876) -0.01, 0.01, 0.19, 
+Gravity: last 10 events
+	 1 (ts=1572.674241060, wall=16:46:41.698) 0.34, 0.34, 9.80, 
+	 2 (ts=1572.694241060, wall=16:46:41.718) 0.34, 0.34, 9.80, 
+	 3 (ts=1572.714241060, wall=16:46:41.737) 0.34, 0.34, 9.80, 
+	 4 (ts=1572.734241060, wall=16:46:41.757) 0.34, 0.34, 9.79, 
+	 5 (ts=1572.754241060, wall=16:46:41.777) 0.34, 0.34, 9.79, 
+	 6 (ts=1572.774241060, wall=16:46:41.796) 0.34, 0.34, 9.79, 
+	 7 (ts=1572.794241060, wall=16:46:41.815) 0.34, 0.34, 9.79, 
+	 8 (ts=1572.814241060, wall=16:46:41.835) 0.34, 0.34, 9.79, 
+	 9 (ts=1572.834241060, wall=16:46:41.855) 0.34, 0.34, 9.79, 
+	10 (ts=1572.854241060, wall=16:46:41.875) 0.34, 0.34, 9.79, 
+BMI160 Step counter: last 1 events
+	 1 (ts=889.085245560, wall=16:35:18.084) 0, 
+BMP285 pressure: last 10 events
+	 1 (ts=1572.012734219, wall=16:46:41.012) 1001.69, 0.00, 0.00, 
+	 2 (ts=1572.110780617, wall=16:46:41.111) 1001.69, 0.00, 0.00, 
+	 3 (ts=1572.208369139, wall=16:46:41.208) 1001.69, 0.00, 0.00, 
+	 4 (ts=1572.307056563, wall=16:46:41.306) 1001.69, 0.00, 0.00, 
+	 5 (ts=1572.405132466, wall=16:46:41.405) 1001.69, 0.00, 0.00, 
+	 6 (ts=1572.503514639, wall=16:46:41.503) 1001.69, 0.00, 0.00, 
+	 7 (ts=1572.602018913, wall=16:46:41.601) 1001.69, 0.00, 0.00, 
+	 8 (ts=1572.700340036, wall=16:46:41.699) 1001.68, 0.00, 0.00, 
+	 9 (ts=1572.798111709, wall=16:46:41.798) 1001.68, 0.00, 0.00, 
+	10 (ts=1572.895211831, wall=16:46:41.894) 1001.67, 0.00, 0.00, 
+AK09915 magnetometer: last 10 events
+	 1 (ts=1572.714724140, wall=16:46:41.718) 72.90, 15.60, -34.95, 
+	 2 (ts=1572.734400684, wall=16:46:41.737) 74.40, 15.45, -33.45, 
+	 3 (ts=1572.754077228, wall=16:46:41.757) 72.00, 15.00, -34.35, 
+	 4 (ts=1572.773742543, wall=16:46:41.777) 73.65, 14.70, -36.75, 
+	 5 (ts=1572.793418959, wall=16:46:41.796) 73.35, 15.75, -35.10, 
+	 6 (ts=1572.813095247, wall=16:46:41.815) 73.05, 15.45, -33.90, 
+	 7 (ts=1572.832771663, wall=16:46:41.835) 71.25, 15.75, -35.55, 
+	 8 (ts=1572.852447951, wall=16:46:41.855) 73.20, 16.20, -34.05, 
+	 9 (ts=1572.872124367, wall=16:46:41.875) 72.30, 15.00, -32.70, 
+	10 (ts=1572.891804017, wall=16:46:41.892) 75.30, 13.50, -34.05, 
+BMI160 gyroscope: last 10 events
+	 1 (ts=1572.734400684, wall=16:46:41.735) 0.00, -0.00, -0.00, 
+	 2 (ts=1572.754077228, wall=16:46:41.754) 0.00, -0.00, 0.00, 
+	 3 (ts=1572.773742543, wall=16:46:41.775) 0.00, -0.00, 0.00, 
+	 4 (ts=1572.793418959, wall=16:46:41.794) 0.00, 0.00, -0.00, 
+	 5 (ts=1572.813095247, wall=16:46:41.813) -0.00, 0.00, -0.00, 
+	 6 (ts=1572.832771663, wall=16:46:41.833) -0.00, 0.00, 0.00, 
+	 7 (ts=1572.852447951, wall=16:46:41.853) 0.00, 0.00, -0.00, 
+	 8 (ts=1572.872124367, wall=16:46:41.873) 0.00, -0.00, 0.00, 
+	 9 (ts=1572.891804017, wall=16:46:41.892) 0.00, -0.00, 0.00, 
+	10 (ts=1572.911480433, wall=16:46:41.912) 0.00, -0.00, 0.00, 
+BMI160 gyroscope (uncalibrated): last 10 events
+	 1 (ts=1572.822933455, wall=16:46:41.824) 0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+	 2 (ts=1572.832771663, wall=16:46:41.833) -0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+	 3 (ts=1572.842609871, wall=16:46:41.843) 0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+	 4 (ts=1572.852447951, wall=16:46:41.853) 0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+	 5 (ts=1572.862286159, wall=16:46:41.863) 0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+	 6 (ts=1572.872124367, wall=16:46:41.873) 0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+	 7 (ts=1572.881965809, wall=16:46:41.883) 0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+	 8 (ts=1572.891804017, wall=16:46:41.892) 0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+	 9 (ts=1572.901642225, wall=16:46:41.902) 0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+	10 (ts=1572.911480433, wall=16:46:41.912) 0.00, -0.00, 0.00, 0.00, -0.00, 0.00, 
+BMI160 accelerometer: last 50 events
+	 1 (ts=1572.429410063, wall=16:46:41.430) 0.34, 0.34, 9.97, 
+	 2 (ts=1572.439248143, wall=16:46:41.440) 0.34, 0.34, 9.96, 
+	 3 (ts=1572.449086351, wall=16:46:41.450) 0.35, 0.36, 9.97, 
+	 4 (ts=1572.458924559, wall=16:46:41.459) 0.33, 0.36, 9.95, 
+	 5 (ts=1572.468762767, wall=16:46:41.469) 0.34, 0.34, 9.98, 
+	 6 (ts=1572.478600625, wall=16:46:41.479) 0.35, 0.34, 9.95, 
+	 7 (ts=1572.488438833, wall=16:46:41.489) 0.34, 0.35, 9.97, 
+	 8 (ts=1572.498277041, wall=16:46:41.499) 0.36, 0.34, 9.94, 
+	 9 (ts=1572.508115121, wall=16:46:41.509) 0.35, 0.36, 9.95, 
+	10 (ts=1572.517953329, wall=16:46:41.518) 0.35, 0.33, 9.96, 
+	11 (ts=1572.527791537, wall=16:46:41.528) 0.34, 0.35, 10.00, 
+	12 (ts=1572.537629745, wall=16:46:41.538) 0.33, 0.34, 9.95, 
+	13 (ts=1572.547467825, wall=16:46:41.548) 0.32, 0.37, 9.97, 
+	14 (ts=1572.557306033, wall=16:46:41.558) 0.36, 0.34, 9.99, 
+	15 (ts=1572.567144241, wall=16:46:41.568) 0.35, 0.35, 9.97, 
+	16 (ts=1572.576989217, wall=16:46:41.577) 0.36, 0.37, 9.98, 
+	17 (ts=1572.586827553, wall=16:46:41.587) 0.36, 0.34, 9.97, 
+	18 (ts=1572.596665889, wall=16:46:41.597) 0.33, 0.35, 9.97, 
+	19 (ts=1572.606504097, wall=16:46:41.607) 0.34, 0.35, 9.95, 
+	20 (ts=1572.616342433, wall=16:46:41.617) 0.35, 0.34, 9.97, 
+	21 (ts=1572.626180641, wall=16:46:41.627) 0.36, 0.35, 9.99, 
+	22 (ts=1572.636018977, wall=16:46:41.636) 0.35, 0.37, 9.99, 
+	23 (ts=1572.645857313, wall=16:46:41.646) 0.34, 0.36, 9.97, 
+	24 (ts=1572.655695521, wall=16:46:41.656) 0.34, 0.33, 9.95, 
+	25 (ts=1572.665533857, wall=16:46:41.666) 0.35, 0.34, 9.98, 
+	26 (ts=1572.675370924, wall=16:46:41.676) 0.37, 0.35, 9.97, 
+	27 (ts=1572.685209260, wall=16:46:41.686) 0.33, 0.36, 9.96, 
+	28 (ts=1572.695047468, wall=16:46:41.695) 0.33, 0.35, 9.98, 
+	29 (ts=1572.704885804, wall=16:46:41.705) 0.35, 0.35, 9.96, 
+	30 (ts=1572.714724140, wall=16:46:41.715) 0.35, 0.35, 9.97, 
+	31 (ts=1572.724562348, wall=16:46:41.725) 0.34, 0.34, 9.99, 
+	32 (ts=1572.734400684, wall=16:46:41.735) 0.34, 0.36, 9.95, 
+	33 (ts=1572.744238892, wall=16:46:41.745) 0.34, 0.34, 9.97, 
+	34 (ts=1572.754077228, wall=16:46:41.754) 0.36, 0.32, 9.99, 
+	35 (ts=1572.763915436, wall=16:46:41.765) 0.36, 0.36, 9.97, 
+	36 (ts=1572.773742543, wall=16:46:41.775) 0.35, 0.36, 9.96, 
+	37 (ts=1572.783580751, wall=16:46:41.784) 0.34, 0.37, 9.98, 
+	38 (ts=1572.793418959, wall=16:46:41.794) 0.34, 0.34, 9.98, 
+	39 (ts=1572.803257039, wall=16:46:41.804) 0.38, 0.34, 9.98, 
+	40 (ts=1572.813095247, wall=16:46:41.813) 0.35, 0.33, 9.99, 
+	41 (ts=1572.822933455, wall=16:46:41.824) 0.36, 0.35, 9.97, 
+	42 (ts=1572.832771663, wall=16:46:41.833) 0.34, 0.36, 9.97, 
+	43 (ts=1572.842609871, wall=16:46:41.843) 0.34, 0.35, 9.97, 
+	44 (ts=1572.852447951, wall=16:46:41.853) 0.33, 0.35, 9.99, 
+	45 (ts=1572.862286159, wall=16:46:41.863) 0.34, 0.36, 9.97, 
+	46 (ts=1572.872124367, wall=16:46:41.873) 0.33, 0.35, 9.99, 
+	47 (ts=1572.881965809, wall=16:46:41.883) 0.37, 0.36, 10.00, 
+	48 (ts=1572.891804017, wall=16:46:41.892) 0.36, 0.37, 9.99, 
+	49 (ts=1572.901642225, wall=16:46:41.902) 0.35, 0.34, 9.95, 
+	50 (ts=1572.911480433, wall=16:46:41.912) 0.34, 0.35, 9.97, 
+AK09915 magnetometer (uncalibrated): last 10 events
+	 1 (ts=1572.714724140, wall=16:46:41.718) 72.90, 15.60, -34.95, 0.00, 0.00, 0.00, 
+	 2 (ts=1572.734400684, wall=16:46:41.737) 74.40, 15.45, -33.45, 0.00, 0.00, 0.00, 
+	 3 (ts=1572.754077228, wall=16:46:41.757) 72.00, 15.00, -34.35, 0.00, 0.00, 0.00, 
+	 4 (ts=1572.773742543, wall=16:46:41.777) 73.65, 14.70, -36.75, 0.00, 0.00, 0.00, 
+	 5 (ts=1572.793418959, wall=16:46:41.796) 73.35, 15.75, -35.10, 0.00, 0.00, 0.00, 
+	 6 (ts=1572.813095247, wall=16:46:41.815) 73.05, 15.45, -33.90, 0.00, 0.00, 0.00, 
+	 7 (ts=1572.832771663, wall=16:46:41.835) 71.25, 15.75, -35.55, 0.00, 0.00, 0.00, 
+	 8 (ts=1572.852447951, wall=16:46:41.855) 73.20, 16.20, -34.05, 0.00, 0.00, 0.00, 
+	 9 (ts=1572.872124367, wall=16:46:41.875) 72.30, 15.00, -32.70, 0.00, 0.00, 0.00, 
+	10 (ts=1572.891804017, wall=16:46:41.892) 75.30, 13.50, -34.05, 0.00, 0.00, 0.00, 
+TMD4903 Light Sensor: last 50 events
+	 1 (ts=1552.672285714, wall=16:46:21.672) 26.74, 0.00, 0.00, 
+	 2 (ts=1552.869019536, wall=16:46:21.868) 26.27, 0.00, 0.00, 
+	 3 (ts=1553.065875458, wall=16:46:22.065) 26.74, 0.00, 0.00, 
+	 4 (ts=1553.261876679, wall=16:46:22.261) 26.27, 0.00, 0.00, 
+	 5 (ts=1553.458305250, wall=16:46:22.458) 26.74, 0.00, 0.00, 
+	 6 (ts=1553.851467643, wall=16:46:22.850) 26.08, 0.00, 0.00, 
+	 7 (ts=1554.048750916, wall=16:46:23.049) 26.74, 0.00, 0.00, 
+	 8 (ts=1555.032209488, wall=16:46:24.031) 26.52, 0.00, 0.00, 
+	 9 (ts=1555.425310831, wall=16:46:24.424) 26.07, 0.00, 0.00, 
+	10 (ts=1556.015542821, wall=16:46:25.014) 25.85, 0.00, 0.00, 
+	11 (ts=1556.408642892, wall=16:46:25.408) 26.32, 0.00, 0.00, 
+	12 (ts=1556.801957910, wall=16:46:25.801) 26.29, 0.00, 0.00, 
+	13 (ts=1556.998325431, wall=16:46:25.997) 26.32, 0.00, 0.00, 
+	14 (ts=1558.564870299, wall=16:46:27.564) 26.51, 0.00, 0.00, 
+	15 (ts=1558.761024145, wall=16:46:27.760) 26.29, 0.00, 0.00, 
+	16 (ts=1559.742739652, wall=16:46:28.742) 26.10, 0.00, 0.00, 
+	17 (ts=1560.135169444, wall=16:46:29.134) 26.29, 0.00, 0.00, 
+	18 (ts=1560.527842385, wall=16:46:29.527) 26.07, 0.00, 0.00, 
+	19 (ts=1560.725400382, wall=16:46:29.725) 26.10, 0.00, 0.00, 
+	20 (ts=1561.314014546, wall=16:46:30.313) 25.88, 0.00, 0.00, 
+	21 (ts=1561.510687318, wall=16:46:30.509) 26.10, 0.00, 0.00, 
+	22 (ts=1561.902415034, wall=16:46:30.902) 25.63, 0.00, 0.00, 
+	23 (ts=1562.098752031, wall=16:46:31.098) 26.29, 0.00, 0.00, 
+	24 (ts=1562.295333227, wall=16:46:31.295) 26.10, 0.00, 0.00, 
+	25 (ts=1562.492097107, wall=16:46:31.492) 26.32, 0.00, 0.00, 
+	26 (ts=1562.884832150, wall=16:46:31.884) 26.07, 0.00, 0.00, 
+	27 (ts=1563.277628243, wall=16:46:32.277) 26.52, 0.00, 0.00, 
+	28 (ts=1563.474453639, wall=16:46:32.474) 26.74, 0.00, 0.00, 
+	29 (ts=1565.047286935, wall=16:46:34.046) 26.07, 0.00, 0.00, 
+	30 (ts=1565.637244200, wall=16:46:34.636) 25.85, 0.00, 0.00, 
+	31 (ts=1565.833703297, wall=16:46:34.833) 26.32, 0.00, 0.00, 
+	32 (ts=1566.030559219, wall=16:46:35.030) 25.85, 0.00, 0.00, 
+	33 (ts=1566.227231990, wall=16:46:35.226) 26.32, 0.00, 0.00, 
+	34 (ts=1566.423936581, wall=16:46:35.423) 25.85, 0.00, 0.00, 
+	35 (ts=1567.012764420, wall=16:46:36.012) 26.07, 0.00, 0.00, 
+	36 (ts=1567.598448180, wall=16:46:36.598) 26.52, 0.00, 0.00, 
+	37 (ts=1567.794479926, wall=16:46:36.794) 26.74, 0.00, 0.00, 
+	38 (ts=1569.167862993, wall=16:46:38.167) 26.07, 0.00, 0.00, 
+	39 (ts=1569.363986314, wall=16:46:38.363) 26.74, 0.00, 0.00, 
+	40 (ts=1569.560353835, wall=16:46:38.560) 26.29, 0.00, 0.00, 
+	41 (ts=1569.756751882, wall=16:46:38.756) 26.74, 0.00, 0.00, 
+	42 (ts=1570.542435073, wall=16:46:39.541) 26.95, 0.00, 0.00, 
+	43 (ts=1570.739107845, wall=16:46:39.738) 26.49, 0.00, 0.00, 
+	44 (ts=1570.935566942, wall=16:46:39.934) 26.95, 0.00, 0.00, 
+	45 (ts=1571.131110287, wall=16:46:40.131) 26.49, 0.00, 0.00, 
+	46 (ts=1571.523906380, wall=16:46:40.524) 26.29, 0.00, 0.00, 
+	47 (ts=1572.113527869, wall=16:46:41.113) 26.76, 0.00, 0.00, 
+	48 (ts=1572.309559616, wall=16:46:41.309) 26.29, 0.00, 0.00, 
+	49 (ts=1572.702415738, wall=16:46:41.702) 26.95, 0.00, 0.00, 
+	50 (ts=1572.898508534, wall=16:46:41.898) 26.51, 0.00, 0.00, 
+TMD4903 Proximity Sensor: last 1 events
+	 1 (ts=14.448165820, wall=16:20:43.449) 5.00, 0.00, 0.00, 
+Active sensors:
+BMI160 accelerometer (handle=0x00000001, connections=4)
+BMI160 gyroscope (handle=0x00000002, connections=2)
+AK09915 magnetometer (handle=0x00000003, connections=3)
+BMP285 pressure (handle=0x00000004, connections=2)
+TMD4903 Light Sensor (handle=0x00000007, connections=2)
+Significant motion (handle=0x0000000c, connections=2)
+Gravity (handle=0x0000000e, connections=2)
+Linear Acceleration (handle=0x0000000f, connections=2)
+Rotation Vector (handle=0x00000010, connections=3)
+BMI160 Step counter (handle=0x00000017, connections=1)
+AK09915 magnetometer (uncalibrated) (handle=0x00000018, connections=1)
+BMI160 gyroscope (uncalibrated) (handle=0x00000019, connections=1)
+Device Orientation (handle=0x0000001e, connections=1)
+Dynamic Sensor Manager (handle=0x00010000, connections=1)
+Socket Buffer size = 984 events
+WakeLock Status: not held 
+Mode : NORMAL
+Sensor Privacy: disabled
+14 active connections
+Connection Number: 0 
+	Operating Mode: NORMAL
+	 fpmu | WakeLockRefCount 0 | uid 10115 | cache size 0 | max cache size 0
+	 Significant motion 0x0000000c | status: active | pending flush events 0 
+Connection Number: 1 
+	Operating Mode: NORMAL
+	 com.google.android.gms.location.weather.collector.PressureProvider | WakeLockRefCount 0 | uid 10115 | cache size 0 | max cache size 0
+	 BMP285 pressure 0x00000004 | status: active | pending flush events 0 
+Connection Number: 2 
+	Operating Mode: NORMAL
+	 com.android.server.display.AutomaticBrightnessController | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0
+	 TMD4903 Light Sensor 0x00000007 | status: active | pending flush events 0 
+Connection Number: 3 
+	Operating Mode: NORMAL
+	 com.android.server.display.BrightnessTracker | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0
+	 TMD4903 Light Sensor 0x00000007 | status: active | pending flush events 0 
+Connection Number: 4 
+	Operating Mode: NORMAL
+	 com.android.server.SensorNotificationService | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0
+	 Dynamic Sensor Manager 0x00010000 | status: active | pending flush events 0 
+Connection Number: 5 
+	Operating Mode: NORMAL
+	 cztq | WakeLockRefCount 0 | uid 10115 | cache size 0 | max cache size 0
+	 Significant motion 0x0000000c | status: active | pending flush events 0 
+Connection Number: 6 
+	Operating Mode: NORMAL
+	 unknown_package_pid_11805 | WakeLockRefCount 0 | uid 10170 | cache size 0 | max cache size 5736
+	 BMI160 accelerometer 0x00000001 | status: active | pending flush events 0 
+	 BMI160 gyroscope 0x00000002 | status: active | pending flush events 0 
+	 AK09915 magnetometer 0x00000003 | status: active | pending flush events 0 
+	 Gravity 0x0000000e | status: active | pending flush events 0 
+	 Linear Acceleration 0x0000000f | status: active | pending flush events 0 
+	 Rotation Vector 0x00000010 | status: active | pending flush events 0 
+Connection Number: 7 
+	Operating Mode: NORMAL
+	 com.google.android.location.fused.PressureProvider | WakeLockRefCount 0 | uid 10115 | cache size 0 | max cache size 0
+	 BMP285 pressure 0x00000004 | status: active | pending flush events 0 
+Connection Number: 8 
+	Operating Mode: NORMAL
+	 com.nianticlabs.nia.sensors.NianticSensorManager | WakeLockRefCount 0 | uid 10170 | cache size 0 | max cache size 0
+	 BMI160 accelerometer 0x00000001 | status: active | pending flush events 0 
+	 BMI160 gyroscope 0x00000002 | status: active | pending flush events 0 
+	 AK09915 magnetometer 0x00000003 | status: active | pending flush events 0 
+	 Gravity 0x0000000e | status: active | pending flush events 0 
+	 Linear Acceleration 0x0000000f | status: active | pending flush events 0 
+	 Rotation Vector 0x00000010 | status: active | pending flush events 0 
+Connection Number: 9 
+	Operating Mode: NORMAL
+	 unknown_package_pid_2190 | WakeLockRefCount 0 | uid 10115 | cache size 0 | max cache size 0
+	 BMI160 accelerometer 0x00000001 | status: active | pending flush events 0 
+	 AK09915 magnetometer 0x00000003 | status: active | pending flush events 0 
+	 AK09915 magnetometer (uncalibrated) 0x00000018 | status: active | pending flush events 0 
+	 BMI160 gyroscope (uncalibrated) 0x00000019 | status: active | pending flush events 0 
+Connection Number: 10 
+	Operating Mode: NORMAL
+	 com.android.server.policy.WindowOrientationListener | WakeLockRefCount 0 | uid 1000 | cache size 0 | max cache size 0
+	 Device Orientation 0x0000001e | status: active | pending flush events 0 
+Connection Number: 11 
+	Operating Mode: NORMAL
+	 com.google.android.location.fused.StepDetector | WakeLockRefCount 0 | uid 10115 | cache size 0 | max cache size 0
+	 BMI160 accelerometer 0x00000001 | status: active | pending flush events 0 
+Connection Number: 12 
+	Operating Mode: NORMAL
+	 com.google.android.gms.fitness.sensors.local.LocalSensorAdapter$ConvertingListenerKitKat | WakeLockRefCount 0 | uid 10115 | cache size 0 | max cache size 0
+	 BMI160 Step counter 0x00000017 | status: active | pending flush events 0 
+Connection Number: 13 
+	Operating Mode: NORMAL
+	 com.unity3d.player.T0 | WakeLockRefCount 0 | uid 10170 | cache size 0 | max cache size 0
+	 Rotation Vector 0x00000010 | status: active | pending flush events 0 
+0 direct connections
+Previous Registrations:
+16:46:41 + 0x00000004 pid= 2190 uid=10115 package=com.google.android.gms.location.weather.collector.PressureProvider samplingPeriod=100000us batchingPeriod=0us
+16:41:40 - 0x00000004 pid= 2190 uid=10115 package=com.google.android.gms.location.weather.collector.PressureProvider
+16:41:37 + 0x00000004 pid= 2190 uid=10115 package=com.google.android.gms.location.weather.collector.PressureProvider samplingPeriod=100000us batchingPeriod=0us
+16:36:35 - 0x00000004 pid= 2190 uid=10115 package=com.google.android.gms.location.weather.collector.PressureProvider
+16:36:32 + 0x00000004 pid= 2190 uid=10115 package=com.google.android.gms.location.weather.collector.PressureProvider samplingPeriod=100000us batchingPeriod=0us
+16:35:18 + 0x00000017 pid= 2190 uid=10115 package=com.google.android.gms.fitness.sensors.local.LocalSensorAdapter$ConvertingListenerKitKat samplingPeriod=60000000us batchingPeriod=60000000us
+16:35:14 + 0x00000003 pid= 2190 uid=10115 package=unknown_package_pid_2190 samplingPeriod=200000us batchingPeriod=0us
+16:35:14 + 0x00000019 pid= 2190 uid=10115 package=unknown_package_pid_2190 samplingPeriod=160000us batchingPeriod=0us
+16:35:14 + 0x00000018 pid= 2190 uid=10115 package=unknown_package_pid_2190 samplingPeriod=200000us batchingPeriod=0us
+16:35:14 + 0x00000001 pid= 2190 uid=10115 package=unknown_package_pid_2190 samplingPeriod=160000us batchingPeriod=0us
+16:35:14 + 0x00000004 pid= 2190 uid=10115 package=com.google.android.location.fused.PressureProvider samplingPeriod=100000us batchingPeriod=0us
+16:35:14 + 0x00000001 pid= 2190 uid=10115 package=com.google.android.location.fused.StepDetector samplingPeriod=20000us batchingPeriod=0us
+16:35:14 + 0x0000000f pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:35:14 + 0x00000010 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:35:14 + 0x00000003 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:35:14 + 0x00000001 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:35:14 + 0x00000002 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=160000us batchingPeriod=0us
+16:35:14 + 0x0000000e pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:35:14 + 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:35:14 + 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:35:14 + 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:35:14 + 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:35:14 + 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=200000us batchingPeriod=0us
+16:35:14 + 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:35:12 - 0x00000010 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:12 - 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:12 - 0x0000000f pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:12 - 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:12 - 0x0000000e pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:12 - 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:12 - 0x00000003 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:12 - 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:12 - 0x00000002 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:12 - 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:12 - 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:12 - 0x00000001 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:12 - 0x00000010 pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:35:12 - 0x0000000f pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:35:11 - 0x00000003 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK
+16:35:11 - 0x00000001 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK
+16:35:11 - 0x00000002 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK
+16:35:11 + 0x0000000f pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:35:11 + 0x00000010 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:35:11 + 0x00000003 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:35:11 + 0x00000001 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:35:11 + 0x00000002 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=160000us batchingPeriod=0us
+16:35:11 + 0x0000000e pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:35:11 + 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:35:11 + 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:35:11 + 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:35:11 + 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:35:11 + 0x00000003 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK samplingPeriod=20000us batchingPeriod=0us
+16:35:11 + 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=200000us batchingPeriod=0us
+16:35:11 + 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:35:11 + 0x00000002 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK samplingPeriod=20000us batchingPeriod=0us
+16:35:11 + 0x00000001 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK samplingPeriod=20000us batchingPeriod=0us
+16:35:10 - 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:10 - 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:10 - 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:10 - 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:10 - 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:10 - 0x00000010 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:10 - 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:35:10 - 0x0000000f pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:10 - 0x0000000e pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:10 - 0x00000003 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:10 - 0x00000002 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:10 - 0x00000001 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:35:02 + 0x00000010 pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:35:02 + 0x0000000f pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:34:58 - 0x00000003 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK
+16:34:58 - 0x00000001 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK
+16:34:58 - 0x00000002 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK
+16:34:58 + 0x00000003 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK samplingPeriod=20000us batchingPeriod=0us
+16:34:58 + 0x00000002 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK samplingPeriod=20000us batchingPeriod=0us
+16:34:58 + 0x00000001 pid=11805 uid=10170 package=com.appsflyer.internal.AFj1nSDK samplingPeriod=20000us batchingPeriod=0us
+16:34:57 + 0x0000000f pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:34:57 + 0x00000010 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:34:57 + 0x00000003 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:34:57 + 0x00000001 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:34:57 + 0x00000002 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=160000us batchingPeriod=0us
+16:34:57 + 0x0000000e pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:34:57 + 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:57 + 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:57 + 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:57 + 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:34:57 + 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=200000us batchingPeriod=0us
+16:34:57 + 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:34:55 - 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:55 - 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:55 - 0x00000010 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:55 - 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:55 - 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:55 - 0x0000000f pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:55 - 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:55 - 0x0000000e pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:55 - 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:55 - 0x00000003 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:55 - 0x00000002 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:55 - 0x00000001 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:29 - 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine
+16:34:29 + 0x0000000f pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:34:29 + 0x00000010 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:34:29 + 0x00000003 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:34:29 + 0x00000001 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:34:29 + 0x00000002 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=160000us batchingPeriod=0us
+16:34:29 + 0x0000000e pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:34:29 + 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:29 + 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:29 + 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:29 + 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:34:28 + 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=200000us batchingPeriod=0us
+16:34:28 + 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:34:28 + 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine samplingPeriod=66667us batchingPeriod=0us
+16:34:26 - 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine
+16:34:26 + 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine samplingPeriod=66667us batchingPeriod=0us
+16:34:26 - 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:26 - 0x00000010 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:26 - 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:26 - 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:26 - 0x0000000f pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:26 - 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:26 - 0x0000000e pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:26 - 0x00000003 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:26 - 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:26 - 0x00000002 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:26 - 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:26 - 0x00000001 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager
+16:34:23 - 0x0000000f pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:34:23 - 0x00000010 pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:34:22 + 0x00000010 pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:34:22 + 0x0000000f pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:34:20 + 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:20 + 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:20 + 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:20 + 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:34:20 + 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=200000us batchingPeriod=0us
+16:34:20 + 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:34:20 + 0x00000010 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:20 + 0x0000000f pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:20 + 0x0000000e pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=80000us batchingPeriod=0us
+16:34:20 + 0x00000002 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:34:20 + 0x00000010 pid=11805 uid=10170 package=com.unity3d.player.T0 samplingPeriod=20000us batchingPeriod=0us
+16:34:20 + 0x00000003 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=200000us batchingPeriod=0us
+16:34:18 + 0x0000000f pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:34:18 + 0x00000010 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:34:18 + 0x00000003 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:34:18 + 0x00000001 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=66667us batchingPeriod=0us
+16:34:18 + 0x00000002 pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=160000us batchingPeriod=0us
+16:34:18 + 0x0000000e pid=11805 uid=10170 package=com.nianticlabs.nia.sensors.NianticSensorManager samplingPeriod=80000us batchingPeriod=0us
+16:34:18 - 0x00010000 pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:18 - 0x0000001e pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:18 - 0x0000000c pid=11805 uid=10170 package=unknown_package_pid_11805
+16:34:17 + 0x00000001 pid=11805 uid=10170 package=unknown_package_pid_11805 samplingPeriod=160000us batchingPeriod=0us
+16:34:15 - 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine
+16:34:14 + 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine samplingPeriod=66667us batchingPeriod=0us
+16:32:33 - 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine
+16:32:29 + 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine samplingPeriod=66667us batchingPeriod=0us
+16:31:32 + 0x0000000c pid= 2190 uid=10115 package=cztq samplingPeriod=0us batchingPeriod=0us
+16:31:32 - 0x00000004 pid= 2190 uid=10115 package=com.google.android.gms.location.weather.collector.PressureProvider
+16:31:31 - 0x00000004 pid= 2190 uid=10115 package=com.google.android.location.fused.PressureProvider
+16:31:29 + 0x00000004 pid= 2190 uid=10115 package=com.google.android.gms.location.weather.collector.PressureProvider samplingPeriod=100000us batchingPeriod=0us
+16:31:29 + 0x00000004 pid= 2190 uid=10115 package=com.google.android.location.fused.PressureProvider samplingPeriod=100000us batchingPeriod=0us
+16:28:10 - 0x0000000f pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:28:10 - 0x00000010 pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:28:10 + 0x00000010 pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:28:10 + 0x0000000f pid=10928 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:26:42 - 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine
+16:24:59 + 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine samplingPeriod=66667us batchingPeriod=0us
+16:24:56 - 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine
+16:24:42 + 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine samplingPeriod=66667us batchingPeriod=0us
+16:23:25 - 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine
+16:21:37 - 0x0000000f pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:21:37 - 0x00000010 pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:21:35 + 0x00000010 pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:21:35 + 0x0000000f pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:21:31 - 0x00000004 pid= 2190 uid=10115 package=com.google.android.location.fused.PressureProvider
+16:21:30 - 0x0000000f pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:21:30 - 0x00000010 pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:21:29 - 0x0000000f pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:21:29 - 0x00000010 pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:21:29 + 0x00000010 pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:21:29 + 0x0000000f pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:21:28 + 0x00000004 pid= 2190 uid=10115 package=com.google.android.location.fused.PressureProvider samplingPeriod=100000us batchingPeriod=0us
+16:21:28 + 0x00000010 pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:21:28 + 0x0000000f pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:21:12 - 0x0000000f pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:21:12 - 0x00000010 pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b
+16:21:07 + 0x00000010 pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:21:07 + 0x0000000f pid= 4189 uid=10115 package=com.google.ccc.abuse.droidguard.events.b samplingPeriod=20000us batchingPeriod=0us
+16:20:58 + 0x0000000c pid= 2190 uid=10115 package=fpmu samplingPeriod=0us batchingPeriod=0us
+16:20:51 + 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine samplingPeriod=66667us batchingPeriod=0us
+16:20:51 - 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine
+16:20:49 - 0x00000006 pid= 1517 uid=10123 package=com.android.systemui.classifier.brightline.BrightLineFalsingManager
+16:20:44 + 0x00000007 pid=  987 uid= 1000 package=com.android.server.display.AutomaticBrightnessController samplingPeriod=250000us batchingPeriod=0us
+16:20:43 + 0x0000001e pid=  987 uid= 1000 package=com.android.server.policy.WindowOrientationListener samplingPeriod=66667us batchingPeriod=0us
+16:20:43 + 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine samplingPeriod=66667us batchingPeriod=0us
+16:20:43 + 0x00000006 pid= 1517 uid=10123 package=com.android.systemui.classifier.brightline.BrightLineFalsingManager samplingPeriod=200000us batchingPeriod=0us
+16:20:41 - 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine
+16:20:41 + 0x0000000e pid= 1659 uid=10091 package=com.ustwo.lwp.wallpapers.base.UtWallpaperService$UtEngine samplingPeriod=66667us batchingPeriod=0us

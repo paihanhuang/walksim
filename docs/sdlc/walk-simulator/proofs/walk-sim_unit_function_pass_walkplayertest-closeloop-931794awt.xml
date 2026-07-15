@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.WalkPlayerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-02T03:35:43" hostname="Davids-MacBook-Pro.local" time="0.054">
+  <properties/>
+  <testcase name="play_emitsRoadSnappedStream_atOneHz()" classname="com.pikmin.sim.WalkPlayerTest" time="0.035"/>
+  <testcase name="play_loopMode_closeLoop_lapsClosedCircuitToFillDuration()" classname="com.pikmin.sim.WalkPlayerTest" time="0.014"/>
+  <testcase name="play_loopMode_fillsSweepShortfall_byLapping()" classname="com.pikmin.sim.WalkPlayerTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

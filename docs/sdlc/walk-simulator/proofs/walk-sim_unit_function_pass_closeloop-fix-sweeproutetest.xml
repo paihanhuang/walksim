@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.SweepRouteTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-07-02T03:58:29" hostname="Davids-MacBook-Pro.local" time="0.028">
+  <properties/>
+  <testcase name="sweep_meetsBudget_withoutWildOvershoot()" classname="com.pikmin.sim.SweepRouteTest" time="0.006"/>
+  <testcase name="sweep_closeLoop_returnsToStart_withBoundedReturnLeg()" classname="com.pikmin.sim.SweepRouteTest" time="0.005"/>
+  <testcase name="sweep_smallGraph_returnsShortfallWithoutCrash()" classname="com.pikmin.sim.SweepRouteTest" time="0.0"/>
+  <testcase name="sweep_walksNewGround_lowRevisitFraction()" classname="com.pikmin.sim.SweepRouteTest" time="0.004"/>
+  <testcase name="sweep_startsAtSnappedStart_andStaysOnGraph()" classname="com.pikmin.sim.SweepRouteTest" time="0.003"/>
+  <testcase name="fetchRadius_containsSpiral_andClamps()" classname="com.pikmin.sim.SweepRouteTest" time="0.0"/>
+  <testcase name="sweep_isDeterministic_andAdjacencyOrderInsensitive()" classname="com.pikmin.sim.SweepRouteTest" time="0.005"/>
+  <testcase name="sweep_leavesNoHarvestGap_insideSweptDisc()" classname="com.pikmin.sim.SweepRouteTest" time="0.003"/>
+  <system-out><![CDATA[[sweep grid] revisitFraction=0.000
+[sweep grid] maxR=912m harvestCoverage=1.000
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

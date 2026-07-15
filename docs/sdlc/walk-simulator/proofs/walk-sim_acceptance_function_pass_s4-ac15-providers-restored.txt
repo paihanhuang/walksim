@@ -1,0 +1,4 @@
+# AC-15 restore-on-stop — providers after STOP (no [mock] tag = real providers restored)
+  fused provider:
+  gps provider:
+  network provider:

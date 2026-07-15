@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="walk-sim :core-osm test (S3)" tests="5" skipped="1" failures="0" errors="0">
+<testsuite name="com.pikmin.osm.OverpassFilterTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-01T02:18:54" hostname="Davids-MacBook-Pro.local" time="0.02">
+  <properties/>
+  <testcase name="excludedWays_areAbsentFromGraph()" classname="com.pikmin.osm.OverpassFilterTest" time="0.02"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.osm.OverpassGraphBuildTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-01T02:18:54" hostname="Davids-MacBook-Pro.local" time="0.001">
+  <properties/>
+  <testcase name="sharedNodeStitches_andDisjointWayIsDropped()" classname="com.pikmin.osm.OverpassGraphBuildTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.osm.OverpassRoadSourceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-01T02:18:54" hostname="Davids-MacBook-Pro.local" time="0.023">
+  <properties/>
+  <testcase name="graphAround_cachesPerBbox()" classname="com.pikmin.osm.OverpassRoadSourceTest" time="0.023"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.osm.ShibuyaFixtureBaker" tests="1" skipped="1" failures="0" errors="0" timestamp="2026-07-01T02:18:54" hostname="Davids-MacBook-Pro.local" time="0.0">
+  <properties/>
+  <testcase name="bakeShibuyaFixture()" classname="com.pikmin.osm.ShibuyaFixtureBaker" time="0.0">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.osm.ShibuyaIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-01T02:18:54" hostname="Davids-MacBook-Pro.local" time="0.075">
+  <properties/>
+  <testcase name="shibuyaGraph_isConnected_walkable_andHasNoAvoidableUTurn()" classname="com.pikmin.osm.ShibuyaIntegrationTest" time="0.075"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+</testsuites>

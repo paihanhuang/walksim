@@ -1,0 +1,10 @@
+    fused: Location[fused 35.658779,139.700477 hAcc=7 et=+4h1m15s489ms alt=30.0 vel=1.3015039 bear=82.299255 vAcc=3 sAcc=1 bAcc=5 mock {Bundle[{noGPSLocation=Location[fused 35.658779,139.700477 hAcc=7 et=+4h1m15s489ms alt=30.0 vel=1.3015039 bear=82.299255 vAcc=3 sAcc=1 bAcc=5 mock]}]}]
+    gps: Location[gps 35.658779,139.700477 hAcc=7 et=+4h1m15s489ms alt=30.0 vel=1.3015039 bear=82.299255 vAcc=3 sAcc=1 bAcc=5 mock]
+    network: Location[network 35.658779,139.700477 hAcc=7 et=+4h1m15s489ms alt=30.0 vel=1.3015039 bear=82.299255 vAcc=3 sAcc=1 bAcc=5 mock]
+    fused: Location[fused 35.659466,139.700580 hAcc=6 et=+3h59m49s465ms alt=30.0 vel=1.4105202 bear=147.10683 vAcc=3 sAcc=1 bAcc=5 mock {Bundle[{noGPSLocation=Location[fused 35.659466,139.700580 hAcc=6 et=+3h59m49s465ms alt=30.0 vel=1.4105202 bear=147.10683 vAcc=3 sAcc=1 bAcc=5 mock]}]}]
+    gps: Location[gps 35.659466,139.700580 hAcc=6 et=+3h59m49s465ms alt=30.0 vel=1.4105202 bear=147.10683 vAcc=3 sAcc=1 bAcc=5 mock]
+    network: Location[network 35.659466,139.700580 hAcc=6 et=+3h59m49s465ms alt=30.0 vel=1.4105202 bear=147.10683 vAcc=3 sAcc=1 bAcc=5 mock]
+  gps provider [mock]:
+ last location=Location[gps 35.658779,139.700477 hAcc=7 et=+4h1m15s489ms alt=30.0 vel=1.3015039 bear=82.299255 vAcc=3 sAcc=1 bAcc=5 mock {Bundle[{noGPSLocation=Location[fused 35.658775,139.700461 hAcc=7 et=+4h1m14s459ms alt=30.0 vel=1.43088 bear=82.29925 vAcc=3 sAcc=1 bAcc=5 mock]}]}]
+  network provider [mock]:
+ last location=Location[network 35.658779,139.700477 hAcc=7 et=+4h1m15s489ms alt=30.0 vel=1.3015039 bear=82.299255 vAcc=3 sAcc=1 bAcc=5 mock {Bundle[{noGPSLocation=Location[fused 35.658775,139.700461 hAcc=7 et=+4h1m14s459ms alt=30.0 vel=1.43088 bear=82.29925 vAcc=3 sAcc=1 bAcc=5 mock]}]}]

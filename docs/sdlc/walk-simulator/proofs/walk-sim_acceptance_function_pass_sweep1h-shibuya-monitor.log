@@ -1,0 +1,18 @@
+=== sweep proof monitor start 18:35:45 ===
+[1/13 18:40:45] pace={Row: 0 playing=1, stepsPerMin=125.27337} ringR=355m pikminFg=yes
+[2/13 18:45:47] pace={Row: 0 playing=1, stepsPerMin=180.0} ringR=213m pikminFg=yes
+[3/13 18:50:48] pace={Row: 0 playing=1, stepsPerMin=137.77136} ringR=256m pikminFg=yes
+[4/13 18:55:52] pace={Row: 0 playing=1, stepsPerMin=122.18376} ringR=221m pikminFg=yes
+  -> screencap sweep_t4.png
+[5/13 19:01:11] pace={Row: 0 playing=1, stepsPerMin=139.86977} ringR=399m pikminFg=yes
+[6/13 19:06:12] pace={Row: 0 playing=1, stepsPerMin=147.57828} ringR=469m pikminFg=yes
+[7/13 19:11:14] pace={Row: 0 playing=1, stepsPerMin=180.0} ringR=493m pikminFg=yes
+[8/13 19:16:16] pace={Row: 0 playing=1, stepsPerMin=138.99512} ringR=515m pikminFg=yes
+  -> screencap sweep_t8.png
+[9/13 19:21:44] pace={Row: 0 playing=1, stepsPerMin=133.06729} ringR=322m pikminFg=yes
+[10/13 19:26:46] pace={Row: 0 playing=1, stepsPerMin=150.20224} ringR=533m pikminFg=yes
+[11/13 19:31:47] pace={Row: 0 playing=1, stepsPerMin=166.14717} ringR=624m pikminFg=yes
+[12/13 19:36:49] pace={Row: 0 playing=1, stepsPerMin=124.56498} ringR=437m pikminFg=yes
+  -> screencap sweep_t12.png
+[13/13 19:42:06] pace={Row: 0 playing=0, stepsPerMin=0.0} ringR=244m pikminFg=yes
+=== monitor done 19:42:09 ===

@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  qa-function RE-VERIFY audit trail for the AC-24e closeLoop played-walk fix (HEAD 931794a, uncommitted
+  WalkPlayer.kt/WalkingMotionEngine.kt working-tree fix). These testsuites were run from TEMPORARY probe
+  files (core-osm/.../QaProbeCloseLoopPlaybackTest.kt, core-sim/.../QaProbeCloseLoopShortfallTest.kt,
+  core-sim/.../QaProbeDegenerateCloseLoopTest.kt), independently authored by qa-function, executed, their
+  real console output transcribed verbatim below, then DELETED from the working tree (per instructions: do
+  not modify project code / leave test-gaming residue). This file is the durable record of that work.
+  Shipped-test evidence (unmodified working tree) is the sibling file
+  walk-sim_unit_function_pass_closeloop-fix-reverify.xml (real JUnit XML, WalkPlayerTest, 3/3 green,
+  including play_loopMode_closeLoop_playedWalkReturnsToStart()).
+-->
+<testsuites>
+  <!-- 1) Independent confirmation, FIX INTACT: played-stream last-vs-first distance, both regimes. -->
+  <testsuite name="qa-function.IndependentProbes.FixIntact" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-02T03:56:00" hostname="Davids-MacBook-Pro.local">
+    <testcase name="probe_closeLoop_nonShortfall_realShibuya_playedWalkReturnsHome" classname="com.pikmin.osm.QaProbeCloseLoopPlaybackTest" time="n/a">
+      <system-out><![CDATA[
+Real baked Shibuya graph (core-osm/src/test/resources/shibuya.json), center=(35.6595,139.7006), durationS=1800 (30 min).
+[probe non-shortfall] targetLenM=2340.0 builtRouteLenM=3471.4615132519484   (route cleared budget -> confirmed NON-shortfall)
+[probe non-shortfall] nominalTicks=1800 playedTicks=2913 lastCumDist=3462.451470129093
+[probe non-shortfall] backHomeM=0.5719704356415912
+ASSERTIONS: builtRoute.totalLengthM >= targetLenM (PASS) ; samples.size(2913) > nominalTicks(1800) (PASS) ;
+            backHomeM(0.57 m) <= 10.0 m (PASS)
+]]></system-out>
+    </testcase>
+    <testcase name="probe_closeLoop_shortfall_tinyGrid_playedWalkReturnsHome" classname="com.pikmin.sim.QaProbeCloseLoopShortfallTest" time="n/a">
+      <system-out><![CDATA[
+Synthetic 6x6 grid, 40 m spacing (200x200 m), start pin near grid centre, laneSpacingM=30, durationS=15000
+(budget target 19500 m -- no such small grid can satisfy it, forcing sweepRoute's spiral to hit the graph
+boundary ("r > maxGraphR + SNAP_MAX_M") well short of budget -- the true "shortfall" regime for closeLoop).
+[probe shortfall] targetLenM=19500.0 builtRouteLenM=7039.959026451606   (route did NOT clear budget -> confirmed SHORTFALL)
+[probe shortfall] playedTicks=5803 lastCumDist=7039.052711477466 estFromRoute=5415.353097270467
+[probe shortfall] backHomeM=1.2468340032577188
+ASSERTIONS: builtRoute.totalLengthM(7040) < targetLenM(19500) (PASS, shortfall confirmed) ;
+            samples.size(5803) < durationS/2(7500) (PASS, tracks the short loop, not nominal D) ;
+            backHomeM(1.25 m) <= 10.0 m (PASS) ;
+            samples.size(5803) <= estFromRouteTicks*2(10830.7) (PASS, within the PATH_END_TICK_CAP backstop;
+              observed inflation over the naive route-length/meanSpeed estimate: 5803/5415.35 = 1.072 (~7.2%),
+              matching WalkingMotionEngine's own code-comment claim of "~+8%" pause-inflation headroom)
+]]></system-out>
+    </testcase>
+  </testsuite>
+
+  <!-- 2) Mutation check: runUntilPathEnd forced to `false` in WalkPlayer.kt (one-line edit, reverted
+       immediately after this run; final working tree verified byte-identical to the fix under review). -->
+  <testsuite name="qa-function.MutationCheck.RunUntilPathEndForcedFalse" tests="3" skipped="0" failures="3" errors="0" timestamp="2026-07-02T03:52:00" hostname="Davids-MacBook-Pro.local">
+    <properties><property name="mutation" value="WalkPlayer.kt: runUntilPathEnd = cfg.loop &amp;&amp; cfg.closeLoop  -->  runUntilPathEnd = false"/></properties>
+    <testcase name="play_loopMode_closeLoop_playedWalkReturnsToStart()" classname="com.pikmin.sim.WalkPlayerTest" time="n/a">
+      <failure message="AC-24e: played walk must end at start, ended 125 m away" type="org.opentest4j.AssertionFailedError"/>
+    </testcase>
+    <testcase name="probe_closeLoop_nonShortfall_realShibuya_playedWalkReturnsHome" classname="com.pikmin.osm.QaProbeCloseLoopPlaybackTest" time="n/a">
+      <system-out><![CDATA[[probe non-shortfall] playedTicks=2670 (== naive durationS-independent estimate; no pause-inflation extension) lastCumDist=3181.0847286952985
+[probe non-shortfall] backHomeM=205.73977057257486]]></system-out>
+      <failure message="played walk must end at start, ended 205.7 m away" type="org.opentest4j.AssertionFailedError"/>
+    </testcase>
+    <testcase name="probe_closeLoop_shortfall_tinyGrid_playedWalkReturnsHome" classname="com.pikmin.sim.QaProbeCloseLoopShortfallTest" time="n/a">
+      <system-out><![CDATA[[probe shortfall] playedTicks=5415 lastCumDist=6564.7491169615205
+[probe shortfall] backHomeM=131.55336450963995]]></system-out>
+      <failure message="played walk must end at start, ended 131.6 m away" type="org.opentest4j.AssertionFailedError"/>
+    </testcase>
+    <system-out><![CDATA[
+CONCLUSION: all 3 tests (1 shipped + 2 qa-function-independent, across 3 different graphs: the shipped 20x20
+synthetic grid, the REAL baked Shibuya graph, and a tiny synthetic shortfall grid) correctly go RED under
+this one-line regression, each failing on the exact property under test (played-walk distance from start,
+tens-to-hundreds of metres off) rather than on an unrelated assertion. Confirms the tests are NOT vacuous.
+Mutation reverted immediately after this run; `git diff HEAD -- .../WalkPlayer.kt` re-checked byte-identical
+to the fix under review before proceeding.
+]]></system-out>
+  </testsuite>
+
+  <!-- 3) Full-suite regression summary (final clean run, mutation reverted, probes deleted). -->
+  <testsuite name="qa-function.FullSuiteRegressionSummary" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-02T03:58:29" hostname="Davids-MacBook-Pro.local">
+    <testcase name="gradlew_noBuildCache_clean_test__all_modules" classname="qa-function.FullSuiteRegressionSummary" time="n/a">
+      <system-out><![CDATA[
+`JAVA_HOME=/opt/homebrew/opt/openjdk@17 ./gradlew --no-build-cache clean test --console=plain` at HEAD
+931794a + the uncommitted fix: BUILD SUCCESSFUL, 60 actionable tasks: 60 executed (no UP-TO-DATE/FROM-CACHE
+short-circuit; every task genuinely re-ran per qa-function-lessons 2026-07-01).
+Aggregate across walk-sim/{core-sim,core-osm,app}/build/test-results/**/*.xml: tests=77 skipped=1 failures=0 errors=0.
+(skipped=1 is ShibuyaFixtureBaker, a pre-existing env-gated live-HTTP re-bake test, unrelated to this fix.)
+Per-class: GeoTest 5/5, GraphRandomWalkerTest 6/6, NoUTurnBearingTest 1/1, PathEngineTest 2/2,
+SweepRouteTest 8/8 (incl. sweep_closeLoop_returnsToStart_withBoundedReturnLeg), WalkingMotionEngineTest 9/9
+(AC-7/8/9/10 + determinism, all via the DEFAULT runUntilPathEnd=false path), WalkPlayerTest 3/3 (incl.
+play_loopMode_closeLoop_playedWalkReturnsToStart -- AC-24e), WalkProfileTest 1/1, OverpassFilterTest 1/1,
+OverpassGraphBuildTest 1/1, OverpassRoadSourceTest 1/1, ShibuyaIntegrationTest 1/1, ShibuyaSweepTest 1/1,
+LocationMappingTest 2/2, PaceDerivationTest 4/4, SequencePlanTest 6/6, WalkStateMachineTest 6/6 (each counted
+once per debug+release variant on the :app module).
+]]></system-out>
+    </testcase>
+  </testsuite>
+</testsuites>

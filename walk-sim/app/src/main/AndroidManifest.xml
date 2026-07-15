@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Overpass fetch + osmdroid tiles. -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Mock GNSS surfaces (the real gate is the Developer-Options "mock location app" selection). -->
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!-- Wakelocked FGS so injection survives while Pikmin is foreground / screen-off. -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_LOCATION" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+
+    <application
+        android:allowBackup="false"
+        android:label="WalkSim"
+        android:theme="@android:style/Theme.Material.Light.NoActionBar">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <service
+            android:name=".WalkService"
+            android:exported="false"
+            android:foregroundServiceType="location" />
+
+        <!-- Query-only pace channel the :stephook module (in Pikmin's process) polls. Exported,
+             permission-free; Android 10 needs no <queries> package-visibility for a provider read. -->
+        <provider
+            android:name=".PaceProvider"
+            android:authorities="com.pikmin.walksim.pace"
+            android:exported="true"
+            tools:ignore="ExportedContentProvider" />
+    </application>
+</manifest>

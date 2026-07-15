@@ -1,0 +1,98 @@
+{
+  "version": 0.6,
+  "generator": "fixture",
+  "elements": [
+    {
+      "type": "way", "id": 100,
+      "nodes": [1, 2, 3],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7000},
+        {"lat": 35.6600, "lon": 139.7003},
+        {"lat": 35.6600, "lon": 139.7006}
+      ],
+      "tags": {"highway": "residential"}
+    },
+    {
+      "type": "way", "id": 101,
+      "nodes": [3, 4, 5],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7006},
+        {"lat": 35.6603, "lon": 139.7006},
+        {"lat": 35.6606, "lon": 139.7006}
+      ],
+      "tags": {"highway": "footway"}
+    },
+    {
+      "type": "way", "id": 200,
+      "nodes": [1, 30],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7000},
+        {"lat": 35.6600, "lon": 139.6996}
+      ],
+      "tags": {"highway": "motorway"}
+    },
+    {
+      "type": "way", "id": 201,
+      "nodes": [3, 31],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7006},
+        {"lat": 35.6596, "lon": 139.7006}
+      ],
+      "tags": {"highway": "motorway_link"}
+    },
+    {
+      "type": "way", "id": 202,
+      "nodes": [5, 32],
+      "geometry": [
+        {"lat": 35.6606, "lon": 139.7006},
+        {"lat": 35.6610, "lon": 139.7006}
+      ],
+      "tags": {"highway": "trunk"}
+    },
+    {
+      "type": "way", "id": 203,
+      "nodes": [1, 33],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7000},
+        {"lat": 35.6604, "lon": 139.7000}
+      ],
+      "tags": {"highway": "trunk_link"}
+    },
+    {
+      "type": "way", "id": 204,
+      "nodes": [3, 34],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7006},
+        {"lat": 35.6600, "lon": 139.7010}
+      ],
+      "tags": {"highway": "residential", "foot": "no"}
+    },
+    {
+      "type": "way", "id": 205,
+      "nodes": [5, 35],
+      "geometry": [
+        {"lat": 35.6606, "lon": 139.7006},
+        {"lat": 35.6606, "lon": 139.7010}
+      ],
+      "tags": {"highway": "footway", "access": "private"}
+    },
+    {
+      "type": "way", "id": 206,
+      "nodes": [1, 36],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7000},
+        {"lat": 35.6596, "lon": 139.7000}
+      ],
+      "tags": {"highway": "elevator"}
+    },
+    {
+      "type": "way", "id": 207,
+      "nodes": [3, 37],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7006},
+        {"lat": 35.6604, "lon": 139.7010}
+      ],
+      "tags": {"highway": "corridor"}
+    }
+  ]
+}

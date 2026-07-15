@@ -1,0 +1,68 @@
+qa-quality overhead proof — spike-step-hook StepInjector driver-loop delta (STEP_COUNTER add)
+Date: 2026-07-13  Verifier: qa-quality  Base commit: f93788e (+working diff)
+Scope: StepInjector.kt driver loop (startDriver) + deliver(), StepHook.kt registration filter.
+
+METHOD
+- StepInjector/StepHook call real Android framework classes (Handler, Looper, AndroidAppHelper,
+  XposedBridge) that throw when invoked against a stub android.jar and have no Robolectric harness in
+  this module (build.gradle.kts test deps = JUnit5 only) -> cannot execute attach()/deliver() end-to-end
+  off-device. No device in this session runs spike-step-hook as an active LSPosed module (attached
+  device 29201FDH300KN2 is cheetah/Pixel 7 Pro, the walk-sim location farm; the proven LSPosed step-hook
+  target per project memory is the separate rooted Pixel XL, not attached this session).
+- Compensating evidence: (1) real JVM microbench (JDK 17 jshell) of the exact NEW primitives added to the
+  hot path -- java.util.concurrent.AtomicLong (a real, unstubbed JDK class, identical bytecode regardless
+  of caller) and a same-shape reflective-ctor+4-field-set allocation proxy for the (also real,
+  unmodified-by-this-diff) SensorEvent reflection pattern already in the pre-fix code; (2) exhaustive
+  static accounting of every '+' line in the diff for thread/allocation-relevant constructs; (3) a forced
+  (--rerun-tasks) recompile of :app:compileDebugKotlin -> BUILD SUCCESSFUL, confirming the read code is
+  what actually builds.
+
+BENCHMARK (jshell, JDK 17, warmup 200k / measured 2,000,000 iters each, this host's JVM/CPU --
+  absolute ns/op will differ on the Pixel's ARM core, but the *relative* comparison below -- new primitive
+  vs. the pre-existing primitive it sits beside -- holds across hosts since both share the same JIT/GC
+  substrate in this measurement):
+  AtomicLong.addAndGet(long)                      : 12.22 ns/op   <- the exact new call: cumulativeInjected.addAndGet(pulses.toLong())
+  reflective ctor + 4 field sets (SensorEvent proxy): 21.56 ns/op   <- SAME shape as the PRE-EXISTING newDetectorEvent() call, reused unmodified by newCounterEvent()
+  Runnable alloc + invoke (handler.post proxy)      : 7.98 ns/op   <- SAME shape as the PRE-EXISTING feed.handler.post{} call, now also paid once for a STEP_COUNTER feed
+
+STATIC ACCOUNTING (every line the diff adds inside the tick-loop call graph: startDriver -> deliver)
+  Unconditional-when-playing (same `if (pulses > 0)` gate the pre-fix deliver() call already used, so it
+  never fires on an idle/parked tick -- QT-5 idle-parking invariant is unchanged):
+    + 1x cumulativeInjected.addAndGet(...)                    ~12 ns   (measured above)
+    + 2x AtomicLong/.get() volatile reads at top of deliver() ~ 2-4 ns each (cheaper than addAndGet; not separately benched, upper-bounded by the CAS-based addAndGet number above)
+  Per STEP_COUNTER feed (bounded -- see below), only when that feed exists:
+    + 1x Runnable alloc (handler.post)                        ~8 ns    (measured above)
+    + 1x reflective SensorEvent alloc (newCounterEvent)       ~22 ns   (measured above, identical pattern to the pre-existing STEP_DETECTOR path)
+    + 1x int comparison (sensor.type branch)                  ~0 ns (JIT-foldable)
+  TOTAL new cost, both feeds active, 1 pulse this tick: ~12 + 4 + 8 + 22 ~= 46 ns
+  vs. 500,000,000 ns tick budget (TICK_MS=500, unchanged)      -> ~9.2e-6 % of one tick period
+  vs. design.md budget ":stephook ... <1% of one core"         -> ~7-8 orders of magnitude under budget
+  Comparison to the ask's "<= existing per-tick cost" framing: the STEP_DETECTOR path alone already pays
+  1x Runnable + Nx(pulses) reflective-event-allocs per tick (~30-50 ns typical N=1-2); the new STEP_COUNTER
+  cost (~30 ns for 1 feed) is the SAME ORDER OF MAGNITUDE, not a multiplicative increase -- PASS vs. budget.
+
+THREADS (bounded check)
+  grep of every '+' line in the diff for Thread(/Executor/Timer/new Handler/Handler( -> 0 matches.
+  startDriver()'s single `Thread{...}.apply{isDaemon=true}.start()` is UNCHANGED by the diff (not in any
+  +/- hunk) and is still gated by the pre-existing `driverStarted` AtomicBoolean.compareAndSet(false,true)
+  -> exactly 1 driver thread for process life, same as before this diff.
+  captureCounterBaseIfNeeded()'s sm.registerListener(reader, counter, SENSOR_DELAY_FASTEST) is a standard
+  Android SensorManager listener registration (OS-side binder/Looper callback dispatch) -- it does not
+  construct a java.lang.Thread. It is called from attach() (a listener-(re)registration event), NEVER from
+  the 500ms tick loop, so it has zero recurring per-tick cost.
+
+BASE-READER ONE-SHOT CHECK
+  Guard `if (counterBase.get() >= 0L || baseReader != null) return` precedes any allocation/registration,
+  so the anonymous SensorEventListener + registerListener call happens at most once per process life
+  (first STEP_COUNTER attach() only; every subsequent attach() call is 2 volatile reads and an early
+  return). The reader's own onSensorChanged unregisters itself (`sm.unregisterListener(this)`) on its
+  first callback -- confirmed one-shot by inspection, not merely by naming.
+
+ALLOCATION BOUND (feeds collection)
+  The `feeds` ConcurrentHashMap prune block (`if (listener == null || !feed.active.get()) { feeds.remove(key);
+  continue }`) is UNCHANGED by the diff (not in any +/- hunk) -- dead/GC'd/detached feeds are still purged
+  every deliver() cycle. Per-tick allocation scales with live feed count (bounded by the number of listeners
+  the two scoped packages actually register for these two sensor types, actively pruned), not unbounded.
+
+COMPILE SANITY
+  ./gradlew :app:compileDebugKotlin --rerun-tasks -> BUILD SUCCESSFUL (14/14 tasks executed, fresh).

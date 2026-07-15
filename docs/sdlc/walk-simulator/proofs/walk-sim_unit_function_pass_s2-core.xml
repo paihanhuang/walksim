@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="walk-sim :core-sim test (S2)" tests="25" skipped="0" failures="0" errors="0">
+<testsuite name="com.pikmin.sim.GeoTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-07-01T01:44:57" hostname="Davids-MacBook-Pro.local" time="0.003">
+  <properties/>
+  <testcase name="haversine_oneDegreeLongitudeAtEquator()" classname="com.pikmin.sim.GeoTest" time="0.001"/>
+  <testcase name="destinationPoint_eastAlongEquator()" classname="com.pikmin.sim.GeoTest" time="0.0"/>
+  <testcase name="bearing_cardinalDirections()" classname="com.pikmin.sim.GeoTest" time="0.001"/>
+  <testcase name="haversine_oneDegreeLatitude()" classname="com.pikmin.sim.GeoTest" time="0.0"/>
+  <testcase name="destinationPoint_roundTripsWithHaversine()" classname="com.pikmin.sim.GeoTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.sim.GraphRandomWalkerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-07-01T01:44:57" hostname="Davids-MacBook-Pro.local" time="0.008">
+  <properties/>
+  <testcase name="generate_allPointsWithinRadius()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.003"/>
+  <testcase name="snapStart_nearestWithinRange_elseNull()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.0"/>
+  <testcase name="generate_lengthMatchesTarget()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.001"/>
+  <testcase name="generate_noUTurnExceptAtDeadEnds()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.001"/>
+  <testcase name="generate_deterministic_andOrderIndependent()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.0"/>
+  <testcase name="generate_allPointsLieOnGraphEdges()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.sim.NoUTurnBearingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-01T01:44:57" hostname="Davids-MacBook-Pro.local" time="0.013">
+  <properties/>
+  <testcase name="generatedWalk_hasNoBearingUTurn_atDegreeGt1Nodes()" classname="com.pikmin.sim.NoUTurnBearingTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.sim.PathEngineTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-01T01:44:57" hostname="Davids-MacBook-Pro.local" time="0.001">
+  <properties/>
+  <testcase name="densify_straightSegment_hasUniformSpacing()" classname="com.pikmin.sim.PathEngineTest" time="0.001"/>
+  <testcase name="densify_preservesTotalLength()" classname="com.pikmin.sim.PathEngineTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.sim.WalkingMotionEngineTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-07-01T01:44:57" hostname="Davids-MacBook-Pro.local" time="0.028">
+  <properties/>
+  <testcase name="pausesPresent_inEveryTenMinuteWalk_acrossSeeds()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.005"/>
+  <testcase name="bearingAndSpeed_consistentWithTrueMotion()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.003"/>
+  <testcase name="play_emitsOnePerTick_deterministically_underVirtualTime()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.007"/>
+  <testcase name="noTeleport_onEmittedTrajectory()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.002"/>
+  <testcase name="noise_amplitudeAccuracyAndAutocorrelation()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.005"/>
+  <testcase name="stepCount_matchesDistanceOverStride()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.002"/>
+  <testcase name="sharpCorner_speedStaysInRange_bearingTracksBothLegs_chordNeverExceedsArc()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.0"/>
+  <testcase name="frames_deterministic_andSeedSensitive()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.0"/>
+  <testcase name="speed_inRange_andAccelBounded()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.sim.WalkPlayerTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-01T01:44:57" hostname="Davids-MacBook-Pro.local" time="0.033">
+  <properties/>
+  <testcase name="play_emitsRoadSnappedStream_atOneHz()" classname="com.pikmin.sim.WalkPlayerTest" time="0.033"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<testsuite name="com.pikmin.sim.WalkProfileTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-01T01:44:57" hostname="Davids-MacBook-Pro.local" time="0.0">
+  <properties/>
+  <testcase name="defaultMeanSpeedIs1_3()" classname="com.pikmin.sim.WalkProfileTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+</testsuites>

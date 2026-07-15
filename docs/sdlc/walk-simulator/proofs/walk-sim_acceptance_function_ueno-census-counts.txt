@@ -1,0 +1,14 @@
+# Ueno big-flower census — Pixel 7 Pro, Pikmin v148, account traso tw, 2026-07-08.
+# Blooming big flowers per frame (large flowers on stalks; excl. carpet, mushrooms, PokeStop discs).
+# Both routes 10 km from Ameyoko start (35.7089,139.7745); identical HOLD-teleport + 18s dwell protocol.
+#
+# 11-point pass (~1000 m):   OLD: 8 3 7 7 8 6 4 4 5 4 6  = 62    NEW: 8 4 5 6 8 7 5 5 6 6 5  = 65
+# infill pass  (~500 m):     OLD: 7 5 6 8 6 8 3 7 7 5    = 62    NEW: 6 7 6 5 7 5 7 5 7 5    = 60
+# ---------------------------------------------------------------------------------------------
+# 21-POINT TOTAL:            OLD = 124                          NEW = 125     -> TIE (0.8%, noise)
+#
+# Design metrics (live 18357-node Overpass graph): OLD 850m cov@250=0.692 revisit=0.002
+#                                                  NEW 500m cov@250=0.954 revisit=0.062
+# DECISION: flowers TIED (124 vs 125, noise). Tiebreak (user: prefer shorter time) = walk time to same coverage;
+#           500m reaches it in less time (see SWEEP rows in ueno-route-diagnostic_v1.9_250m-reach.txt) ->
+#           Ueno default = 500 m / 10 km. Full rationale in walk-sim_acceptance_function_ueno-route-census.md.

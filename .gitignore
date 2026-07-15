@@ -1,0 +1,21 @@
+# Gradle / build outputs
+build/
+.gradle/
+
+# Local machine config (SDK paths, etc.)
+local.properties
+
+# IDE
+.idea/
+*.iml
+*.iws
+*.ipr
+
+# OS
+.DS_Store
+
+# Brainstorm visual-companion scratch
+.superpowers/
+
+# Android
+/captures

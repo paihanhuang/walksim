@@ -1,0 +1,30 @@
+{
+  "purpose": "Regression gate: does the spike-step-hook STEP_COUNTER/GMS-scope fix change walk-sim's own test-suite outcome? BEFORE = spike-step-hook diff stashed (pre-fix baseline).",
+  "verifier": "qa-quality",
+  "date": "2026-07-13",
+  "base_commit": "f93788e",
+  "walksim_source_touched_by_diff": false,
+  "method": "git stash push -- the 3 modified spike-step-hook files, then ./gradlew :app:testDebugUnitTest :core-sim:test --rerun-tasks (forced, non-cached) in walk-sim/",
+  "gradle_result": "BUILD SUCCESSFUL",
+  "gradle_tasks": "30 actionable tasks: 30 executed",
+  "suites": {
+    "app:testDebugUnitTest": [
+      {"class": "com.pikmin.walksim.LocationMappingTest", "tests": 2, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.walksim.LocationsSpacingTest", "tests": 3, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.walksim.PaceDerivationTest", "tests": 4, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.walksim.SequencePlanTest", "tests": 6, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.walksim.WalkStateMachineTest", "tests": 6, "skipped": 0, "failures": 0, "errors": 0}
+    ],
+    "core-sim:test": [
+      {"class": "com.pikmin.sim.GeoTest", "tests": 5, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.sim.GraphRandomWalkerTest", "tests": 6, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.sim.NoUTurnBearingTest", "tests": 1, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.sim.PathEngineTest", "tests": 2, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.sim.SweepRouteTest", "tests": 8, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.sim.WalkingMotionEngineTest", "tests": 9, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.sim.WalkPlayerTest", "tests": 3, "skipped": 0, "failures": 0, "errors": 0},
+      {"class": "com.pikmin.sim.WalkProfileTest", "tests": 1, "skipped": 0, "failures": 0, "errors": 0}
+    ]
+  },
+  "totals": {"tests": 56, "failures": 0, "errors": 0, "skipped": 0}
+}

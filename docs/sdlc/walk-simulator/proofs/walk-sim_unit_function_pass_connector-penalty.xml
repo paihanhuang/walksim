@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<qa-function-proof verdict="PASS" head="931794a" fix="connector-walked-edge-penalty (uncommitted working tree)">
+
+  <summary><![CDATA[
+qa-function VERIFY proof: connector walked-edge penalty fix (SweepRoute.kt), uncommitted on HEAD 931794a.
+
+Change under test: shortestPath() gained walked: Set<Pair<Long,Long>> (default emptySet); edges whose
+undirected key is already in `walked` (toured earlier by the spiral) cost WALKED_EDGE_PENALTY(3.0)x their
+length, so mid-spiral connectors prefer fresh streets over deadheading swept ground. closeLoop's return leg
+calls shortestPath WITHOUT `walked` (plain shortest path home, exempt per AC-24e). ShibuyaSweepTest's AC-24b
+revisit bound tightened 0.20 -> 0.12.
+
+VERDICT: PASS (see qa-function's chat response for the full numbered findings / criteria table).
+
+Command: cd walk-sim && JAVA_HOME=/opt/homebrew/opt/openjdk@17 ./gradlew --no-build-cache clean test --console=plain
+
+Sections:
+ 1) GREEN: final run, fix as shipped (WALKED_EDGE_PENALTY=3.0). Full 77-test suite: 77 tests, 0 failures,
+    0 errors, 1 skipped (pre-existing, unrelated: ShibuyaFixtureBaker, env-gated live-HTTP re-bake tool).
+ 2) RED probe: WALKED_EDGE_PENALTY temporarily set to 1.0 (neutralises the penalty: stepCost = length times
+    1.0 = length, byte-for-byte the pre-fix cost function) to prove the tightened 0.12 bound is a real,
+    non-vacuous regression guard, not a bound loosely chosen to already pass. Captured, then the mutation was
+    reverted immediately; `git diff -- walk-sim/core-sim/.../SweepRoute.kt` after revert matched the shipped
+    fix exactly (WALKED_EDGE_PENALTY = 3.0, no probe residue), and `git status` was clean of any
+    qa-function-authored changes before this proof was written.
+]]></summary>
+
+  <section id="1-green-shipped-fix" note="WALKED_EDGE_PENALTY=3.0 (as shipped) -- ShibuyaSweepTest (AC-24a/b/d), SweepRouteTest (AC-1/2/4/5/6/24a/b/d/e), WalkPlayerTest (AC-24e regression)">
+
+    <note>core-osm: TEST-com.pikmin.osm.ShibuyaSweepTest.xml (real baked Shibuya graph)</note>
+    <testsuite name="com.pikmin.osm.ShibuyaSweepTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-02T04:32:34" hostname="Davids-MacBook-Pro.local" time="0.035">
+      <properties/>
+      <testcase name="sweep_onRealShibuya_meetsBudget_sweepsNewGround_leavesNoHarvestGaps()" classname="com.pikmin.osm.ShibuyaSweepTest" time="0.035"/>
+      <system-out><![CDATA[[sweep Shibuya] len=5770m maxR=734m revisit=0.078 harvestCov=1.000 genMs=4
+]]></system-out>
+      <system-err><![CDATA[]]></system-err>
+    </testsuite>
+
+    <note>core-sim: TEST-com.pikmin.sim.SweepRouteTest.xml (synthetic 21x21 grid fixture)</note>
+    <testsuite name="com.pikmin.sim.SweepRouteTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-07-02T04:32:34" hostname="Davids-MacBook-Pro.local" time="0.028">
+      <properties/>
+      <testcase name="sweep_meetsBudget_withoutWildOvershoot()" classname="com.pikmin.sim.SweepRouteTest" time="0.006"/>
+      <testcase name="sweep_closeLoop_returnsToStart_withBoundedReturnLeg()" classname="com.pikmin.sim.SweepRouteTest" time="0.006"/>
+      <testcase name="sweep_smallGraph_returnsShortfallWithoutCrash()" classname="com.pikmin.sim.SweepRouteTest" time="0.0"/>
+      <testcase name="sweep_walksNewGround_lowRevisitFraction()" classname="com.pikmin.sim.SweepRouteTest" time="0.004"/>
+      <testcase name="sweep_startsAtSnappedStart_andStaysOnGraph()" classname="com.pikmin.sim.SweepRouteTest" time="0.003"/>
+      <testcase name="fetchRadius_containsSpiral_andClamps()" classname="com.pikmin.sim.SweepRouteTest" time="0.0"/>
+      <testcase name="sweep_isDeterministic_andAdjacencyOrderInsensitive()" classname="com.pikmin.sim.SweepRouteTest" time="0.005"/>
+      <testcase name="sweep_leavesNoHarvestGap_insideSweptDisc()" classname="com.pikmin.sim.SweepRouteTest" time="0.003"/>
+      <system-out><![CDATA[[sweep grid] revisitFraction=0.000
+[sweep grid] maxR=912m harvestCoverage=1.000
+]]></system-out>
+      <system-err><![CDATA[]]></system-err>
+    </testsuite>
+
+    <note>core-sim: TEST-com.pikmin.sim.WalkPlayerTest.xml. Regression check for the separately-verified
+    AC-24e closure fix (already uncommitted in this tree): proves the connector penalty did not disturb the
+    return leg's plain-shortest exemption or the closed-loop played-walk-returns-to-start property.</note>
+    <testsuite name="com.pikmin.sim.WalkPlayerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-02T04:32:34" hostname="Davids-MacBook-Pro.local" time="0.1">
+      <properties/>
+      <testcase name="play_emitsRoadSnappedStream_atOneHz()" classname="com.pikmin.sim.WalkPlayerTest" time="0.031"/>
+      <testcase name="play_loopMode_fillsSweepShortfall_byLapping()" classname="com.pikmin.sim.WalkPlayerTest" time="0.011"/>
+      <testcase name="play_loopMode_closeLoop_playedWalkReturnsToStart()" classname="com.pikmin.sim.WalkPlayerTest" time="0.058"/>
+      <system-out><![CDATA[]]></system-out>
+      <system-err><![CDATA[]]></system-err>
+    </testsuite>
+
+    <full-suite-tally tests="77" failures="0" errors="0" skipped="1" skipped-reason="pre-existing, unrelated: com.pikmin.osm.ShibuyaFixtureBaker.bakeShibuyaFixture() (env-gated live-HTTP re-bake tool)"/>
+  </section>
+
+  <section id="2-red-probe-penalty-disabled" note="WALKED_EDGE_PENALTY temporarily set to 1.0 in SweepRoute.kt (neutralised, reproduces the exact pre-fix cost function) to prove the tightened 0.12 bound is a real, non-vacuous regression guard. Reverted immediately after this capture; git diff confirmed byte-identical to the shipped fix.">
+
+    <note>core-osm: ShibuyaSweepTest under the probe mutation. RED as expected. The measured values
+    (len=5684m, revisit=0.175) are IDENTICAL to STATUS.md's documented pre-fix baseline, independently
+    corroborating that the "before" story in the fix's own commentary is accurate, not just asserted.</note>
+    <testsuite name="com.pikmin.osm.ShibuyaSweepTest" tests="1" skipped="0" failures="1" errors="0" timestamp="2026-07-02T04:31:22" hostname="Davids-MacBook-Pro.local" time="0.07">
+      <properties/>
+      <testcase name="sweep_onRealShibuya_meetsBudget_sweepsNewGround_leavesNoHarvestGaps()" classname="com.pikmin.osm.ShibuyaSweepTest" time="0.07">
+        <failure message="org.opentest4j.AssertionFailedError: AC-24b re-walked ground: revisit=0.17543859649122806 (need &#8804;0.12 with fresh-connector penalty) ==&gt; expected: &lt;true&gt; but was: &lt;false&gt;" type="org.opentest4j.AssertionFailedError"><![CDATA[org.opentest4j.AssertionFailedError: AC-24b re-walked ground: revisit=0.17543859649122806 (need <=0.12 with fresh-connector penalty) ==> expected: <true> but was: <false>
+	at app//org.junit.jupiter.api.AssertionFailureBuilder.build(AssertionFailureBuilder.java:151)
+	at app//org.junit.jupiter.api.AssertTrue.assertTrue(AssertTrue.java:36)
+	at app//org.junit.jupiter.api.Assertions.assertTrue(Assertions.java:214)
+	at app//com.pikmin.osm.ShibuyaSweepTest.sweep_onRealShibuya_meetsBudget_sweepsNewGround_leavesNoHarvestGaps(ShibuyaSweepTest.kt:95)
+	(JUnit5/reflection frames elided for readability; failure attribute + system-out below are the load-bearing evidence, captured live by qa-function during VERIFY)
+]]></failure>
+      </testcase>
+      <system-out><![CDATA[[sweep Shibuya] len=5684m maxR=734m revisit=0.175 harvestCov=1.000 genMs=8
+]]></system-out>
+      <system-err><![CDATA[]]></system-err>
+    </testsuite>
+
+    <note>core-sim: SweepRouteTest under the same probe: still fully green (BUILD SUCCESSFUL). The synthetic
+    21x21 Manhattan grid fixture's spiral connectors apparently never need to deadhead in the first place
+    (revisitFraction=0.000 with or without the penalty): expected, since a regular grid offers symmetric
+    shortest paths, so this fixture was never the regression's reproduction case. The irregular real Shibuya
+    street graph above is the meaningful guard; noted here so this proof does not overstate the grid test's
+    sensitivity to the fix.</note>
+    <testsuite name="com.pikmin.sim.SweepRouteTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-07-02T04:31:28" hostname="Davids-MacBook-Pro.local" time="0.044">
+      <properties/>
+      <testcase name="sweep_meetsBudget_withoutWildOvershoot()" classname="com.pikmin.sim.SweepRouteTest" time="0.02"/>
+      <testcase name="sweep_closeLoop_returnsToStart_withBoundedReturnLeg()" classname="com.pikmin.sim.SweepRouteTest" time="0.007"/>
+      <testcase name="sweep_smallGraph_returnsShortfallWithoutCrash()" classname="com.pikmin.sim.SweepRouteTest" time="0.0"/>
+      <testcase name="sweep_walksNewGround_lowRevisitFraction()" classname="com.pikmin.sim.SweepRouteTest" time="0.004"/>
+      <testcase name="sweep_startsAtSnappedStart_andStaysOnGraph()" classname="com.pikmin.sim.SweepRouteTest" time="0.004"/>
+      <testcase name="fetchRadius_containsSpiral_andClamps()" classname="com.pikmin.sim.SweepRouteTest" time="0.0"/>
+      <testcase name="sweep_isDeterministic_andAdjacencyOrderInsensitive()" classname="com.pikmin.sim.SweepRouteTest" time="0.005"/>
+      <testcase name="sweep_leavesNoHarvestGap_insideSweptDisc()" classname="com.pikmin.sim.SweepRouteTest" time="0.002"/>
+      <system-out><![CDATA[[sweep grid] revisitFraction=0.000
+[sweep grid] maxR=912m harvestCoverage=1.000
+]]></system-out>
+      <system-err><![CDATA[]]></system-err>
+    </testsuite>
+
+  </section>
+
+  <post-probe-verification><![CDATA[
+git diff -- walk-sim/core-sim/src/main/kotlin/com/pikmin/sim/SweepRoute.kt after reverting the probe matched
+the shipped fix exactly (WALKED_EDGE_PENALTY = 3.0, no leftover comment/whitespace delta). git status
+confirmed clean of any qa-function-authored residue. Full suite re-run clean (--no-build-cache clean test)
+after revert: 77 tests, 0 failures, 0 errors, 1 skipped (same unrelated skip) - final state used for the
+PASS verdict.
+]]></post-probe-verification>
+
+</qa-function-proof>

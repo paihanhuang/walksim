@@ -1,0 +1,35 @@
+{
+  "version": 0.6,
+  "generator": "fixture",
+  "elements": [
+    {
+      "type": "way", "id": 100,
+      "nodes": [1, 2, 3],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7000},
+        {"lat": 35.6600, "lon": 139.7003},
+        {"lat": 35.6600, "lon": 139.7006}
+      ],
+      "tags": {"highway": "residential"}
+    },
+    {
+      "type": "way", "id": 101,
+      "nodes": [3, 4, 5],
+      "geometry": [
+        {"lat": 35.6600, "lon": 139.7006},
+        {"lat": 35.6603, "lon": 139.7006},
+        {"lat": 35.6606, "lon": 139.7006}
+      ],
+      "tags": {"highway": "tertiary"}
+    },
+    {
+      "type": "way", "id": 300,
+      "nodes": [100, 101],
+      "geometry": [
+        {"lat": 35.6700, "lon": 139.7100},
+        {"lat": 35.6703, "lon": 139.7100}
+      ],
+      "tags": {"highway": "residential"}
+    }
+  ]
+}

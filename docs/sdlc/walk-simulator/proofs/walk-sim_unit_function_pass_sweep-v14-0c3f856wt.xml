@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- qa-function VERIFY-mode proof: harvest-sweep re-baseline (requirements v1.4) vs HEAD 0c3f856 + uncommitted working tree. -->
+<!-- Command: cd walk-sim && JAVA_HOME=/opt/homebrew/opt/openjdk@17 ./gradlew --no-build-cache clean test --console=plain -->
+<!-- Full suite: 75 tests (app x2 variants + core-sim + core-osm), 0 failures, 0 errors. -->
+<testsuites>
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.SweepRouteTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2026-07-02T01:21:13" hostname="Davids-MacBook-Pro.local" time="0.022">
+  <properties/>
+  <testcase name="sweep_meetsBudget_withoutWildOvershoot()" classname="com.pikmin.sim.SweepRouteTest" time="0.006"/>
+  <testcase name="sweep_smallGraph_returnsShortfallWithoutCrash()" classname="com.pikmin.sim.SweepRouteTest" time="0.001"/>
+  <testcase name="sweep_walksNewGround_lowRevisitFraction()" classname="com.pikmin.sim.SweepRouteTest" time="0.004"/>
+  <testcase name="sweep_startsAtSnappedStart_andStaysOnGraph()" classname="com.pikmin.sim.SweepRouteTest" time="0.003"/>
+  <testcase name="fetchRadius_containsSpiral_andClamps()" classname="com.pikmin.sim.SweepRouteTest" time="0.001"/>
+  <testcase name="sweep_isDeterministic_andAdjacencyOrderInsensitive()" classname="com.pikmin.sim.SweepRouteTest" time="0.005"/>
+  <testcase name="sweep_leavesNoHarvestGap_insideSweptDisc()" classname="com.pikmin.sim.SweepRouteTest" time="0.002"/>
+  <system-out><![CDATA[[sweep grid] revisitFraction=0.000
+[sweep grid] maxR=912m harvestCoverage=1.000
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.osm.ShibuyaSweepTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-02T01:21:12" hostname="Davids-MacBook-Pro.local" time="0.036">
+  <properties/>
+  <testcase name="sweep_onRealShibuya_meetsBudget_sweepsNewGround_leavesNoHarvestGaps()" classname="com.pikmin.osm.ShibuyaSweepTest" time="0.036"/>
+  <system-out><![CDATA[[sweep Shibuya] len=5684m maxR=734m revisit=0.175 harvestCov=1.000 genMs=4
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.WalkPlayerTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-02T01:21:13" hostname="Davids-MacBook-Pro.local" time="0.048">
+  <properties/>
+  <testcase name="play_emitsRoadSnappedStream_atOneHz()" classname="com.pikmin.sim.WalkPlayerTest" time="0.035"/>
+  <testcase name="play_loopMode_fillsSweepShortfall_byLapping()" classname="com.pikmin.sim.WalkPlayerTest" time="0.013"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.GraphRandomWalkerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-07-02T01:21:13" hostname="Davids-MacBook-Pro.local" time="0.015">
+  <properties/>
+  <testcase name="generate_allPointsWithinRadius()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.008"/>
+  <testcase name="snapStart_nearestWithinRange_elseNull()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.0"/>
+  <testcase name="generate_lengthMatchesTarget()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.001"/>
+  <testcase name="generate_noUTurnExceptAtDeadEnds()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.001"/>
+  <testcase name="generate_deterministic_andOrderIndependent()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.001"/>
+  <testcase name="generate_allPointsLieOnGraphEdges()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.NoUTurnBearingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-02T01:21:13" hostname="Davids-MacBook-Pro.local" time="0.002">
+  <properties/>
+  <testcase name="generatedWalk_hasNoBearingUTurn_atDegreeGt1Nodes()" classname="com.pikmin.sim.NoUTurnBearingTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.WalkingMotionEngineTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-07-02T01:21:13" hostname="Davids-MacBook-Pro.local" time="0.021">
+  <properties/>
+  <testcase name="pausesPresent_inEveryTenMinuteWalk_acrossSeeds()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.004"/>
+  <testcase name="bearingAndSpeed_consistentWithTrueMotion()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="play_emitsOnePerTick_deterministically_underVirtualTime()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.003"/>
+  <testcase name="noTeleport_onEmittedTrajectory()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="noise_amplitudeAccuracyAndAutocorrelation()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.005"/>
+  <testcase name="stepCount_matchesDistanceOverStride()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="sharpCorner_speedStaysInRange_bearingTracksBothLegs_chordNeverExceedsArc()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="frames_deterministic_andSeedSensitive()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.0"/>
+  <testcase name="speed_inRange_andAccelBounded()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+</testsuites>

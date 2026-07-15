@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- LSPosed scope: Pikmin (game STEP_DETECTOR → landing page) + GMS (Google Fit STEP_COUNTER → Weekly Challenge). -->
+    <string-array name="xposedscope">
+        <item>com.nianticlabs.pikmin</item>
+        <item>com.google.android.gms</item>
+    </string-array>
+</resources>

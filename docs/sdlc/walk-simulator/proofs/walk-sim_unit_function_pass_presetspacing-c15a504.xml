@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="walk-sim full suite (clean, no-build-cache re-run, HEAD=c15a504 + uncommitted per-preset-spacing diff)">
+<!-- app/build/test-results/testDebugUnitTest/TEST-com.pikmin.walksim.LocationMappingTest.xml -->
+<testsuite name="com.pikmin.walksim.LocationMappingTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.004">
+  <properties/>
+  <testcase name="setsTheFixedSecondaryAccuracies()" classname="com.pikmin.walksim.LocationMappingTest" time="0.004"/>
+  <testcase name="mapsMotionFields_andStampsInjectedClocks()" classname="com.pikmin.walksim.LocationMappingTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- app/build/test-results/testDebugUnitTest/TEST-com.pikmin.walksim.LocationsSpacingTest.xml -->
+<testsuite name="com.pikmin.walksim.LocationsSpacingTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.006">
+  <properties/>
+  <testcase name="measuredPresets_useTunedSpacing()" classname="com.pikmin.walksim.LocationsSpacingTest" time="0.006"/>
+  <testcase name="unmeasuredPresets_keepDefault()" classname="com.pikmin.walksim.LocationsSpacingTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- app/build/test-results/testDebugUnitTest/TEST-com.pikmin.walksim.PaceDerivationTest.xml -->
+<testsuite name="com.pikmin.walksim.PaceDerivationTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.002">
+  <properties/>
+  <testcase name="stepsPerMinScalesWithStride()" classname="com.pikmin.walksim.PaceDerivationTest" time="0.001"/>
+  <testcase name="zeroSpeed_isNotPlaying()" classname="com.pikmin.walksim.PaceDerivationTest" time="0.0"/>
+  <testcase name="nullSample_isNotPlaying()" classname="com.pikmin.walksim.PaceDerivationTest" time="0.0"/>
+  <testcase name="movingSpeed_derivesStepsPerMinFromStride()" classname="com.pikmin.walksim.PaceDerivationTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- app/build/test-results/testDebugUnitTest/TEST-com.pikmin.walksim.SequencePlanTest.xml -->
+<testsuite name="com.pikmin.walksim.SequencePlanTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.004">
+  <properties/>
+  <testcase name="realPresets_segmentsAlwaysSumToTotal()" classname="com.pikmin.walksim.SequencePlanTest" time="0.001"/>
+  <testcase name="emptyPresets_yieldEmptyPlan()" classname="com.pikmin.walksim.SequencePlanTest" time="0.0"/>
+  <testcase name="remainder_isAbsorbedByTheLastSegment_andSegmentsSumToTotal()" classname="com.pikmin.walksim.SequencePlanTest" time="0.001"/>
+  <testcase name="threePresets_evenTotal_eachGetsAThird()" classname="com.pikmin.walksim.SequencePlanTest" time="0.0"/>
+  <testcase name="singlePreset_getsTheWholeDuration()" classname="com.pikmin.walksim.SequencePlanTest" time="0.0"/>
+  <testcase name="zeroDuration_splitsIntoZeroSegments()" classname="com.pikmin.walksim.SequencePlanTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- app/build/test-results/testDebugUnitTest/TEST-com.pikmin.walksim.WalkStateMachineTest.xml -->
+<testsuite name="com.pikmin.walksim.WalkStateMachineTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.002">
+  <properties/>
+  <testcase name="startsIdle()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.001"/>
+  <testcase name="complete_isTheNaturalTerminalTransition()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <testcase name="terminalAcceptsNothing()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <testcase name="stopFromPaused_reachesTerminal()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <testcase name="happyPath_start_pause_resume_stop()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <testcase name="illegalTransitionsAreRejectedNoOps()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-osm/build/test-results/test/TEST-com.pikmin.osm.OverpassFilterTest.xml -->
+<testsuite name="com.pikmin.osm.OverpassFilterTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:32" hostname="Davids-MacBook-Pro.local" time="0.031">
+  <properties/>
+  <testcase name="excludedWays_areAbsentFromGraph()" classname="com.pikmin.osm.OverpassFilterTest" time="0.031"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-osm/build/test-results/test/TEST-com.pikmin.osm.OverpassGraphBuildTest.xml -->
+<testsuite name="com.pikmin.osm.OverpassGraphBuildTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:32" hostname="Davids-MacBook-Pro.local" time="0.001">
+  <properties/>
+  <testcase name="sharedNodeStitches_andDisjointWayIsDropped()" classname="com.pikmin.osm.OverpassGraphBuildTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-osm/build/test-results/test/TEST-com.pikmin.osm.OverpassRoadSourceTest.xml -->
+<testsuite name="com.pikmin.osm.OverpassRoadSourceTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:32" hostname="Davids-MacBook-Pro.local" time="0.035">
+  <properties/>
+  <testcase name="graphAround_cachesPerBbox()" classname="com.pikmin.osm.OverpassRoadSourceTest" time="0.035"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-osm/build/test-results/test/TEST-com.pikmin.osm.ShibuyaFixtureBaker.xml -->
+<testsuite name="com.pikmin.osm.ShibuyaFixtureBaker" tests="1" skipped="1" failures="0" errors="0" timestamp="2026-07-03T04:42:32" hostname="Davids-MacBook-Pro.local" time="0.0">
+  <properties/>
+  <testcase name="bakeShibuyaFixture()" classname="com.pikmin.osm.ShibuyaFixtureBaker" time="0.0">
+    <skipped/>
+  </testcase>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-osm/build/test-results/test/TEST-com.pikmin.osm.ShibuyaIntegrationTest.xml -->
+<testsuite name="com.pikmin.osm.ShibuyaIntegrationTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:32" hostname="Davids-MacBook-Pro.local" time="0.081">
+  <properties/>
+  <testcase name="shibuyaGraph_isConnected_walkable_andHasNoAvoidableUTurn()" classname="com.pikmin.osm.ShibuyaIntegrationTest" time="0.081"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-osm/build/test-results/test/TEST-com.pikmin.osm.ShibuyaSweepTest.xml -->
+<testsuite name="com.pikmin.osm.ShibuyaSweepTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:32" hostname="Davids-MacBook-Pro.local" time="0.043">
+  <properties/>
+  <testcase name="sweep_onRealShibuya_meetsBudget_sweepsNewGround_leavesNoHarvestGaps()" classname="com.pikmin.osm.ShibuyaSweepTest" time="0.043"/>
+  <system-out><![CDATA[[sweep Shibuya] len=6099m maxR=852m revisit=0.004 harvestCov=1.000 genMs=4
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-sim/build/test-results/test/TEST-com.pikmin.sim.GeoTest.xml -->
+<testsuite name="com.pikmin.sim.GeoTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.008">
+  <properties/>
+  <testcase name="haversine_oneDegreeLongitudeAtEquator()" classname="com.pikmin.sim.GeoTest" time="0.005"/>
+  <testcase name="destinationPoint_eastAlongEquator()" classname="com.pikmin.sim.GeoTest" time="0.0"/>
+  <testcase name="bearing_cardinalDirections()" classname="com.pikmin.sim.GeoTest" time="0.001"/>
+  <testcase name="haversine_oneDegreeLatitude()" classname="com.pikmin.sim.GeoTest" time="0.0"/>
+  <testcase name="destinationPoint_roundTripsWithHaversine()" classname="com.pikmin.sim.GeoTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-sim/build/test-results/test/TEST-com.pikmin.sim.GraphRandomWalkerTest.xml -->
+<testsuite name="com.pikmin.sim.GraphRandomWalkerTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.015">
+  <properties/>
+  <testcase name="generate_allPointsWithinRadius()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.009"/>
+  <testcase name="snapStart_nearestWithinRange_elseNull()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.0"/>
+  <testcase name="generate_lengthMatchesTarget()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.0"/>
+  <testcase name="generate_noUTurnExceptAtDeadEnds()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.002"/>
+  <testcase name="generate_deterministic_andOrderIndependent()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.001"/>
+  <testcase name="generate_allPointsLieOnGraphEdges()" classname="com.pikmin.sim.GraphRandomWalkerTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-sim/build/test-results/test/TEST-com.pikmin.sim.NoUTurnBearingTest.xml -->
+<testsuite name="com.pikmin.sim.NoUTurnBearingTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.002">
+  <properties/>
+  <testcase name="generatedWalk_hasNoBearingUTurn_atDegreeGt1Nodes()" classname="com.pikmin.sim.NoUTurnBearingTest" time="0.002"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-sim/build/test-results/test/TEST-com.pikmin.sim.PathEngineTest.xml -->
+<testsuite name="com.pikmin.sim.PathEngineTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.001">
+  <properties/>
+  <testcase name="densify_straightSegment_hasUniformSpacing()" classname="com.pikmin.sim.PathEngineTest" time="0.001"/>
+  <testcase name="densify_preservesTotalLength()" classname="com.pikmin.sim.PathEngineTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-sim/build/test-results/test/TEST-com.pikmin.sim.SweepRouteTest.xml -->
+<testsuite name="com.pikmin.sim.SweepRouteTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.028">
+  <properties/>
+  <testcase name="sweep_meetsBudget_withoutWildOvershoot()" classname="com.pikmin.sim.SweepRouteTest" time="0.006"/>
+  <testcase name="sweep_closeLoop_returnsToStart_withBoundedReturnLeg()" classname="com.pikmin.sim.SweepRouteTest" time="0.006"/>
+  <testcase name="sweep_smallGraph_returnsShortfallWithoutCrash()" classname="com.pikmin.sim.SweepRouteTest" time="0.0"/>
+  <testcase name="sweep_walksNewGround_lowRevisitFraction()" classname="com.pikmin.sim.SweepRouteTest" time="0.004"/>
+  <testcase name="sweep_startsAtSnappedStart_andStaysOnGraph()" classname="com.pikmin.sim.SweepRouteTest" time="0.002"/>
+  <testcase name="fetchRadius_containsSpiral_andClamps()" classname="com.pikmin.sim.SweepRouteTest" time="0.0"/>
+  <testcase name="sweep_isDeterministic_andAdjacencyOrderInsensitive()" classname="com.pikmin.sim.SweepRouteTest" time="0.004"/>
+  <testcase name="sweep_leavesNoHarvestGap_insideSweptDisc()" classname="com.pikmin.sim.SweepRouteTest" time="0.002"/>
+  <system-out><![CDATA[[sweep grid] revisitFraction=0.000
+[sweep grid] maxR=1081m harvestCoverage=1.000
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-sim/build/test-results/test/TEST-com.pikmin.sim.WalkPlayerTest.xml -->
+<testsuite name="com.pikmin.sim.WalkPlayerTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.11">
+  <properties/>
+  <testcase name="play_emitsRoadSnappedStream_atOneHz()" classname="com.pikmin.sim.WalkPlayerTest" time="0.037"/>
+  <testcase name="play_loopMode_fillsSweepShortfall_byLapping()" classname="com.pikmin.sim.WalkPlayerTest" time="0.014"/>
+  <testcase name="play_loopMode_closeLoop_playedWalkReturnsToStart()" classname="com.pikmin.sim.WalkPlayerTest" time="0.059"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-sim/build/test-results/test/TEST-com.pikmin.sim.WalkProfileTest.xml -->
+<testsuite name="com.pikmin.sim.WalkProfileTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.0">
+  <properties/>
+  <testcase name="defaultMeanSpeedIs1_3()" classname="com.pikmin.sim.WalkProfileTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+<!-- core-sim/build/test-results/test/TEST-com.pikmin.sim.WalkingMotionEngineTest.xml -->
+<testsuite name="com.pikmin.sim.WalkingMotionEngineTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-07-03T04:42:33" hostname="Davids-MacBook-Pro.local" time="0.021">
+  <properties/>
+  <testcase name="pausesPresent_inEveryTenMinuteWalk_acrossSeeds()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.004"/>
+  <testcase name="bearingAndSpeed_consistentWithTrueMotion()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.002"/>
+  <testcase name="play_emitsOnePerTick_deterministically_underVirtualTime()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.002"/>
+  <testcase name="noTeleport_onEmittedTrajectory()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="noise_amplitudeAccuracyAndAutocorrelation()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.005"/>
+  <testcase name="stepCount_matchesDistanceOverStride()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="sharpCorner_speedStaysInRange_bearingTracksBothLegs_chordNeverExceedsArc()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="frames_deterministic_andSeedSensitive()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="speed_inRange_andAccelBounded()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+
+</testsuites>

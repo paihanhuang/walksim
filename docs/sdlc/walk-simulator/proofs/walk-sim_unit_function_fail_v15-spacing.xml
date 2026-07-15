@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- qa-function VERIFY-mode proof: v1.5 re-baseline (harvest reach 350->500 m, DEFAULT_LANE_SPACING_M 550->850 m). -->
+<!-- HEAD 41cc9e7 + uncommitted working tree (5 files: requirements.md, Locations.kt, ShibuyaSweepTest.kt, SweepRoute.kt, SweepRouteTest.kt). -->
+<!-- Command: cd walk-sim && JAVA_HOME=/opt/homebrew/opt/openjdk@17 ./gradlew --no-build-cache clean test --console=plain -->
+<!-- Full suite (final, post-probe-revert): 77 tests, 0 failures, 0 errors, 1 skipped (pre-existing @Disabled fixture baker, unrelated). -->
+<!--
+     VERDICT: FAIL — reason is a requirements.md documentation self-contradiction, NOT a code/test defect.
+     All CODE and TEST claims below are independently verified TRUE and non-vacuous (see inline evidence):
+       - AC-24(a) no-gap coverage @ 500 m reach / 850 m spacing: harvestCov=1.000 (Shibuya real graph AND
+         synthetic grid), non-vacuous (Shibuya inner-set = 450/1150 real nodes, probed and reverted, not shown
+         as a testcase here since it was a throwaway diagnostic, not a committed test).
+       - AC-24(b) revisit bound tightened 0.12->0.05: measured 0.004, PINS with 12.5x margin. Non-vacuity
+         probed: temporarily reverting ShibuyaSweepTest's spacingM 850->550 (the pre-v1.5 default) reproduces
+         revisit=0.07792 (matches the code comment's documented pre-v1.5 baseline "~0.078" almost exactly) and
+         correctly FAILS the 0.05 bound -- proves the bound is a real, currently-binding regression guard, not
+         vacuously wide. Probe reverted; working tree diff confirmed byte-identical to pre-probe (git diff --stat
+         unchanged: 5 files, 29 insertions(+), 18 deletions(-)).
+       - fetchRadius_containsSpiral_andClamps @ spacing=850: hand-verified sqrt(850*5616/pi+300^2)+300 = 1568.65,
+         inside the asserted [1530,1610] band.
+       - Swept radius grew (the optimization's actual point): maxR=852 m @ 850 spacing vs maxR=734 m @ 550
+         spacing (same probe run above) on the same real Shibuya graph.
+       - Full suite green with 0 regressions, confirmed via genuine `--no-build-cache clean test` (all 60
+         Gradle tasks executed, not cache/UP-TO-DATE) run twice (pre- and post-probe-revert).
+     FAIL driver: docs/sdlc/walk-simulator/requirements.md, in the SAME diff under verification, was only
+     partially re-baselined:
+       - AC-2 (line 40) still reads "lane spacing default 550 m" -- contradicts AC-24(a) 5 lines below it,
+         which correctly states "default 850 m" in the same table, same document, same edit pass.
+       - The "## Problem / intent" prose (line 13, "v1.4 route goal") still reads "harvestable within ~350 m
+         ... ~700 m corridor" -- contradicts the v1.5 changelog note 6 lines above it (500 m reach).
+     Neither line is exercised by executable test code (no test asserts a literal 350 or 550 in test logic --
+     grep-confirmed clean), so this is a spec/traceability defect, not a false-green test. Fix is a 2-line text
+     edit in requirements.md; no code change or re-test required once corrected.
+-->
+<testsuites>
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.SweepRouteTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-07-02T05:53:20" hostname="Davids-MacBook-Pro.local" time="0.027">
+  <properties/>
+  <testcase name="sweep_meetsBudget_withoutWildOvershoot()" classname="com.pikmin.sim.SweepRouteTest" time="0.006"/>
+  <testcase name="sweep_closeLoop_returnsToStart_withBoundedReturnLeg()" classname="com.pikmin.sim.SweepRouteTest" time="0.005"/>
+  <testcase name="sweep_smallGraph_returnsShortfallWithoutCrash()" classname="com.pikmin.sim.SweepRouteTest" time="0.0"/>
+  <testcase name="sweep_walksNewGround_lowRevisitFraction()" classname="com.pikmin.sim.SweepRouteTest" time="0.004"/>
+  <testcase name="sweep_startsAtSnappedStart_andStaysOnGraph()" classname="com.pikmin.sim.SweepRouteTest" time="0.003"/>
+  <testcase name="fetchRadius_containsSpiral_andClamps()" classname="com.pikmin.sim.SweepRouteTest" time="0.001"/>
+  <testcase name="sweep_isDeterministic_andAdjacencyOrderInsensitive()" classname="com.pikmin.sim.SweepRouteTest" time="0.004"/>
+  <testcase name="sweep_leavesNoHarvestGap_insideSweptDisc()" classname="com.pikmin.sim.SweepRouteTest" time="0.003"/>
+  <system-out><![CDATA[[sweep grid] revisitFraction=0.000
+[sweep grid] maxR=1081m harvestCoverage=1.000
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.osm.ShibuyaSweepTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-07-02T05:53:20" hostname="Davids-MacBook-Pro.local" time="0.037">
+  <properties/>
+  <testcase name="sweep_onRealShibuya_meetsBudget_sweepsNewGround_leavesNoHarvestGaps()" classname="com.pikmin.osm.ShibuyaSweepTest" time="0.037"/>
+  <system-out><![CDATA[[sweep Shibuya] len=6099m maxR=852m revisit=0.004 harvestCov=1.000 genMs=4
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
+<!-- Aggregate (all modules, this run): tests=77 failures=0 errors=0 skipped=1 (ShibuyaFixtureBaker, pre-existing @Disabled). -->
+</testsuites>
