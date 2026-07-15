@@ -1,0 +1,23 @@
+===== STAGE 3 SCENARIO 1 — LIVE non-Shibuya city (Xinyi, Taipei 25.0339,121.5645) =====
+Branch plan-a-arch-optimization HEAD 4d53366. Walk START 23:45:29, duration 360s, spacing_s 500.
+PASS criterion: mock fix near 25.03,121.56 (Taipei) — NOT Shibuya 35.66,139.70; and MOVES between samples.
+
+----- SAMPLE #1 @ 23:46:20 -----
+      last location=Location[gps 25.033791,121.563455 hAcc=8.084101 et=+1d11h13m5s589ms alt=30.0 vAcc=3.0 mslAlt=10.38470063303031 mslAltAcc=3.0121255 vel=1.2364956 sAcc=0.5 bear=181.0445 bAcc=5.0 mock]
+      last location=Location[network 25.033791,121.563455 hAcc=8.084101 et=+1d11h13m5s589ms alt=30.0 vAcc=3.0 mslAlt=10.38470063303031 mslAltAcc=3.0121255 vel=1.2364956 sAcc=0.5 bear=181.0445 bAcc=5.0 mock]
+      last location=Location[fused 25.033791,121.563455 hAcc=8.084101 et=+1d11h13m5s589ms alt=30.0 vAcc=3.0 mslAlt=10.38470063303031 mslAltAcc=3.0121255 vel=1.2364956 sAcc=0.5 bear=181.0445 bAcc=5.0 mock]
+      last location=Location[gps 25.033791,121.563455 hAcc=8.084101 et=+1d11h13m5s589ms alt=30.0 vAcc=3.0 mslAlt=10.38470063303031 mslAltAcc=3.0121255 vel=1.2364956 sAcc=0.5 bear=181.0445 bAcc=5.0 mock]
+
+----- SAMPLE #2 @ 23:46:55 (~34s after #1 — coords MUST differ = avatar walked the route) -----
+      last location=Location[gps 25.033426,121.563454 hAcc=8.773576 et=+1d11h13m40s160ms alt=30.0 vAcc=3.0 mslAlt=10.38470785103592 mslAltAcc=3.0121255 vel=1.0693531 sAcc=0.5 bear=182.15672 bAcc=5.0 mock]
+      last location=Location[network 25.033426,121.563454 hAcc=8.773576 et=+1d11h13m40s160ms alt=30.0 vAcc=3.0 mslAlt=10.38470785103592 mslAltAcc=3.0121255 vel=1.0693531 sAcc=0.5 bear=182.15672 bAcc=5.0 mock]
+      last location=Location[fused 25.033426,121.563454 hAcc=8.773576 et=+1d11h13m40s160ms alt=30.0 vAcc=3.0 mslAlt=10.38470785103592 mslAltAcc=3.0121255 vel=1.0693531 sAcc=0.5 bear=182.15672 bAcc=5.0 mock]
+      last location=Location[gps 25.033426,121.563454 hAcc=8.773576 et=+1d11h13m40s160ms alt=30.0 vAcc=3.0 mslAlt=10.38470785103592 mslAltAcc=3.0121255 vel=1.0693531 sAcc=0.5 bear=182.15672 bAcc=5.0 mock]
+
+----- LOGCAT (StepInjector / WalkService) @ 23:46:56 -----
+07-14 23:45:30.885  1347  1347 I adbd    : adbd service requested 'shell,v2,TERM=xterm-256color,raw:su -c am start-foreground-service -n com.pikmin.walksim/.WalkService -a com.pikmin.walksim.START --es lat_s 25.0339 --es lng_s 121.5645 --el duration_s 360 --es spacing_s 500'
+07-14 23:45:30.961  1624  2560 I ActivityManager: Background started FGS: Allowed [callingPackage: com.android.shell; callingUid: 0; uidState: NONE; uidBFSL: n/a; BFGS denied: false; intent: Intent { act=com.pikmin.walksim.START xflg=0x4 cmp=com.pikmin.walksim/.WalkService (has extras) }; code:SYSTEM_UID; tempAllowListReason:<null>; allowWiu:51; targetSdkVersion:34; callerTargetSdkVersion:36; startForegroundCount:0; bindFromPackage:null; isBindService:false]
+07-14 23:46:23.530 15260 15260 I LSPosed-Bridge: StepInjector: detach com.nianticproject.ichigo.fitness.FitnessManager$1 (feeds=0)
+
+----- FALLBACK CHECK (must be EMPTY in Scenario 1) -----
+[end fallback check]

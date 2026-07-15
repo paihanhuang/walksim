@@ -1,0 +1,20 @@
+===== STAGE 3 SCENARIO 2 — FORCED FALLBACK (network OFF, Xinyi pin 25.0339,121.5645) =====
+Branch plan-a-arch-optimization HEAD 4d53366. Walk START 23:52:30, duration 300s, spacing_s 500. WiFi+data DISABLED.
+BINDING CHECK: Overpass fetch must FAIL -> fallback re-homes to SHIBUYA 35.6595,139.7006 — NOT the failed Xinyi pin 25.03,121.56.
+
+----- SAMPLE #1 @ 23:53:14 -----
+      last location=Location[gps 35.659802,139.700215 hAcc=9.06235 et=+1d11h19m59s801ms alt=30.0 vAcc=3.0 mslAlt=-6.4267757228776645 mslAltAcc=3.0121255 vel=1.3068963 sAcc=0.5 bear=315.8605 bAcc=5.0 mock]
+      last location=Location[network 35.659802,139.700215 hAcc=9.06235 et=+1d11h19m59s801ms alt=30.0 vAcc=3.0 mslAlt=-6.4267757228776645 mslAltAcc=3.0121255 vel=1.3068963 sAcc=0.5 bear=315.8605 bAcc=5.0 mock]
+      last location=Location[fused 35.659802,139.700215 hAcc=9.06235 et=+1d11h19m59s801ms alt=30.0 vAcc=3.0 mslAlt=-6.4267757228776645 mslAltAcc=3.0121255 vel=1.3068963 sAcc=0.5 bear=315.8605 bAcc=5.0 mock]
+      last location=Location[gps 35.659802,139.700215 hAcc=9.06235 et=+1d11h19m59s801ms alt=30.0 vAcc=3.0 mslAlt=-6.4267757228776645 mslAltAcc=3.0121255 vel=1.3068963 sAcc=0.5 bear=315.8605 bAcc=5.0 mock]
+
+----- SAMPLE #2 @ 23:53:21 (still SHIBUYA + moving = playing baked graph) -----
+      last location=Location[gps 35.659843,139.700155 hAcc=8.83294 et=+1d11h20m6s136ms alt=30.0 vAcc=3.0 mslAlt=-6.427114969141357 mslAltAcc=3.0121255 vel=1.5201467 sAcc=0.5 bear=315.86044 bAcc=5.0 mock]
+      last location=Location[network 35.659843,139.700155 hAcc=8.83294 et=+1d11h20m6s136ms alt=30.0 vAcc=3.0 mslAlt=-6.427114969141357 mslAltAcc=3.0121255 vel=1.5201467 sAcc=0.5 bear=315.86044 bAcc=5.0 mock]
+      last location=Location[fused 35.659843,139.700155 hAcc=8.83294 et=+1d11h20m6s136ms alt=30.0 vAcc=3.0 mslAlt=-6.427114969141357 mslAltAcc=3.0121255 vel=1.5201467 sAcc=0.5 bear=315.86044 bAcc=5.0 mock]
+      last location=Location[gps 35.659843,139.700155 hAcc=8.83294 et=+1d11h20m6s136ms alt=30.0 vAcc=3.0 mslAlt=-6.427114969141357 mslAltAcc=3.0121255 vel=1.5201467 sAcc=0.5 bear=315.86044 bAcc=5.0 mock]
+
+----- LOGCAT: fetch failure + fallback evidence -----
+07-14 23:52:32.369  1347  1347 I adbd    : adbd service requested 'shell,v2,TERM=xterm-256color,raw:su -c am start-foreground-service -n com.pikmin.walksim/.WalkService -a com.pikmin.walksim.START --es lat_s 25.0339 --es lng_s 121.5645 --el duration_s 300 --es spacing_s 500'
+07-14 23:52:32.445  1624  2535 I ActivityManager: Background started FGS: Allowed [callingPackage: com.android.shell; callingUid: 0; uidState: NONE; uidBFSL: n/a; BFGS denied: false; intent: Intent { act=com.pikmin.walksim.START xflg=0x4 cmp=com.pikmin.walksim/.WalkService (has extras) }; code:SYSTEM_UID; tempAllowListReason:<null>; allowWiu:51; targetSdkVersion:34; callerTargetSdkVersion:36; startForegroundCount:0; bindFromPackage:null; isBindService:false]
+07-14 23:52:34.069 25452 25770 W WalkService: Overpass fetch failed; falling back to baked Shibuya
