@@ -44,9 +44,11 @@ any budget below. Within budget => Stage 5 is deferred/never runs.
   gen total budget = 76.054625 ms (1.5 x 50.703083)   <- primary trigger
   heap    budget = 16.248336 MB   (1.5 x 10.832224)
 
-Caveat: absolute ms are machine/JIT-sensitive; compare Stage 5 re-measures on the
-SAME machine, warmed, and treat the gen-total (76.05 ms) + heap (16.25 MB) budgets
-as the headline triggers. The env gate keeps this test at zero default-run cost
+Caveat: absolute ms are machine/JIT-sensitive AND this baseline is COLD / single-shot
+(no JIT warm-up, no repetition). Stage 5 (Task 5.0) MUST re-measure with the IDENTICAL
+cold single-shot PerfBaselineTest on the SAME machine -- like-for-like, NOT warmed (a
+warmed re-measure reads faster and would mask a real regression). Treat the gen-total
+(76.05 ms) + heap (16.25 MB) budgets as the headline triggers. The env gate keeps this test at zero default-run cost
 (returns immediately unless WALKSIM_PERF=1) and adds no production dependency.
 
 Verdict: PASS. Reproducible gen/heap numbers captured; Stage 5 budget frozen.
