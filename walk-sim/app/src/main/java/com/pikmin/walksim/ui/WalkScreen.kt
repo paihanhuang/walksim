@@ -26,7 +26,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
@@ -84,17 +83,16 @@ fun WalkScreen(
 
         LocationDropdown(selectedPosition = state.selectedPosition, onSelectPreset = onSelectPreset)
 
-        // Map slot — Stage 2 replaces this placeholder with the osmdroid AndroidView. Weighted so the swap
-        // keeps the surrounding layout identical.
-        Box(
-            Modifier
+        // Map slot — the osmdroid AndroidView. Weighted so it fills the same space the Stage-1 placeholder did.
+        WalkMap(
+            startPin = state.startPin,
+            selectedPosition = state.selectedPosition,
+            sample = state.sample,
+            onPick = onPick,
+            modifier = Modifier
                 .fillMaxWidth()
-                .weight(1f)
-                .background(Color(PetalTokens.MAP)),
-            contentAlignment = Alignment.Center,
-        ) {
-            Text("map — Stage 2 placeholder", color = Color.White, fontWeight = FontWeight.Medium)
-        }
+                .weight(1f),
+        )
 
         Text(
             "start pin: %.5f, %.5f".format(state.startPin.lat, state.startPin.lng),
