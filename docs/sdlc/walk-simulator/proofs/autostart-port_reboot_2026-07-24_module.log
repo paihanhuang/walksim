@@ -1,0 +1,8 @@
+Error: Activity class {com.pikmin.walksim/com.pikmin.walksim.MainActivity} does not exist.
+2026-07-24 16:17:25 am start issued (autostart=true)
+2026-07-24 16:17:36 pace: 
+2026-07-24 16:28:45 boot_completed; polling for CE unlock (first swipe)
+2026-07-24 16:28:53 app available after ~5s (device unlocked)
+Starting: Intent { cmp=com.pikmin.walksim/.MainActivity (has extras) }
+2026-07-24 16:28:53 am start issued (autostart=true)
+2026-07-24 16:29:06 pace: Row: 0 playing=0, stepsPerMin=0.0, schemaVersion=1

@@ -56,6 +56,17 @@ fun startSpec(selectedPosition: Int, startPin: LatLng, durationMin: Long, speedM
 }
 
 /**
+ * The walk to auto-start on boot: rebuild the last-used [StartSpec] from the persisted picker selection.
+ * Delegates to [startSpec] but supplies the preset's canonical `at` as the pin — autostart replays the
+ * preset, not a hand-dragged point (only selection/duration/pace are persisted).
+ */
+fun autostartSpec(selectedPosition: Int, durationMin: Long, speedMps: Double): StartSpec {
+    val preset = PRESET_LOCATIONS.getOrNull(selectedPosition - 1)
+        ?: return StartSpec.Sequential(durationMin * 60, speedMps) // 0 / negative / out-of-range
+    return startSpec(selectedPosition, preset.at, durationMin, speedMps)
+}
+
+/**
  * Mirror of the spinner listener's duration write (MainActivity.kt:162-165): selecting a single preset
  * (position>=1) yields `presetDurationMinutes(routeLengthKm, speed)`; "All areas" (position 0) yields `null`
  * (it keeps its own total duration and never overwrites the field).

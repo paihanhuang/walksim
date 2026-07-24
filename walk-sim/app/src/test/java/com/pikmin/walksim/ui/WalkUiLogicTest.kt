@@ -111,4 +111,42 @@ class WalkUiLogicTest {
         assertEquals("boom", bannerText(mockAppOk = true, setupError = "boom"))
         assertNull(bannerText(mockAppOk = true, setupError = null))
     }
+
+    // --- autostartSpec: rebuild a StartSpec from the persisted selection on a boot autostart.
+    // Reuses startSpec but supplies the preset's canonical .at (autostart replays the preset, not a pin). ---
+    @Test
+    fun autostartPositionZeroIsSequential() {
+        assertEquals(
+            StartSpec.Sequential(durationS = 3600L, speedMps = 1.3),
+            autostartSpec(selectedPosition = 0, durationMin = 60, speedMps = 1.3),
+        )
+    }
+
+    @Test
+    fun autostartPositiveSelectionIsSinglePresetCenter() {
+        val idx = 1 // 1-based -> PRESET_LOCATIONS[0]
+        val preset = PRESET_LOCATIONS[idx - 1]
+        val spec = autostartSpec(selectedPosition = idx, durationMin = 60, speedMps = 1.3) as StartSpec.Single
+        assertEquals(3600L, spec.durationS)
+        assertEquals(1.3, spec.speedMps)
+        assertEquals(preset.at, spec.start) // canonical preset center, NOT a hand-dragged pin
+        assertEquals(preset.spacingM, spec.spacingM)
+    }
+
+    @Test
+    fun autostartLastPresetSelectableAtSizeIndex() {
+        val last = PRESET_LOCATIONS.size // 1-based selection of the final preset — upper boundary
+        val spec = autostartSpec(selectedPosition = last, durationMin = 60, speedMps = 1.3) as StartSpec.Single
+        assertEquals(PRESET_LOCATIONS.last().at, spec.start)
+        assertEquals(PRESET_LOCATIONS.last().spacingM, spec.spacingM)
+    }
+
+    @Test
+    fun autostartOutOfRangeFallsBackToSequentialNeverThrows() {
+        assertEquals(
+            StartSpec.Sequential(durationS = 60L, speedMps = 1.3),
+            autostartSpec(selectedPosition = PRESET_LOCATIONS.size + 1, durationMin = 1, speedMps = 1.3),
+        )
+        assertTrue(autostartSpec(selectedPosition = -1, durationMin = 1, speedMps = 1.3) is StartSpec.Sequential)
+    }
 }
