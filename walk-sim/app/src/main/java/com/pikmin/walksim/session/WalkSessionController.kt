@@ -10,7 +10,7 @@ import com.pikmin.sim.sweepFetchRadiusM
 import com.pikmin.walksim.PRESET_LOCATIONS
 import com.pikmin.walksim.WalkBus
 import com.pikmin.walksim.WalkStateMachine
-import com.pikmin.walksim.sequencePlan
+import com.pikmin.walksim.fullRoutePlan
 import kotlinx.coroutines.CancellationException
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
@@ -70,15 +70,17 @@ class WalkSessionController(
                     while (!machine.isTerminal) { sink.hold(holdTarget() ?: spec.start); delay(HOLD_REFRESH_MS) }
                 }
                 Mode.SEQUENTIAL -> {
-                    // Default "All areas": one pass over the presets in order, each for its slice of the total.
-                    val plan = sequencePlan(PRESET_LOCATIONS, spec.durationS)
+                    // "All areas": each preset walks its OWN full route to completion (a closed loop back to its
+                    // start), THEN teleports to the next — continuous within a city, a jump only at city→city.
+                    val plan = fullRoutePlan(PRESET_LOCATIONS, spec.profile.meanSpeedMps)
                     for ((i, entry) in plan.withIndex()) {
                         val (preset, segS) = entry
                         val label = "Walking ${preset.label} · ${i + 1}/${plan.size}"
                         onNotify(label) // during the (slow) per-preset graph fetch
                         sink.hold(preset.at) // cover the fetch gap so real GPS never shows between presets
                         val (graph, effStart) = resolveGraph(preset.at, segS, spec)
-                        playRoute(graph, effStart, segS, spec, spec.seed + i, label) // distinct seed per preset
+                        // closeLoop = the city's full route returns to its start = "complete" before the jump.
+                        playRoute(graph, effStart, segS, spec, spec.seed + i, label, closeLoop = true)
                         if (machine.isTerminal) break // stopped: fall through to machine.complete()
                     }
                 }
@@ -89,7 +91,7 @@ class WalkSessionController(
                 }
             }
             machine.complete()
-            Log.i(TAG, "walk complete: duration ${spec.durationS}s elapsed")
+            Log.i(TAG, "walk complete (mode=${spec.mode})") // SEQUENTIAL runs the sum of all city routes, not spec.durationS
         } catch (_: CancellationException) {
             // stop requested
         } catch (e: IllegalArgumentException) {
@@ -115,8 +117,9 @@ class WalkSessionController(
         spec: RunSpec,
         seed: Long,
         notifLabel: String? = null,
+        closeLoop: Boolean = spec.closeLoop,
     ) {
-        val cfg = WalkPlayerConfig(profile = spec.profile, laneSpacingM = spec.laneSpacingM, closeLoop = spec.closeLoop, seed = seed)
+        val cfg = WalkPlayerConfig(profile = spec.profile, laneSpacingM = spec.laneSpacingM, closeLoop = closeLoop, seed = seed)
         var lastNotifBucket = -1L
         WalkPlayer(graph, cfg).play(start, segS).collect { sample ->
             awaitRunnable() // suspends while paused (back-pressure); throws when stopped

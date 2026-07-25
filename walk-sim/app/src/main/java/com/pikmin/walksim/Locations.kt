@@ -53,15 +53,11 @@ fun presetDurationMinutes(routeLengthKm: Double, speedMps: Double): Long {
 }
 
 /**
- * The default "All areas (sequential)" schedule: split [totalDurationS] evenly across [presets], one pass, in
- * order. Every preset gets `total / n` seconds; the **last** absorbs the integer-division remainder so the
- * segments sum to exactly [totalDurationS]. Empty [presets] → empty plan.
+ * The "All areas full-route" schedule: each preset walks its OWN full route ([NamedLocation.routeLengthKm]) to
+ * completion before the next begins — so a city is never cut off mid-route; the only jump is city→city. Each
+ * preset's seconds = routeLengthKm / [speedMps]; the total is the sum (not bounded by any shared duration).
  */
-fun sequencePlan(presets: List<NamedLocation>, totalDurationS: Long): List<Pair<NamedLocation, Long>> {
-    if (presets.isEmpty()) return emptyList()
-    val each = totalDurationS / presets.size
-    return presets.mapIndexed { i, preset ->
-        val seg = if (i == presets.lastIndex) totalDurationS - each * (presets.size - 1) else each
-        preset to seg
-    }
+fun fullRoutePlan(presets: List<NamedLocation>, speedMps: Double): List<Pair<NamedLocation, Long>> {
+    val speed = speedMps.takeIf { it > 0.0 } ?: 1.3 // a "0"/negative speed must not divide-by-zero → Long.MAX_VALUE
+    return presets.map { it to Math.round(it.routeLengthKm * 1000.0 / speed) }
 }

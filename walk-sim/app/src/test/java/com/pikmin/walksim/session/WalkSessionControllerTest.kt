@@ -10,7 +10,7 @@ import com.pikmin.osm.RoadSource
 import com.pikmin.walksim.PRESET_LOCATIONS
 import com.pikmin.walksim.WalkBus
 import com.pikmin.walksim.WalkStateMachine
-import com.pikmin.walksim.sequencePlan
+import com.pikmin.walksim.fullRoutePlan
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.advanceTimeBy
 import kotlinx.coroutines.test.advanceUntilIdle
@@ -116,12 +116,11 @@ class WalkSessionControllerTest {
         assertNotNull(WalkBus.setupError.value, "the failure raises a setup-error banner")
     }
 
-    // Sequential "All areas": each preset is held before its own segment's fetch, in preset order.
+    // Sequential "All areas": each preset is held before its own full-route fetch, in preset order.
     @Test
     fun sequentialHoldsEachCityBeforeItsSegment() = runTest {
-        val total = 20L
-        controller(FakeSink(), FakeRoadSource(), WalkStateMachine().apply { start() }).run(spec(Mode.SEQUENTIAL, durationS = total))
-        val plan = sequencePlan(PRESET_LOCATIONS, total)
+        controller(FakeSink(), FakeRoadSource(), WalkStateMachine().apply { start() }).run(spec(Mode.SEQUENTIAL))
+        val plan = fullRoutePlan(PRESET_LOCATIONS, WalkProfile().meanSpeedMps)
         val holds = log.filter { it.startsWith("hold") }
         assertEquals(plan.map { "hold(${"%.4f".format(it.first.at.lat)})" }, holds, "one hold per preset, in order")
         // Each preset interleaves as hold→fetch (hold covers that preset's fetch gap), never batched up front.
