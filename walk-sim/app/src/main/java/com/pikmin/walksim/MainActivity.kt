@@ -162,7 +162,7 @@ class MainActivity : ComponentActivity() {
         val prefs = getSharedPreferences(PREFS, Context.MODE_PRIVATE)
         sendStart(
             autostartSpec(
-                selectedPosition = prefs.getInt(KEY_SELECTION, 0),
+                selectedPosition = prefs.getInt(KEY_SELECTION, DEFAULT_SELECTION),
                 durationMin = prefs.getLong(KEY_DURATION_MIN, 60L),
                 speedMps = prefs.getFloat(KEY_SPEED_MPS, 1.3f).toDouble(),
             ),
@@ -172,6 +172,10 @@ class MainActivity : ComponentActivity() {
     companion object {
         /** Boolean intent extra set by the walksim-autostart Magisk boot module to auto-start the walk. */
         const val EXTRA_AUTOSTART = "autostart"
+        // Reboot-autostart defaults to a SINGLE continuous preset (Shibuya = dropdown pos 1), NOT "All areas"
+        // (pos 0): the SEQUENTIAL "All areas" mode teleports between preset cities (discontinuous; can trip
+        // Pikmin's "going too fast" lock). A continuous single-city walk is the right hands-free farm default.
+        private const val DEFAULT_SELECTION = 1
         private const val PREFS = "walksim_prefs"
         private const val KEY_SELECTION = "last_selection"
         private const val KEY_DURATION_MIN = "last_duration_min"
