@@ -13,10 +13,10 @@ class CompositeRoadSourceTest {
     private val g1 = WalkGraph(mapOf(1L to LatLng(0.0, 0.0)), emptyMap())
     private val g2 = WalkGraph(mapOf(2L to LatLng(1.0, 1.0)), emptyMap())
     private fun src(g: WalkGraph) = object : RoadSource {
-        override suspend fun graphAround(center: LatLng, radiusM: Int) = g
+        override suspend fun graphAround(center: LatLng, radiusM: Int, extraWalkable: Set<String>) = g
     }
     private fun failing() = object : RoadSource {
-        override suspend fun graphAround(center: LatLng, radiusM: Int): WalkGraph = throw java.io.IOException("net")
+        override suspend fun graphAround(center: LatLng, radiusM: Int, extraWalkable: Set<String>): WalkGraph = throw java.io.IOException("net")
     }
 
     @Test

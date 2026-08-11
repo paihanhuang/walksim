@@ -49,15 +49,9 @@ fun sweepRoute(
     val center = graph.nodes.getValue(startNode)
 
     // Connected component of the start, with canonically sorted adjacency (Dijkstra determinism).
-    val adj = HashMap<Long, List<Edge>>()
-    val component = HashSet<Long>().apply { add(startNode) }
-    val queue = ArrayDeque<Long>().apply { add(startNode) }
-    while (queue.isNotEmpty()) {
-        val u = queue.removeFirst()
-        val edges = graph.adjacency[u].orEmpty().sortedWith(compareBy({ it.toNode }, { it.lengthM }))
-        adj[u] = edges
-        for (e in edges) if (component.add(e.toNode)) queue.addLast(e.toNode)
-    }
+    val connected = connectedAdjacency(graph, startNode)
+    val adj = connected.adj
+    val component = connected.component
     val maxGraphR = component.maxOf { Geo.haversineMeters(center, graph.nodes.getValue(it)) }
 
     val points = ArrayList<LatLng>().apply { add(center) }
@@ -123,7 +117,7 @@ const val DEFAULT_LANE_SPACING_M = 850.0
 
 private const val FIRST_RING_M = 300.0    // first ring radius; its 500 m reach covers the centre disc
 private const val WAYPOINT_STEP_M = 300.0 // spiral arc between waypoints (chord ≈ arc at ring radii)
-private const val SNAP_MAX_M = 250.0      // waypoint→node snap limit; beyond it the waypoint is skipped
+private const val SNAP_MAX_M = 250.0     // waypoint→node snap limit; beyond it the waypoint is skipped
 private const val FETCH_BUFFER_M = 300.0
 // v1.6: 2000→2500 so a full 20 km spiral at 850 m spacing FITS the fetched disc (π·2500²/850 ≈ 23 km) and does
 // NOT shortfall into re-walk (open would lap the shortfall, closed would return home early) — the actual cause
@@ -132,10 +126,27 @@ private const val FETCH_MAX_M = 2500.0
 private const val MAX_WAYPOINTS = 100_000 // safety guard; a 2 km spiral uses ~10² waypoints
 private const val MAX_DTHETA_RAD = 1.05   // ≥ ~6 waypoints per turn even on a clamped tiny ring
 
-/** Nearest component node within [SNAP_MAX_M] of [p]; ties by id (deterministic), null if none. */
-private fun snapWaypoint(graph: WalkGraph, component: Set<Long>, p: LatLng): Long? {
+/** The start's connected component plus its canonically sorted adjacency (Dijkstra determinism). */
+internal class ConnectedGraph(val adj: Map<Long, List<Edge>>, val component: Set<Long>)
+
+/** BFS out from [startNode], sorting each node's edges canonically so downstream Dijkstras are deterministic. */
+internal fun connectedAdjacency(graph: WalkGraph, startNode: Long): ConnectedGraph {
+    val adj = HashMap<Long, List<Edge>>()
+    val component = HashSet<Long>().apply { add(startNode) }
+    val queue = ArrayDeque<Long>().apply { add(startNode) }
+    while (queue.isNotEmpty()) {
+        val u = queue.removeFirst()
+        val edges = graph.adjacency[u].orEmpty().sortedWith(compareBy({ it.toNode }, { it.lengthM }))
+        adj[u] = edges
+        for (e in edges) if (component.add(e.toNode)) queue.addLast(e.toNode)
+    }
+    return ConnectedGraph(adj, component)
+}
+
+/** Nearest component node within [maxM] of [p]; ties by id (deterministic), null if none. */
+internal fun snapWaypoint(graph: WalkGraph, component: Set<Long>, p: LatLng, maxM: Double = SNAP_MAX_M): Long? {
     var best: Long? = null
-    var bestD = SNAP_MAX_M
+    var bestD = maxM
     for (id in component) {
         val d = Geo.haversineMeters(p, graph.nodes.getValue(id))
         if (d < bestD || (d == bestD && best != null && id < best!!)) {
@@ -154,7 +165,7 @@ private fun snapWaypoint(graph: WalkGraph, component: Set<Long>, p: LatLng): Lon
  * moderate, so a genuinely-forced retrace (only road out, e.g. a bridge) is still taken. Pass an empty [walked]
  * for a plain shortest path (the closure return leg, exempt per AC-24e).
  */
-private fun shortestPath(
+internal fun shortestPath(
     adj: Map<Long, List<Edge>>,
     src: Long,
     dst: Long,
@@ -194,7 +205,7 @@ private fun shortestPath(
 }
 
 /** Appends edge geometry, skipping the leading vertex that duplicates the current last point. */
-private fun appendGeometry(points: MutableList<LatLng>, geom: List<LatLng>) {
+internal fun appendGeometry(points: MutableList<LatLng>, geom: List<LatLng>) {
     for (i in geom.indices) {
         if (i == 0 && points.isNotEmpty() && points.last() == geom[0]) continue
         points += geom[i]

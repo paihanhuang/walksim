@@ -16,14 +16,16 @@ class OverpassRoadSource(
     private val fetch: (LatLng, Int) -> String = OverpassClient::fetch,
 ) : RoadSource {
 
-    private data class Key(val lat: Double, val lng: Double, val radiusM: Int)
+    private data class Key(val lat: Double, val lng: Double, val radiusM: Int, val extra: Set<String>)
 
     private val cache = ConcurrentHashMap<Key, WalkGraph>()
 
-    override suspend fun graphAround(center: LatLng, radiusM: Int): WalkGraph {
-        val key = Key(center.lat, center.lng, radiusM)
+    override suspend fun graphAround(center: LatLng, radiusM: Int, extraWalkable: Set<String>): WalkGraph {
+        val key = Key(center.lat, center.lng, radiusM, extraWalkable)
         cache[key]?.let { return it }
-        val graph = withContext(Dispatchers.IO) { OverpassGraph.fromOverpassJson(fetch(center, radiusM)) }
+        val graph = withContext(Dispatchers.IO) {
+            OverpassGraph.fromOverpassJson(fetch(center, radiusM), extraWalkable)
+        }
         return cache.getOrPut(key) { graph }
     }
 }

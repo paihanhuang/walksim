@@ -40,6 +40,8 @@ sealed interface StartSpec {
         override val speedMps: Double,
         val start: LatLng,
         val spacingM: Double,
+        /** Surveyed big-flower sites; empty = harvest sweep (every pre-R2 preset). */
+        val flowers: List<LatLng> = emptyList(),
     ) : StartSpec
 }
 
@@ -52,7 +54,7 @@ fun startSpec(selectedPosition: Int, startPin: LatLng, durationMin: Long, speedM
     val durationS = durationMin * 60
     if (selectedPosition == 0) return StartSpec.Sequential(durationS, speedMps)
     val preset = PRESET_LOCATIONS[selectedPosition - 1]
-    return StartSpec.Single(durationS, speedMps, startPin, preset.spacingM)
+    return StartSpec.Single(durationS, speedMps, startPin, preset.spacingM, preset.flowers)
 }
 
 /**

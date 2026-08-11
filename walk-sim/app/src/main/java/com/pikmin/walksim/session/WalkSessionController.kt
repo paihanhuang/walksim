@@ -3,9 +3,11 @@ package com.pikmin.walksim.session
 import android.util.Log
 import com.pikmin.model.LatLng
 import com.pikmin.model.WalkGraph
+import com.pikmin.osm.OverpassGraph
 import com.pikmin.osm.RoadSource
 import com.pikmin.sim.WalkPlayer
 import com.pikmin.sim.WalkPlayerConfig
+import com.pikmin.sim.flowerFetchRadiusM
 import com.pikmin.sim.sweepFetchRadiusM
 import com.pikmin.walksim.PRESET_LOCATIONS
 import com.pikmin.walksim.WalkBus
@@ -28,6 +30,8 @@ data class RunSpec(
     val laneSpacingM: Double,
     val closeLoop: Boolean,
     val radiusOverrideM: Int?,
+    /** Surveyed big-flower sites; empty = harvest sweep (unchanged for every pre-R2 preset). */
+    val flowers: List<LatLng> = emptyList(),
 )
 
 /**
@@ -78,9 +82,12 @@ class WalkSessionController(
                         val label = "Walking ${preset.label} · ${i + 1}/${plan.size}"
                         onNotify(label) // during the (slow) per-preset graph fetch
                         sink.hold(preset.at) // cover the fetch gap so real GPS never shows between presets
-                        val (graph, effStart) = resolveGraph(preset.at, segS, spec)
+                        // Carry the preset's OWN flower survey (empty for every sweep preset, so their
+                        // behaviour is unchanged) — otherwise a tour preset would be swept here instead.
+                        val presetSpec = spec.copy(flowers = preset.flowers)
+                        val (graph, effStart) = resolveGraph(preset.at, segS, presetSpec)
                         // closeLoop = the city's full route returns to its start = "complete" before the jump.
-                        playRoute(graph, effStart, segS, spec, spec.seed + i, label, closeLoop = true)
+                        playRoute(graph, effStart, segS, presetSpec, spec.seed + i, label, closeLoop = true)
                         if (machine.isTerminal) break // stopped: fall through to machine.complete()
                     }
                 }
@@ -119,7 +126,10 @@ class WalkSessionController(
         notifLabel: String? = null,
         closeLoop: Boolean = spec.closeLoop,
     ) {
-        val cfg = WalkPlayerConfig(profile = spec.profile, laneSpacingM = spec.laneSpacingM, closeLoop = closeLoop, seed = seed)
+        val cfg = WalkPlayerConfig(
+            profile = spec.profile, laneSpacingM = spec.laneSpacingM, closeLoop = closeLoop, seed = seed,
+            flowers = spec.flowers,
+        )
         var lastNotifBucket = -1L
         WalkPlayer(graph, cfg).play(start, segS).collect { sample ->
             awaitRunnable() // suspends while paused (back-pressure); throws when stopped
@@ -145,9 +155,15 @@ class WalkSessionController(
      * Radius: [RunSpec.radiusOverrideM] if given, else sized so the disc contains the segment's sweep spiral (AC-2).
      */
     private suspend fun resolveGraph(start: LatLng, segS: Long, spec: RunSpec): Pair<WalkGraph, LatLng> {
-        val radiusM = spec.radiusOverrideM ?: sweepFetchRadiusM(spec.profile.meanSpeedMps * segS, spec.laneSpacingM).toInt()
+        // A flower tour's disc must contain every surveyed site (they are fixed points, not a length budget).
+        val radiusM = spec.radiusOverrideM
+            ?: if (spec.flowers.isNotEmpty()) flowerFetchRadiusM(start, spec.flowers).toInt()
+            else sweepFetchRadiusM(spec.profile.meanSpeedMps * segS, spec.laneSpacingM).toInt()
         fellBackToShibuya = false
-        val graph = roadSource.graphAround(start, radiusM)
+        // A flower tour also needs foot-only ways: its sites can sit on paths/decks the street-only graph
+        // drops, and the largest-component guard would then discard them (proof: FlowerRouteDiagnostic).
+        val extraWalkable = if (spec.flowers.isNotEmpty()) OverpassGraph.FOOT_ONLY_WAYS else emptySet()
+        val graph = roadSource.graphAround(start, radiusM, extraWalkable)
         // On fallback the composite served the baked Shibuya graph and signalled a re-home: the effective start
         // becomes [home], not the unreachable pin (identical to the pre-injection behavior).
         return graph to if (fellBackToShibuya) home else start

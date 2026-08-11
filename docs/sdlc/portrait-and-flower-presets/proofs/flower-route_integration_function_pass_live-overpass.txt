@@ -1,0 +1,22 @@
+[Haneda] fetchR=3391m nodes=8668 tour=17131m (17.13km) vertices=682
+  flower[01] 35.5468,139.7462  closestApproach=3 m REACHED
+  flower[02] 35.5490,139.7440  closestApproach=3 m REACHED
+  flower[03] 35.5533,139.7452  closestApproach=5 m REACHED
+  flower[04] 35.5525,139.7405  closestApproach=3 m REACHED
+  flower[05] 35.5455,139.7520  closestApproach=44 m REACHED
+  flower[06] 35.5510,139.7530  closestApproach=26 m REACHED
+  flower[07] 35.5570,139.7480  closestApproach=22 m REACHED
+  flower[08] 35.5449,139.7699  closestApproach=19 m REACHED
+  flower[09] 35.5494,139.7857  closestApproach=13 m REACHED
+  flower[10] 35.5533,139.7876  closestApproach=53 m REACHED
+[Haneda] worstApproach=53m reachedAll@250m=true
+[Enoshima] fetchR=2097m nodes=4654 tour=6726m (6.73km) vertices=443
+  flower[01] 35.2989,139.4803  closestApproach=12 m REACHED
+  flower[02] 35.2965,139.4795  closestApproach=223 m REACHED
+  flower[03] 35.3020,139.4810  closestApproach=12 m REACHED
+  flower[04] 35.3060,139.4830  closestApproach=9 m REACHED
+  flower[05] 35.3095,139.4838  closestApproach=15 m REACHED
+  flower[06] 35.3130,139.4880  closestApproach=29 m REACHED
+  flower[07] 35.3140,139.4790  closestApproach=23 m REACHED
+  flower[08] 35.3060,139.4910  closestApproach=141 m REACHED
+[Enoshima] worstApproach=223m reachedAll@250m=true

@@ -14,10 +14,27 @@ import org.junit.jupiter.api.Test
 class LocationsSpacingTest {
 
     @Test
-    fun everyPreset_is500m10km() {
-        PRESET_LOCATIONS.forEach {
+    fun everySweepPreset_is500m10km() {
+        val sweeps = PRESET_LOCATIONS.filter { it.flowers.isEmpty() }
+        assertEquals(10, sweeps.size, "the ten v1.9 harvest-sweep presets")
+        sweeps.forEach {
             assertEquals(500.0, it.spacingM, 1e-9, "${it.label} spacingM")
             assertEquals(10.0, it.routeLengthKm, 1e-9, "${it.label} routeLengthKm")
+        }
+    }
+
+    /**
+     * R2/R3 tour presets are NOT sweeps: lane spacing does not apply and the length is the censused tour's,
+     * not the standard 10 km. What must hold is that each carries a real survey and starts on one of its own
+     * flower sites (census criterion 3: begin amid the most flowers).
+     */
+    @Test
+    fun everyTourPreset_carriesItsSurveyAndStartsOnAFlower() {
+        val tours = PRESET_LOCATIONS.filter { it.flowers.isNotEmpty() }
+        assertEquals(2, tours.size, "Haneda + Enoshima")
+        tours.forEach {
+            assertTrue(it.flowers.size >= 5, "${it.label} survey too small: ${it.flowers.size}")
+            assertTrue(it.at in it.flowers, "${it.label} must start on a surveyed flower site")
         }
     }
 

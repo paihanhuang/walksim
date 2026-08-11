@@ -9,11 +9,11 @@ class CompositeRoadSource(
     private val fallback: RoadSource,
     private val onFallback: (Throwable) -> Unit = {},
 ) : RoadSource {
-    override suspend fun graphAround(center: LatLng, radiusM: Int): WalkGraph =
+    override suspend fun graphAround(center: LatLng, radiusM: Int, extraWalkable: Set<String>): WalkGraph =
         try {
-            primary.graphAround(center, radiusM)
+            primary.graphAround(center, radiusM, extraWalkable)
         } catch (t: Throwable) {
             onFallback(t)
-            fallback.graphAround(center, radiusM)
+            fallback.graphAround(center, radiusM, extraWalkable)
         }
 }

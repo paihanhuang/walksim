@@ -42,7 +42,16 @@ object WalkingMotionEngine {
 
     private const val TICK_MS = 1000L
     private const val DT = TICK_MS / 1000.0                 // fixed timestep, seconds
-    private const val MAX_STEP_M = 2.5 * DT + 2.0           // AC-7 no-teleport bound (4.5 m at 1 Hz)
+    private const val MAX_STEP_M = 2.5 * DT + 2.0           // AC-7 no-teleport bound at the default profile (4.5 m at 1 Hz)
+
+    /**
+     * Per-tick displacement ceiling. The guard exists to stop a NOISE spike looking like a teleport, so it has
+     * to sit above what the profile can legitimately cover in one tick — otherwise a fast pace is silently
+     * throttled to 4.5 m/s no matter what the user asked for. Never tighter than [MAX_STEP_M], so the default
+     * 1.3 m/s profile keeps its exact 4.5 m bound.
+     */
+    private fun maxStepFor(profile: WalkProfile) =
+        maxOf(MAX_STEP_M, profile.speedRange.endInclusive * DT + 2.0)
 
     // Speed: discrete Ornstein–Uhlenbeck pull toward the profile mean.
     private const val SPEED_THETA = 0.3                     // mean-reversion strength per tick
@@ -91,6 +100,7 @@ object WalkingMotionEngine {
         require(durationMs > 0) { "durationMs must be > 0" }
         val ticks = (durationMs / TICK_MS).toInt()
         if (path.size < 2 || ticks <= 0) return emptyList()
+        val maxStepM = maxStepFor(profile) // per-run no-teleport bound (R4: must not throttle a fast pace)
 
         // Precompute segment lengths/bearings once; advance a monotonic cursor as cumDist grows.
         val segLen = DoubleArray(path.size - 1) { Geo.haversineMeters(path[it], path[it + 1]) }
@@ -160,11 +170,11 @@ object WalkingMotionEngine {
                 lng = truePos.lng + offE / mPerDegLng,
             )
 
-            // 4) No-teleport guard (AC-7): clamp emitted displacement to MAX_STEP_M.
+            // 4) No-teleport guard (AC-7): clamp emitted displacement to maxStepM.
             if (n > 0) {
                 val dEmit = Geo.haversineMeters(prevEmitted, emitted)
-                if (dEmit > MAX_STEP_M) {
-                    emitted = Geo.destinationPoint(prevEmitted, Geo.bearingDegrees(prevEmitted, emitted), MAX_STEP_M)
+                if (dEmit > maxStepM) {
+                    emitted = Geo.destinationPoint(prevEmitted, Geo.bearingDegrees(prevEmitted, emitted), maxStepM)
                 }
             }
 

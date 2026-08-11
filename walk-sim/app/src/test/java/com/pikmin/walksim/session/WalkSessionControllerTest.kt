@@ -52,7 +52,7 @@ class WalkSessionControllerTest {
     // Returns a small local lattice centred on the requested pin (as production does: every pin → its own graph),
     // so both the single start and every far preset snap onto walkable road.
     private inner class FakeRoadSource(val boom: Boolean = false) : RoadSource {
-        override suspend fun graphAround(center: LatLng, radiusM: Int): WalkGraph {
+        override suspend fun graphAround(center: LatLng, radiusM: Int, extraWalkable: Set<String>): WalkGraph {
             log += "fetch"
             if (boom) throw RuntimeException("net down")
             return gridGraph(center)

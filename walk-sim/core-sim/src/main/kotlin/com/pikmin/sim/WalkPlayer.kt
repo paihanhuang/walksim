@@ -24,6 +24,11 @@ data class WalkPlayerConfig(
     val laneSpacingM: Double = DEFAULT_LANE_SPACING_M,
     val closeLoop: Boolean = false,
     val seed: Long,
+    /**
+     * Surveyed big-flower sites. EMPTY (default) keeps every existing mode untouched; non-empty replaces the
+     * sweep with [flowerRoute] — the shortest closed road tour passing all of them, played to completion.
+     */
+    val flowers: List<LatLng> = emptyList(),
 )
 
 /**
@@ -37,7 +42,19 @@ class WalkPlayer(private val graph: WalkGraph, private val cfg: WalkPlayerConfig
         val targetLengthM = cfg.profile.meanSpeedMps * durationS
         val route: Route
         val playMs: Long
-        if (cfg.loop && cfg.closeLoop) {
+        // Flower tour (R2/R3): a fixed closed circuit over the censused sites. Degenerates to null when NO site
+        // is reachable from the start — the offline-Shibuya fallback graph, or a fetch too poor to snap them —
+        // in which case this preset walks the normal sweep rather than stalling the whole session on a
+        // zero-length route (in SEQUENTIAL that would abort every city after it).
+        val tour = if (cfg.flowers.isEmpty()) null else {
+            flowerRoute(graph, start, cfg.flowers, closeLoop = true).takeIf { it.totalLengthM > 0.0 }
+        }
+        if (tour != null) {
+            // Played IN FULL (runUntilPathEnd) like the closed sweep, so the avatar completes the tour rather
+            // than stopping partway; the played time tracks the tour's own length, not the requested duration.
+            route = tour
+            playMs = Math.round(route.totalLengthM / cfg.profile.meanSpeedMps * 1000)
+        } else if (cfg.loop && cfg.closeLoop) {
             // Closed harvest run (AC-24e): ONE closed sweep (spiral out + shortest path home), sized up to
             // the budget or the fetched graph, played IN FULL so the avatar returns to its start. Playback is
             // time-limited, so it must run for the loop's own length — not D — or it would stop partway up the
@@ -64,7 +81,7 @@ class WalkPlayer(private val graph: WalkGraph, private val cfg: WalkPlayerConfig
         val path = PathEngine.densify(route, spacingM = cfg.spacingM)
         return WalkingMotionEngine.play(
             path, cfg.profile, durationMs = playMs, seed = cfg.seed,
-            runUntilPathEnd = cfg.loop && cfg.closeLoop,
+            runUntilPathEnd = tour != null || (cfg.loop && cfg.closeLoop),
         )
     }
 

@@ -27,7 +27,13 @@ typealias DensePath = List<LatLng>
  */
 data class WalkProfile(
     val meanSpeedMps: Double = 1.3,
-    val speedRange: ClosedRange<Double> = 0.8..1.8,
+    /**
+     * Band the modelled speed varies within. Derived as [meanSpeedMps] ±0.5 m/s so a pace the user asks for is
+     * actually walked: the old fixed 0.8..1.8 literal clamped EVERY run to 1.8 m/s, so 5/7/10/20 m/s all played
+     * at 1.8 (144 steps/min at a 0.75 m stride — what the on-device pace channel reported). At the 1.3 m/s
+     * default this is exactly the old 0.8..1.8, so the shipped walk is unchanged.
+     */
+    val speedRange: ClosedRange<Double> = maxOf(0.1, meanSpeedMps - 0.5)..(meanSpeedMps + 0.5),
     val maxAccelMpsSq: Double = 0.5,
     val strideM: Double = 0.75,
     val pauseRatePerMin: Double = 0.5,

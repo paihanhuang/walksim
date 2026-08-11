@@ -105,6 +105,9 @@ class WalkService : Service() {
         val closeLoop = intent?.getStringExtra(EXTRA_CLOSE_STR) == "1"
         val sequential = intent?.getStringExtra(EXTRA_SEQUENTIAL) == "1" // default "All areas" mode
         val holdMode = intent?.getStringExtra(EXTRA_HOLD_STR) == "1" // hold_s=1 → static position hold (freeze/census)
+        // flowers_s: censused big-flower sites → the walk tours them instead of sweeping (R2/R3). Absent for
+        // every pre-existing preset, so their behaviour is byte-identical.
+        val flowers = decodeFlowers(intent?.getStringExtra(EXTRA_FLOWERS_STR))
         if (holdMode) { holdTarget = LatLng(lat, lng); holdActive = true }
 
         WalkBus.durationS = durationS
@@ -124,6 +127,7 @@ class WalkService : Service() {
             start = LatLng(lat, lng), durationS = durationS, profile = profile, seed = System.currentTimeMillis(),
             mode = if (holdMode) Mode.HOLD else if (sequential) Mode.SEQUENTIAL else Mode.SINGLE,
             laneSpacingM = laneSpacingM, closeLoop = closeLoop, radiusOverrideM = radiusOverrideM,
+            flowers = flowers,
         )
         val controller = WalkSessionController(roadSource, inj, machine, SHIBUYA, ::updateNotification, holdTarget = { holdTarget })
         session = controller
@@ -216,5 +220,6 @@ class WalkService : Service() {
         const val EXTRA_CLOSE_STR = "close_s"     // "1" → closed run: shortest path home appended (AC-24e)
         const val EXTRA_SEQUENTIAL = "seq"     // "1" → default "All areas" mode: walk every preset in sequence
         const val EXTRA_HOLD_STR = "hold_s"    // "1" → static position hold (freeze / census sampling): pin mock, no route/steps
+        const val EXTRA_FLOWERS_STR = "flowers_s" // "lat,lng;lat,lng;…" → tour these big flowers (R2/R3) instead of sweeping
     }
 }

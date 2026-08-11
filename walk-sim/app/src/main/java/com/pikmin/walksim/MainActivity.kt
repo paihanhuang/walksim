@@ -121,6 +121,9 @@ class MainActivity : ComponentActivity() {
                         putExtra(WalkService.EXTRA_LAT, spec.start.lat)
                         putExtra(WalkService.EXTRA_LNG, spec.start.lng)
                         putExtra(WalkService.EXTRA_SPACING_STR, spec.spacingM.toString())
+                        if (spec.flowers.isNotEmpty()) {
+                            putExtra(WalkService.EXTRA_FLOWERS_STR, encodeFlowers(spec.flowers))
+                        }
                     }
                 }
             },

@@ -37,10 +37,17 @@ class FullRoutePlanTest {
     }
 
     @Test
-    fun realPresets_areAll500m10km_soEqualPerCitySeconds() {
+    fun realSweepPresets_areAll500m10km_soEqualPerCitySeconds() {
         val plan = fullRoutePlan(PRESET_LOCATIONS, speedMps = 1.3)
         assertEquals(PRESET_LOCATIONS.size, plan.size)
-        val expected = Math.round(10_000.0 / 1.3) // every preset is a 10 km route (v1.9 standardized)
-        assertTrue(plan.all { it.second == expected }, "every 10 km city gets the same full-route seconds")
+        val expected = Math.round(10_000.0 / 1.3) // every SWEEP preset is a 10 km route (v1.9 standardized)
+        val sweepSeconds = plan.filter { it.first.flowers.isEmpty() }.map { it.second }
+        assertEquals(10, sweepSeconds.size)
+        assertTrue(sweepSeconds.all { it == expected }, "every 10 km city gets the same full-route seconds")
+        // R2/R3 tour presets get their OWN censused length, not the standard 10 km.
+        assertTrue(
+            plan.filter { it.first.flowers.isNotEmpty() }.all { it.second == Math.round(it.first.routeLengthKm * 1000.0 / 1.3) },
+            "a tour preset gets the time to walk its own tour",
+        )
     }
 }

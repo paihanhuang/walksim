@@ -10,5 +10,10 @@ import com.pikmin.model.WalkGraph
  * walker in `:core-sim` (`GraphRandomWalker`), NOT here — this source does not clip to a circle.
  */
 interface RoadSource {
-    suspend fun graphAround(center: LatLng, radiusM: Int): WalkGraph
+    /**
+     * [extraWalkable] widens the way allow-list for this build only (default empty = the classic street-only
+     * graph). Flower-tour presets pass [OverpassGraph.FOOT_ONLY_WAYS]; every sweep preset leaves it empty and
+     * therefore gets a byte-identical graph to before.
+     */
+    suspend fun graphAround(center: LatLng, radiusM: Int, extraWalkable: Set<String> = emptySet()): WalkGraph
 }

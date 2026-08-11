@@ -11,6 +11,8 @@ class FixtureRoadSource(private val load: (LatLng, Int) -> String) : RoadSource 
 
     private var cached: WalkGraph? = null
 
-    override suspend fun graphAround(center: LatLng, radiusM: Int): WalkGraph =
-        cached ?: withContext(Dispatchers.IO) { OverpassGraph.fromOverpassJson(load(center, radiusM)) }.also { cached = it }
+    override suspend fun graphAround(center: LatLng, radiusM: Int, extraWalkable: Set<String>): WalkGraph =
+        cached ?: withContext(Dispatchers.IO) {
+            OverpassGraph.fromOverpassJson(load(center, radiusM), extraWalkable)
+        }.also { cached = it }
 }

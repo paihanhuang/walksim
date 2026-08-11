@@ -36,21 +36,35 @@ object OverpassGraph {
         "pedestrian", "service",
     )
 
+    /**
+     * Foot-ONLY way classes a flower tour opts into. Deliberately NOT in [WALKABLE]: they roughly double the
+     * node count and add sidewalk/trail noise, which is why every sweep preset excludes them. A tour preset
+     * needs them because its fixed sites can be foot-only — Enoshima island's paths, Haneda's terminal decks —
+     * and [largestComponent] would otherwise discard those areas entirely.
+     */
+    val FOOT_ONLY_WAYS = setOf("footway", "path", "steps", "cycleway", "track")
+
     private class Way(val nodes: List<Long>, val geometry: List<LatLng>)
 
-    fun fromOverpassJson(json: String): WalkGraph =
-        largestComponent(stitch(parseWalkableWays(json)))
+    /**
+     * [extraWalkable] adds highway classes to the allow-list for THIS build only (default empty → the
+     * classic street-only graph every sweep preset uses, byte-identical). A flower-tour preset opts in to
+     * footway/path/steps where its sites are reachable only on foot — an island's paths, an airport's
+     * pedestrian decks — which would otherwise be dropped and then discarded by [largestComponent].
+     */
+    fun fromOverpassJson(json: String, extraWalkable: Set<String> = emptySet()): WalkGraph =
+        largestComponent(stitch(parseWalkableWays(json, extraWalkable)))
 
     // --- 1 + 2: parse + WALKABLE filter -------------------------------------------------------------
 
-    private fun parseWalkableWays(json: String): List<Way> {
+    private fun parseWalkableWays(json: String, extraWalkable: Set<String> = emptySet()): List<Way> {
         val elements = Json.parseToJsonElement(json).jsonObject["elements"]?.jsonArray ?: return emptyList()
         val out = ArrayList<Way>()
         for (el in elements) {
             val obj = el.jsonObject
             if (obj["type"]?.jsonPrimitive?.contentOrNull != "way") continue
             val tags = obj["tags"]?.jsonObject ?: continue
-            if (!isWalkable(tags)) continue
+            if (!isWalkable(tags, extraWalkable)) continue
             val nodes = obj["nodes"]?.jsonArray?.map { it.jsonPrimitive.long } ?: continue
             val geometry = obj["geometry"]?.jsonArray?.map {
                 val g = it.jsonObject
@@ -61,10 +75,10 @@ object OverpassGraph {
         return out
     }
 
-    private fun isWalkable(tags: JsonObject): Boolean {
+    private fun isWalkable(tags: JsonObject, extraWalkable: Set<String> = emptySet()): Boolean {
         fun tag(key: String) = tags[key]?.jsonPrimitive?.contentOrNull
         val highway = tag("highway") ?: return false
-        if (highway !in WALKABLE) return false
+        if (highway !in WALKABLE && highway !in extraWalkable) return false
         if (tag("foot") == "no") return false
         if (tag("access") == "private") return false
         return true

@@ -1,0 +1,5 @@
+pace=1.3 window=120s | Row: 0 playing=1, stepsPerMin=123.97447, schemaVersion=1
+pace=5 window=120s | Row: 0 playing=0, stepsPerMin=0.0, schemaVersion=1
+pace=7 window=120s | Row: 0 playing=1, stepsPerMin=557.3739, schemaVersion=1
+pace=10 window=120s | Row: 0 playing=1, stepsPerMin=793.152, schemaVersion=1
+pace=20 window=120s | Row: 0 playing=1, stepsPerMin=1610.6724, schemaVersion=1
