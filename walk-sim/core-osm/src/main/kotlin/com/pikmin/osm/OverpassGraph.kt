@@ -30,7 +30,7 @@ object OverpassGraph {
      * thread one strip. footway/path/track/steps/cycleway are dropped: sidewalk/trail noise that bloats the
      * graph (~2x nodes) without adding reachable streets. motorway/trunk excluded (not walked).
      */
-    private val WALKABLE = setOf(
+    internal val WALKABLE = setOf(
         "living_street", "residential", "unclassified", "tertiary", "tertiary_link",
         "secondary", "secondary_link", "primary", "primary_link", "road",
         "pedestrian", "service",
@@ -57,7 +57,7 @@ object OverpassGraph {
 
     // --- 1 + 2: parse + WALKABLE filter -------------------------------------------------------------
 
-    private fun parseWalkableWays(json: String, extraWalkable: Set<String> = emptySet()): List<Way> {
+    private fun parseWalkableWays(json: String, extraWalkable: Set<String>): List<Way> {
         val elements = Json.parseToJsonElement(json).jsonObject["elements"]?.jsonArray ?: return emptyList()
         val out = ArrayList<Way>()
         for (el in elements) {
@@ -75,7 +75,7 @@ object OverpassGraph {
         return out
     }
 
-    private fun isWalkable(tags: JsonObject, extraWalkable: Set<String> = emptySet()): Boolean {
+    private fun isWalkable(tags: JsonObject, extraWalkable: Set<String>): Boolean {
         fun tag(key: String) = tags[key]?.jsonPrimitive?.contentOrNull
         val highway = tag("highway") ?: return false
         if (highway !in WALKABLE && highway !in extraWalkable) return false

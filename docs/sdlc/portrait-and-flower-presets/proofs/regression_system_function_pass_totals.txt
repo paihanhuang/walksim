@@ -1,0 +1,1 @@
+regression_system_function_pass: tests=191 skipped=5 failures=0 errors=0 (baseline 164/0)

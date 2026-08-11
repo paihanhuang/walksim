@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.PathEngineTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-08-11T09:25:51" hostname="Davids-MacBook-Pro.local" time="0.001">
+  <properties/>
+  <testcase name="densify_straightSegment_hasUniformSpacing()" classname="com.pikmin.sim.PathEngineTest" time="0.001"/>
+  <testcase name="densify_preservesTotalLength()" classname="com.pikmin.sim.PathEngineTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

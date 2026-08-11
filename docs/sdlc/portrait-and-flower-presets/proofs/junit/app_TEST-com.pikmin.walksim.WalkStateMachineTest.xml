@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.walksim.WalkStateMachineTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-08-11T09:25:53" hostname="Davids-MacBook-Pro.local" time="0.002">
+  <properties/>
+  <testcase name="startsIdle()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.001"/>
+  <testcase name="complete_isTheNaturalTerminalTransition()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <testcase name="terminalAcceptsNothing()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <testcase name="stopFromPaused_reachesTerminal()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <testcase name="happyPath_start_pause_resume_stop()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <testcase name="illegalTransitionsAreRejectedNoOps()" classname="com.pikmin.walksim.WalkStateMachineTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

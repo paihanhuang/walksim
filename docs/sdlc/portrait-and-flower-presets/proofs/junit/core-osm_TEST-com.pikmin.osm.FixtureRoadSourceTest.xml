@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.osm.FixtureRoadSourceTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-08-11T09:25:51" hostname="Davids-MacBook-Pro.local" time="0.088">
+  <properties/>
+  <testcase name="loadsBakedShibuya_connectedNonEmptyGraph()" classname="com.pikmin.osm.FixtureRoadSourceTest" time="0.054"/>
+  <testcase name="parsesOnce_thenCaches_ignoringCenterRadius()" classname="com.pikmin.osm.FixtureRoadSourceTest" time="0.034"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

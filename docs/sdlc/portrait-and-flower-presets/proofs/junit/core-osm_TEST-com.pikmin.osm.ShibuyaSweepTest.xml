@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.osm.ShibuyaSweepTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2026-08-11T09:25:51" hostname="Davids-MacBook-Pro.local" time="0.03">
+  <properties/>
+  <testcase name="sweep_onRealShibuya_meetsBudget_sweepsNewGround_leavesNoHarvestGaps()" classname="com.pikmin.osm.ShibuyaSweepTest" time="0.03"/>
+  <system-out><![CDATA[[sweep Shibuya] len=6099m maxR=852m revisit=0.004 harvestCov=1.000 genMs=5
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

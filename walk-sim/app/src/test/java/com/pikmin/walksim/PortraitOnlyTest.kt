@@ -25,7 +25,7 @@ class PortraitOnlyTest {
 
     /** The `<activity …>` opening tag that declares `.MainActivity`. */
     private fun mainActivityDeclaration(): String =
-        Regex("<activity\\b[^>]*>", RegexOption.DOT_MATCHES_ALL)
+        Regex("<activity\\b[^>]*>")
             .findAll(manifestFile().readText())
             .map { it.value }
             .firstOrNull { it.contains("android:name=\".MainActivity\"") }

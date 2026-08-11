@@ -6,11 +6,12 @@ import com.pikmin.model.Edge
 import com.pikmin.model.Route
 import com.pikmin.model.WalkGraph
 import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Assertions.assertNull
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 
 /**
- * Flower-waypoint route: the shortest road walk that passes EVERY surveyed big flower (R2/R3). Unlike
+ * Flower-waypoint route: a near-shortest road walk passing EVERY surveyed big flower (R2/R3). Unlike
  * [sweepRoute] — which blankets an area on a spiral and is judged by coverage — this route is judged by
  * "did it visit all the flowers, and is the tour short". Everything here is reconstructed BLACK-BOX from
  * the returned polyline; the builder's own bookkeeping is never trusted.
@@ -75,7 +76,7 @@ class FlowerRouteTest {
         val start = nodes.getValue(10L)
         val flowers = listOf(nodes.getValue(11L), nodes.getValue(8L), nodes.getValue(15L), nodes.getValue(7L))
 
-        val route = flowerRoute(graph, start, flowers, closeLoop = true)
+        val route = requireNotNull(flowerRoute(graph, start, flowers, closeLoop = true))
 
         val optimal = bruteForceOptimalM(start, flowers)
         assertEquals(1600.0, optimal, 1.0, "oracle sanity: the optimal closed tour is 16 × 100 m")
@@ -110,14 +111,72 @@ class FlowerRouteTest {
         assertEquals(800.0, flowerFetchRadiusM(start, emptyList()), 1e-9)
     }
 
+    /**
+     * No reachable site (an offline/fallback graph nowhere near the survey) must be stated as `null`, not
+     * smuggled out as a zero-length route the caller has to decode. WalkPlayer turns this into "walk the
+     * sweep instead"; before, a degenerate route aborted an entire SEQUENTIAL run.
+     */
+    @Test
+    fun returnsNullWhenNoSurveyedSiteIsReachable() {
+        val graph = grid()
+        val start = graph.nodes.values.first()
+        val elsewhere = listOf(LatLng(0.0, 0.0), LatLng(-33.8688, 151.2093))
+
+        assertNull(flowerRoute(graph, start, elsewhere), "unreachable survey must yield null, not a stub route")
+    }
+
+    /**
+     * "Shortest walking path" needs a bound, not one hand-picked case: NN + 2-opt is a heuristic, so this
+     * pits it against the BRUTE-FORCE optimum over many seeded random surveys on the Manhattan grid, where
+     * road distance is |Δnorth| + |Δeast| and can be computed independently of the builder's Dijkstra.
+     */
+    @Test
+    fun toursAreOptimalAcrossRandomSurveys() {
+        val graph = grid()
+        val nodes = graph.nodes.values.toList()
+        fun manhattanM(a: LatLng, b: LatLng) =
+            Geo.haversineMeters(a, LatLng(b.lat, a.lng)) + Geo.haversineMeters(LatLng(b.lat, a.lng), b)
+
+        fun optimal(start: LatLng, sites: List<LatLng>): Double {
+            fun perms(items: List<LatLng>): List<List<LatLng>> =
+                if (items.size <= 1) listOf(items) else items.flatMap { h -> perms(items - h).map { listOf(h) + it } }
+            return perms(sites).minOf { order ->
+                var total = 0.0
+                var prev = start
+                for (p in order) { total += manhattanM(prev, p); prev = p }
+                total + manhattanM(prev, start)
+            }
+        }
+
+        val rng = kotlin.random.Random(20260811)
+        var worstRatio = 1.0
+        var worstCase = ""
+        repeat(25) { case ->
+            val idx = generateSequence { rng.nextInt(nodes.size) }.distinct().take(6).toList()
+            val start = nodes[idx.first()]
+            val sites = idx.drop(1).map { nodes[it] }
+            val tour = requireNotNull(flowerRoute(graph, start, sites, closeLoop = true))
+            val best = optimal(start, sites)
+            val ratio = tour.totalLengthM / best
+            if (ratio > worstRatio) { worstRatio = ratio; worstCase = "case $case idx=$idx" }
+        }
+        // MEASURED bound, not an aspiration: over these 25 seeded surveys the worst case is 3.4% above the
+        // brute-force optimum (case 20). NN + 2-opt is a heuristic — it is near-optimal, not optimal — so the
+        // preset docs say "near-shortest", and this gate catches a regression that makes it materially worse.
+        assertTrue(
+            worstRatio <= 1.05,
+            "tour exceeded the optimal closed walk by %.1f%% (%s)".format((worstRatio - 1) * 100, worstCase),
+        )
+    }
+
     @Test
     fun isDeterministic() {
         val graph = grid()
         val flowers = flowersOn(graph, 46, 89, 200, 331, 417)
         val start = graph.nodes.values.first()
 
-        val a = flowerRoute(graph, start, flowers)
-        val b = flowerRoute(graph, start, flowers)
+        val a = requireNotNull(flowerRoute(graph, start, flowers))
+        val b = requireNotNull(flowerRoute(graph, start, flowers))
 
         assertEquals(a.points, b.points, "same inputs must yield an identical polyline")
         assertEquals(a.totalLengthM, b.totalLengthM, 0.0)
@@ -129,8 +188,8 @@ class FlowerRouteTest {
         val flowers = flowersOn(graph, 46, 200, 417)
         val start = graph.nodes.values.first()
 
-        val closed = flowerRoute(graph, start, flowers, closeLoop = true)
-        val open = flowerRoute(graph, start, flowers, closeLoop = false)
+        val closed = requireNotNull(flowerRoute(graph, start, flowers, closeLoop = true))
+        val open = requireNotNull(flowerRoute(graph, start, flowers, closeLoop = false))
 
         assertTrue(
             Geo.haversineMeters(closed.points.last(), start) <= 1.0,
@@ -148,7 +207,7 @@ class FlowerRouteTest {
         val flowers = flowersOn(graph, 35, 120, 300, 420)
         val start = graph.nodes.values.first()
 
-        val route = flowerRoute(graph, start, flowers)
+        val route = requireNotNull(flowerRoute(graph, start, flowers))
 
         for (f in flowers) {
             assertTrue(

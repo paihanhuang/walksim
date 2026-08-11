@@ -18,8 +18,6 @@ import java.io.File
  */
 class FlowerRouteDiagnostic {
 
-    private val FOOT_WAYS = setOf("footway", "path", "steps", "cycleway", "track")
-
     private data class Preset(val label: String, val start: LatLng, val flowers: List<LatLng>)
 
     private val presets = listOf(
@@ -53,8 +51,8 @@ class FlowerRouteDiagnostic {
         for (p in presets) {
             val radius = flowerFetchRadiusM(p.start, p.flowers)
             val json = OverpassClient.fetch(p.start, radius.toInt())
-            val graph = OverpassGraph.fromOverpassJson(json, FOOT_WAYS)
-            val route = flowerRoute(graph, p.start, p.flowers, closeLoop = true)
+            val graph = OverpassGraph.fromOverpassJson(json, OverpassGraph.FOOT_ONLY_WAYS)
+            val route = requireNotNull(flowerRoute(graph, p.start, p.flowers, closeLoop = true)) { "${p.label}: no surveyed site reachable" }
             log("[${p.label}] fetchR=${"%.0f".format(radius)}m nodes=${graph.nodes.size} tour=${"%.0f".format(route.totalLengthM)}m (${"%.2f".format(route.totalLengthM / 1000)}km) vertices=${route.points.size}")
             var worst = 0.0
             p.flowers.forEachIndexed { i, f ->

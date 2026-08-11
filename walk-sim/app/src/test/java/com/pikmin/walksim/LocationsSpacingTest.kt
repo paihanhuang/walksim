@@ -35,6 +35,9 @@ class LocationsSpacingTest {
         tours.forEach {
             assertTrue(it.flowers.size >= 5, "${it.label} survey too small: ${it.flowers.size}")
             assertTrue(it.at in it.flowers, "${it.label} must start on a surveyed flower site")
+            // Lane spacing is unused while the tour builds, but a tour whose sites are all unreachable falls
+            // back to the SWEEP — which would otherwise run at the abandoned pre-v1.9 850 m default.
+            assertEquals(500.0, it.spacingM, 1e-9, "${it.label} fallback-sweep spacing")
         }
     }
 

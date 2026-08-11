@@ -42,7 +42,10 @@ object WalkingMotionEngine {
 
     private const val TICK_MS = 1000L
     private const val DT = TICK_MS / 1000.0                 // fixed timestep, seconds
-    private const val MAX_STEP_M = 2.5 * DT + 2.0           // AC-7 no-teleport bound at the default profile (4.5 m at 1 Hz)
+    /** What a plausible [topSpeedMps] covers in one tick, plus room for a noise excursion. */
+    private fun noTeleportBoundM(topSpeedMps: Double) = topSpeedMps * DT + 2.0
+
+    private val MAX_STEP_M = noTeleportBoundM(2.5)          // AC-7 bound at the default profile (4.5 m at 1 Hz)
 
     /**
      * Per-tick displacement ceiling. The guard exists to stop a NOISE spike looking like a teleport, so it has
@@ -51,7 +54,7 @@ object WalkingMotionEngine {
      * 1.3 m/s profile keeps its exact 4.5 m bound.
      */
     private fun maxStepFor(profile: WalkProfile) =
-        maxOf(MAX_STEP_M, profile.speedRange.endInclusive * DT + 2.0)
+        maxOf(MAX_STEP_M, noTeleportBoundM(profile.speedRange.endInclusive))
 
     // Speed: discrete Ornstein–Uhlenbeck pull toward the profile mean.
     private const val SPEED_THETA = 0.3                     // mean-reversion strength per tick

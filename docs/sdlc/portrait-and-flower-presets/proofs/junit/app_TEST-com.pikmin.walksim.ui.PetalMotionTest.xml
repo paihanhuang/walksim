@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.walksim.ui.PetalMotionTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2026-08-11T09:25:53" hostname="Davids-MacBook-Pro.local" time="0.002">
+  <properties/>
+  <testcase name="zeroDurationIsZero()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.0"/>
+  <testcase name="overrunClampsToOne()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.0"/>
+  <testcase name="halfwayIsHalf()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.0"/>
+  <testcase name="completesFromPaused()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.0"/>
+  <testcase name="firstTickIsSmallPositive()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.0"/>
+  <testcase name="nullSampleIsZero()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.0"/>
+  <testcase name="completesFromRunning()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.0"/>
+  <testcase name="noBurstOnPause()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.001"/>
+  <testcase name="noBurstOnStart()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.0"/>
+  <testcase name="noBurstWhenAlreadyIdle()" classname="com.pikmin.walksim.ui.PetalMotionTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

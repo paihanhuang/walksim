@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.walksim.ui.WalkUiLogicTest" tests="14" skipped="0" failures="0" errors="0" timestamp="2026-08-11T09:25:53" hostname="Davids-MacBook-Pro.local" time="0.004">
+  <properties/>
+  <testcase name="singleCarriesPinAndPresetSpacing()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="autostartPositiveSelectionIsSinglePresetCenter()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="hudNullSampleIsIdle()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="autostartPositionZeroIsSequential()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="hudZeroDurationProgressIsZero()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.001"/>
+  <testcase name="presetSelectionSetsDuration()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="controlsPerState()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="autostartLastPresetSelectableAtSizeIndex()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.001"/>
+  <testcase name="durationConvertsMinutesToSeconds()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="sequentialWhenPositionZero()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="autostartOutOfRangeFallsBackToSequentialNeverThrows()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="bannerPriority()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="hudFormatsSampleLikeRenderHud()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <testcase name="hudClampsRemainingAndProgress()" classname="com.pikmin.walksim.ui.WalkUiLogicTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

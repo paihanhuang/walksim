@@ -8,8 +8,8 @@
 | R1 portrait only | **DONE, device-verified** | forced `user_rotation=1` → display stayed `ROTATION_0`, activity config `port` |
 | R2 Haneda preset | **DONE, device-verified** | tour 17.13 km; 10/10 censused sites passed ≤250 m on the phone (worst 246 m) |
 | R3 Enoshima preset | **DONE, device-verified** | tour 6.73 km; 8/8 censused sites passed ≤250 m on the phone (worst 238 m) |
-| R4 pace 1.3/5/7/10/20 | **DONE, device-verified** | see `proofs/pace_acceptance_function_pass_matrix.md` |
-| R5 no regression | **DONE** | 164/0 baseline → 176/0; golden route + motion digest tests unchanged |
+| R4 pace 1.3/5/7/10/20 | **DONE, device-verified** (one unexplained outlier) | all five credited, rate scales 108 → 1235 steps/min; **5 m/s credits only ~33% of published, reproducibly and unexplained** — `proofs/pace_acceptance_function_pass_matrix.md` |
+| R5 no regression | **DONE** | 164/0 baseline → **191/0**; golden route + motion digest unchanged; machine-readable `proofs/junit/*.xml` |
 
 ## Defects found and fixed during this work
 
@@ -26,6 +26,19 @@
    Haneda moved to Terminal 3; Enoshima to Katase-Enoshima station.
 5. **Degenerate tour aborted the whole session** — an unreachable survey produced a zero-length route that killed
    SEQUENTIAL mode for every city after it. Now falls back to the sweep.
+
+## Code-review remediation (2026-08-11)
+
+A two-axis review (Standards + Spec, parallel independent agents) returned findings on both axes; all are fixed
+except one, tracked in `tasks.md`:
+- the 250 m criterion is now gated OFFLINE over the real `PRESET_LOCATIONS` (`TourPresetReachTest` + baked
+  fixtures) instead of only by a normally-skipped network diagnostic;
+- the two water-sampled Haneda sites are toured rather than silently dropped;
+- "shortest" is now "near-shortest" with a MEASURED 3.4% worst case gated at 5%;
+- the zero-length-route sentinel became a nullable return; tour presets pin the fallback sweep to 500 m;
+- the false "~400–700 m census spacing" claim is corrected in `requirements.md` (real max is 1001 m);
+- **open:** the 5 m/s step-credit deficit is reproducible and unexplained; two hypotheses were tested and both
+  rejected rather than being used to explain it away.
 
 ## Known limitations (honest)
 

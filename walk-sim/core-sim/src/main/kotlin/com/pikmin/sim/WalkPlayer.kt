@@ -46,9 +46,7 @@ class WalkPlayer(private val graph: WalkGraph, private val cfg: WalkPlayerConfig
         // is reachable from the start — the offline-Shibuya fallback graph, or a fetch too poor to snap them —
         // in which case this preset walks the normal sweep rather than stalling the whole session on a
         // zero-length route (in SEQUENTIAL that would abort every city after it).
-        val tour = if (cfg.flowers.isEmpty()) null else {
-            flowerRoute(graph, start, cfg.flowers, closeLoop = true).takeIf { it.totalLengthM > 0.0 }
-        }
+        val tour = if (cfg.flowers.isEmpty()) null else flowerRoute(graph, start, cfg.flowers, closeLoop = true)
         if (tour != null) {
             // Played IN FULL (runUntilPathEnd) like the closed sweep, so the avatar completes the tour rather
             // than stopping partway; the played time tracks the tour's own length, not the requested duration.

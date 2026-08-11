@@ -8,7 +8,11 @@ import com.pikmin.model.WalkGraph
 import java.util.PriorityQueue
 
 /**
- * Flower-waypoint route (R2/R3) — the shortest road walk that passes EVERY surveyed big flower.
+ * Flower-waypoint route (R2/R3) — a NEAR-shortest road walk that passes EVERY surveyed big flower.
+ *
+ * "Near": the visiting order is nearest-neighbour + 2-opt, a heuristic, measured within **3.4%** of the
+ * brute-force optimum over 25 seeded random surveys (`FlowerRouteTest.toursAreOptimalAcrossRandomSurveys`,
+ * which gates it at 5%). Exact TSP is not worth it here — 3% of a 17 km tour is ~9 minutes of walking.
  *
  * [sweepRoute] blankets a district on a spiral because a city core's flowers are everywhere; that is the
  * wrong shape for a place whose big flowers sit in a few known clusters (Haneda's landside, Enoshima's
@@ -23,6 +27,9 @@ import java.util.PriorityQueue
  *    construction and detours around unwalkable pockets exactly as the sweep does.
  *  - [closeLoop] appends the shortest path home, making the tour a closed run the walk can repeat.
  *
+ * Returns **null** when no surveyed site is reachable from [start] — an offline/fallback graph, or a fetch too
+ * poor to snap any of them. The caller then walks its normal route instead of a zero-length one.
+ *
  * Deterministic for identical (graph, start, flowers): snap ties by node id, Dijkstra ties by node id over
  * canonically sorted adjacency, and a fixed 2-opt scan order — no RNG.
  */
@@ -31,7 +38,7 @@ fun flowerRoute(
     start: LatLng,
     flowers: List<LatLng>,
     closeLoop: Boolean = true,
-): Route {
+): Route? {
     val startNode = GraphRandomWalker(graph).snapStart(start, START_SNAP_M)
         ?: throw IllegalArgumentException("no connected graph node within $START_SNAP_M m of start")
     val connected = connectedAdjacency(graph, startNode)
@@ -43,7 +50,7 @@ fun flowerRoute(
         .mapNotNull { snapWaypoint(graph, connected.component, it, FLOWER_SNAP_M) }
         .distinct()
         .filter { it != startNode }
-    if (targets.isEmpty()) return Route(listOf(center, center), 0.0)
+    if (targets.isEmpty()) return null
 
     val order = tourOrder(connected.adj, startNode, targets)
 
@@ -66,7 +73,7 @@ fun flowerRoute(
             }
         }
     }
-    return if (points.size == 1) Route(listOf(center, center), 0.0) else Route(points, length)
+    return if (points.size == 1) null else Route(points, length)
 }
 
 /**

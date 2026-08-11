@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.sim.WalkingMotionEngineTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2026-08-11T09:25:52" hostname="Davids-MacBook-Pro.local" time="0.021">
+  <properties/>
+  <testcase name="pausesPresent_inEveryTenMinuteWalk_acrossSeeds()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.004"/>
+  <testcase name="bearingAndSpeed_consistentWithTrueMotion()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.002"/>
+  <testcase name="play_emitsOnePerTick_deterministically_underVirtualTime()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.002"/>
+  <testcase name="noTeleport_onEmittedTrajectory()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.002"/>
+  <testcase name="noise_amplitudeAccuracyAndAutocorrelation()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.005"/>
+  <testcase name="stepCount_matchesDistanceOverStride()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="sharpCorner_speedStaysInRange_bearingTracksBothLegs_chordNeverExceedsArc()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="frames_deterministic_andSeedSensitive()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.001"/>
+  <testcase name="speed_inRange_andAccelBounded()" classname="com.pikmin.sim.WalkingMotionEngineTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

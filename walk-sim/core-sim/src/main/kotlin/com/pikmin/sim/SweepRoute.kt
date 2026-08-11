@@ -117,7 +117,7 @@ const val DEFAULT_LANE_SPACING_M = 850.0
 
 private const val FIRST_RING_M = 300.0    // first ring radius; its 500 m reach covers the centre disc
 private const val WAYPOINT_STEP_M = 300.0 // spiral arc between waypoints (chord ≈ arc at ring radii)
-private const val SNAP_MAX_M = 250.0     // waypoint→node snap limit; beyond it the waypoint is skipped
+private const val SNAP_MAX_M = 250.0      // waypoint→node snap limit; beyond it the waypoint is skipped
 private const val FETCH_BUFFER_M = 300.0
 // v1.6: 2000→2500 so a full 20 km spiral at 850 m spacing FITS the fetched disc (π·2500²/850 ≈ 23 km) and does
 // NOT shortfall into re-walk (open would lap the shortfall, closed would return home early) — the actual cause

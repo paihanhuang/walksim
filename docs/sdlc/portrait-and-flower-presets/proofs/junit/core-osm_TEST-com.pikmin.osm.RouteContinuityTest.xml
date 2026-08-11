@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.osm.RouteContinuityTest" tests="2" skipped="0" failures="0" errors="0" timestamp="2026-08-11T09:25:51" hostname="Davids-MacBook-Pro.local" time="0.087">
+  <properties/>
+  <testcase name="shibuyaWalk_emittedPositionStream_hasNoTeleport()" classname="com.pikmin.osm.RouteContinuityTest" time="0.064"/>
+  <testcase name="shibuyaSweep_isContinuous_noTeleports()" classname="com.pikmin.osm.RouteContinuityTest" time="0.023"/>
+  <system-out><![CDATA[[motion] samples=1926 maxGap=2.6m over15m=0
+[continuity] points=511 polylineLen=10196m totalLengthM=10196m maxGap=148m jumps>60m=23
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

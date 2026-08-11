@@ -20,7 +20,7 @@ data class NamedLocation(
     val routeLengthKm: Double = 20.0,
     /**
      * Surveyed big-flower sites (R2/R3). EMPTY (the default) = a harvest-sweep preset, unchanged. Non-empty
-     * switches the walk to [com.pikmin.sim.flowerRoute]: the shortest road tour passing every listed site,
+     * switches the walk to [com.pikmin.sim.flowerRoute]: a near-shortest road tour passing every listed site,
      * for places whose flowers sit in a few known clusters rather than spread across a dense core. Sites come
      * from a real in-Pikmin teleport census — see `docs/sdlc/portrait-and-flower-presets/`.
      */
@@ -48,7 +48,7 @@ val PRESET_LOCATIONS = listOf(
     NamedLocation("Osaka Namba, Japan", LatLng(34.6659, 135.5020), spacingM = 500.0, routeLengthKm = 10.0),
     NamedLocation("Xinyi, Taipei, Taiwan", LatLng(25.0339, 121.5645), spacingM = 500.0, routeLengthKm = 10.0),
     NamedLocation("Seoul Myeongdong, Korea", LatLng(37.5636, 126.9848), spacingM = 500.0, routeLengthKm = 10.0),
-    // --- Flower-tour presets (R2/R3): shortest road tour over CENSUSED big-flower sites, not a sweep. ---
+    // --- Flower-tour presets (R2/R3): near-shortest road tour over CENSUSED big-flower sites, not a sweep. ---
     // Haneda: the terminals are nearly barren (0-1 flowers/frame); the landside west — Anamori-inari, HICity,
     // Tenkubashi, Otorii — carries almost all of them. Census: 16 points, 20 flowers, 1.25/frame. The start is
     // Terminal 3, CENTRAL to the 4 km-wide survey: an edge start (Anamori) put T1/T2 at the rim of the fetch
@@ -58,6 +58,8 @@ val PRESET_LOCATIONS = listOf(
     NamedLocation(
         "Haneda Airport, Tokyo, Japan",
         LatLng(35.5449, 139.7699),
+        // Unused while the tour builds; it is the spacing of the FALLBACK sweep when no site is reachable.
+        spacingM = 500.0,
         routeLengthKm = 17.13,
         flowers = listOf(
             LatLng(35.5468, 139.7462), // Anamori-inari (3)
@@ -70,6 +72,11 @@ val PRESET_LOCATIONS = listOf(
             LatLng(35.5449, 139.7699), // Terminal 3 / International (1)
             LatLng(35.5494, 139.7857), // Terminal 1 (1)
             LatLng(35.5533, 139.7876), // Terminal 2 (1)
+            // Sampled while the avatar stood on water (Tama river mouth / bay); the flowers counted were on the
+            // far bank. Still censused sites, so they are toured — the snap puts each on the nearest walkable
+            // bank. Excluding them silently narrowed R2.2, which says EVERY censused site.
+            LatLng(35.5430, 139.7620), // Terminal 3 south, across the water (1)
+            LatLng(35.5440, 139.7440), // Kojiya south, across the water (2)
         ),
     ),
     // Enoshima: densest of the two new areas (1.78 flowers/frame on land). Starts at Katase-Enoshima station
@@ -79,6 +86,7 @@ val PRESET_LOCATIONS = listOf(
     NamedLocation(
         "Enoshima / Katase-Kaigan, Japan",
         LatLng(35.3095, 139.4838),
+        spacingM = 500.0, // fallback-sweep spacing (see Haneda)
         routeLengthKm = 6.73,
         flowers = listOf(
             LatLng(35.2989, 139.4803), // Enoshima island shrine (3)

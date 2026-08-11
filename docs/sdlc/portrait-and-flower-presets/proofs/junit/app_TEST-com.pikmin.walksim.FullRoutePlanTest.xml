@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.pikmin.walksim.FullRoutePlanTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-08-11T09:25:53" hostname="Davids-MacBook-Pro.local" time="0.001">
+  <properties/>
+  <testcase name="realSweepPresets_areAll500m10km_soEqualPerCitySeconds()" classname="com.pikmin.walksim.FullRoutePlanTest" time="0.0"/>
+  <testcase name="emptyPresets_yieldEmptyPlan()" classname="com.pikmin.walksim.FullRoutePlanTest" time="0.001"/>
+  <testcase name="eachPresetGetsItsFullRouteTime_orderPreserved()" classname="com.pikmin.walksim.FullRoutePlanTest" time="0.0"/>
+  <testcase name="nonPositiveSpeed_fallsBackTo1point3_notInfinity()" classname="com.pikmin.walksim.FullRoutePlanTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

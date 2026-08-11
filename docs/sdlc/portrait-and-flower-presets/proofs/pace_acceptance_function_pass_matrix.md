@@ -1,62 +1,67 @@
 # Proof — pace matrix 1.3 / 5 / 7 / 10 / 20 m/s, verified in Pikmin Bloom (R4)
 
 **Date:** 2026-08-11 · **Device:** Pixel 7 Pro (cheetah), Pikmin Bloom **v150.0**, account *wasai*.
-WalkSim installed `pm install --force-queryable` (mandatory — see "defect 1" below).
+WalkSim installed `pm install --force-queryable` (mandatory — see defect 1).
+
+> **Revision (post code-review).** An earlier version of this file reported per-pace credit from windows run
+> back-to-back and explained the shortfalls as "Google Fit lag spilling forward". A reviewer showed that claim
+> does not survive its own data, so it is **withdrawn**. Every number below comes from ISOLATED windows: walk
+> 120 s, STOP, allow 45 s for Fit to reconcile, then read the counter. The windows chain exactly (each t1 is the
+> next t0), so no credit is unmeasured.
 
 ## The two defects this uncovered
 
 **1. Pace channel unreachable (the historical "pace not picked up" bug).** A plain `adb install` breaks package
 visibility, so the hook inside Pikmin's process cannot see the provider:
-
-```
-E ActivityThread: Failed to find provider info for com.pikmin.walksim.pace
-I VectorLegacyBridge: PaceClient: query returned null (provider unreachable)
-```
-
-Reinstalling with `--force-queryable` cleared it; the hook then attached
-(`StepInjector: attach type=18 …FitnessManager$1 (feeds=1)`) and no further provider errors appeared.
+`Failed to find provider info for com.pikmin.walksim.pace` → `PaceClient: query returned null`. Reinstalling
+with `--force-queryable` cleared it and the hook attached (`StepInjector: attach type=18 …FitnessManager$1`).
 **This install flag is part of the deliverable.**
 
-**2. Any pace above ~1.8 m/s was silently ignored.** BEFORE the fix the pace channel published a hard
-**144.0 steps/min** for 5, 7 and 20 m/s — exactly 1.8 m/s ÷ 0.75 m stride × 60, i.e. the `WalkProfile.speedRange`
-ceiling. A second clamp (fixed 4.5 m/tick no-teleport bound) capped ground speed at 4.5 m/s independently.
+**2. Any pace above ~1.8 m/s was silently ignored.** BEFORE the fix the channel published a hard **144.0
+steps/min** for 5, 7 and 20 m/s — exactly 1.8 m/s ÷ 0.75 m stride × 60, the `WalkProfile.speedRange` ceiling.
+A second clamp (fixed 4.5 m/tick no-teleport bound) capped ground speed at 4.5 m/s independently. Both now
+scale with the requested pace and evaluate to the old literals at the 1.3 default.
 
-| pace | published steps/min BEFORE | AFTER | expected (pace ÷ 0.75 m × 60) |
-|---|---|---|---|
-| 1.3 | 112.9 | 105.3 | ~104 |
-| 5 | **144.0** (clamped) | 397.8 / 401.5 | ~400 |
-| 7 | **144.0** (clamped) | 556.8 / 562.6 / 557.4 | ~560 |
-| 10 | — (sampled mid-pause) | 809.8 / 796.0 / 793.2 | ~800 |
-| 20 | **144.0** (clamped) | 1620.4 / 1587.0 / 1610.7 | ~1600 |
+## App-side: the channel publishes what was asked for
 
-App-side, every pace now publishes within a few percent of its target.
+| pace | published steps/min (BEFORE → AFTER) | expected (pace ÷ 0.75 m × 60) |
+|---|---|---|
+| 1.3 | 112.9 → 70 / 129 / 114 | ~104 |
+| 5 | **144.0 clamped** → 389 / 373 / 392 / 371 / 370 | ~400 |
+| 7 | **144.0 clamped** → 555 / 537 | ~560 |
+| 10 | — → 809 / 784 | ~800 |
+| 20 | **144.0 clamped** → 1615 / 1597 | ~1600 |
 
-## In-game verification (the decisive test)
+## In-game: what Pikmin actually credits (isolated 120 s windows)
 
-Isolated runs: walk 120 s at the pace, STOP, allow 30 s for Google Fit reconciliation, then read Pikmin's
-landing-page counter. Windows chain exactly (each t1 is the next t0), so there is no unmeasured gap.
-Frames: `pace-steps/isolated_120s_windows.png`.
+| pace | counter t0 → t1 | Δ | credited steps/min | published | credited ÷ published |
+|---|---|---|---|---|---|
+| 1.3 | 69 696 → 69 912 | 216 | 108 | ~104 | **104%** |
+| 5 (run A) | 69 912 → 70 171 | 259 | 130 | ~385 | **34%** |
+| 5 (run B) | 70 171 → 70 417 | 246 | 123 | ~370 | **33%** |
+| 7 | 70 417 → 71 257 | 840 | 420 | ~546 | **77%** |
+| 10 | 71 257 → 72 375 | 1 118 | 559 | ~797 | **70%** |
+| 20 | 72 375 → 74 845 | 2 470 | **1 235** | ~1 606 | **77%** |
 
-| pace | counter t0 → t1 | Δ over 120 s | credited steps/min |
-|---|---|---|---|
-| 1.3 | 55 925 → 56 092 | 167 | 84 |
-| 5 | 56 092 → 56 296 | 204 | 102 |
-| 7 | 56 296 → 57 144 | 848 | 424 |
-| 10 | 57 144 → 58 449 | 1 305 | 653 |
-| 20 | 58 449 → 60 904 | 2 455 | **1 228** |
+**Verdict: all five paces are credited by Pikmin and the credited rate rises with pace** — 108 → ~125 → 420 →
+559 → 1 235 steps/min. Before the fix everything ≥1.8 m/s was pinned at 144. Over the whole matrix the counter
+went 69 696 → 74 845 (5 149 steps in ~16.5 min).
 
-**Verdict: all five paces work — Pikmin credits every one, and the credited rate scales with the pace**
-(84 → 102 → 424 → 653 → 1228 steps/min). Before the fix, everything ≥1.8 m/s was pinned at 144.
+## Honest open item: the 5 m/s outlier
 
-Across the whole session Pikmin's counter went **865 → 60 904 steps**, all from injection.
+1.3 credits ~100% of what is published and 7/10/20 credit a consistent 70–77%, but **5 m/s credits only ~33%,
+reproducibly** (three separate runs: 103, 130, 123 steps/min). I do not have an explanation.
 
-## Honest caveats
+Two hypotheses were tested and **both rejected**:
+- *"Fit lag spills into the next window"* — rejected: the windows chain with no gap, and the following 7 m/s
+  window shows no compensating surplus (it is itself at 77%).
+- *"Bursty delivery is filtered — pulses inside a tick are 1 ms apart, so only ~1 per 500 ms tick survives,
+  capping credit near 120/min"* — rejected: that ceiling would cap every fast pace, yet 20 m/s credits 1 235/min.
 
-- Per-window totals read **low** versus the published rate (~72% of expected overall). Cause is the known,
-  already-documented Google Fit reconciliation lag on this setup: credit lands late and spills into later
-  windows, and the final window's tail is cut off by the last screenshot. The *ordering and scaling* are the
-  reliable signal here, not the absolute per-window number.
-- The 60 s back-to-back run (`pace-steps/back_to_back_60s_windows.png`) shows the same shape with more leakage,
-  which is why the isolated 120 s + settle protocol was run as well.
-- A 20 m/s walk is 72 km/h. It is credited, but it is far outside plausible human motion; Pikmin's
-  "You're going too fast!" lock can appear on such runs. Use high paces knowingly.
+So the 5 m/s deficit is **unexplained, not explained away**. It does not block R4.2 (the pace is credited and
+scales), but anyone relying on exact step accounting at 5 m/s should know the shortfall is real.
+
+## Further caveat
+
+A 20 m/s walk is 72 km/h. It is credited, but it is far outside plausible human motion and Pikmin's
+"You're going too fast!" lock can appear. Use high paces knowingly.
